@@ -1,0 +1,5 @@
+eta_A = 0.00022333155669416248
+k=10 m=2k: exact RP 1.61  SparseStack RP 1.632  Gaussian RP 1.624  same-sketch regression excess 1.98  1+k/(m-k-1) = 2.111
+k=10 m=4k: exact RP 1.61  SparseStack RP 1.664  Gaussian RP 1.645  same-sketch regression excess 1.337  1+k/(m-k-1) = 1.345
+k=20 m=2k: exact RP 1.195  SparseStack RP 1.201  Gaussian RP 1.199  same-sketch regression excess 1.98  1+k/(m-k-1) = 2.053
+k=20 m=4k: exact RP 1.195  SparseStack RP 1.196  Gaussian RP 1.199  same-sketch regression excess 1.33  1+k/(m-k-1) = 1.339

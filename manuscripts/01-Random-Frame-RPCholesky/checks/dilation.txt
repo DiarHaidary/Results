@@ -1,0 +1,8 @@
+m=1  det-tilted E tr R = 8.2149   V_m = 8.2155   (E det / (m! e_m) = 1.0003)
+m=2  det-tilted E tr R = 5.4234   V_m = 5.4239   (E det / (m! e_m) = 1.0010)
+m=3  det-tilted E tr R = 3.1890   V_m = 3.1875   (E det / (m! e_m) = 0.9999)
+m=4  det-tilted E tr R = 1.5367   V_m = 1.5331   (E det / (m! e_m) = 1.0067)
+tightness error 1.15e-14
+tr R = 4.8037509598  tr(Ã/Ã_SS) = 4.8037509598 ; max |diag(Ã/S) - q_i z_i'Rz_i| = 6.66e-16
+nonzero spectra: [3.34885795, 1.1239086, 0.33098441]
+                 [3.34885795, 1.1239086, 0.33098441]

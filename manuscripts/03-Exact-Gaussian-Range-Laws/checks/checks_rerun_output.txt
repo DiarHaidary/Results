@@ -1,0 +1,54 @@
+== constants ==
+kappa_G = 2.0743278107 ; 2 sqrt(6 kappa_G) = 7.0557684
+112/pi - 4 = 31.6507 ; C_new = 112/(3pi) - 4/3 = 10.5502 ; 3 C_new = 31.6507
+pi^2/4 = 2.4674 ; pi^2/2 = 4.9348
+
+== (A) common-Schmidt KR vs Gaussian Nystrom ==
+full: KR mean 1.7007  Gauss mean 1.6933 ; rank-r: KR 2.8526 Gauss 2.8431 ; bound (1+r/(k-r-1))tau = 6.0000
+  q=0.1: KR 2.1246 Gauss 2.1241
+  q=0.5: KR 2.5284 Gauss 2.5303
+  q=0.9: KR 3.9731 Gauss 3.9734
+
+== (B) Hurwitz pair ==
+sym(M1'M1)-I/2: 1.57e-16, sym(M2'M2)-I/2: 1.57e-16, sym(M1'M2): 0.00e+00
+angle histogram (should be 0.125 each): [0.1261, 0.1244, 0.1244, 0.1245, 0.125, 0.125, 0.1256, 0.125]
+
+== (C) head-only counterexample: Var log|slope| ==
+structured 4.9255 (pi^2/2=4.9348), Gaussian 2.4674 (pi^2/4=2.4674)
+
+== (D) dimension counts: Segre cone and Grassmannian image ==
+n=[2, 2]: Segre cone dim (Jacobian rank) 3 vs m+1=3
+n=[2, 2, 2]: Segre cone dim (Jacobian rank) 4 vs m+1=4
+n=[2, 2, 2, 2, 2]: Segre cone dim (Jacobian rank) 6 vs m+1=6
+n=[3, 4]: Segre cone dim (Jacobian rank) 6 vs m+1=6
+n=[3, 3, 3]: Segre cone dim (Jacobian rank) 7 vs m+1=7
+n=[2,2,2], k=4: Grassmannian image dim 12 ; km=12 ; k(R-k)=16
+
+== (E) one-query identity, compressed matrix, n1 recovery ==
+||U'LL'U - wI|| = 4.94e-16
+one-query rel err 1.62e-16 ; w from response rel err 1.48e-16
+unsupported vector: rel err 2.949 (identity not expected)
+eig(B) top 5: [10.0, 3.0, 1.0, 0.2, 0.0]
+Nystrom from n1=12 queries e_iΓèùh: rel err 4.67e-16 ; |tr B - tr A| = 0.00e+00
+5 powers via one query each: rel err 7.46e-16
+third order, 1000 frozen product environments: worst rel err 4.83e-15
+
+== (F) generalized Nystrom: Gaussian / calibrated / frozen / raw ==
+prediction mean (1+k/(p-k-1))E||(I-QQ')A||^2 = 0.5531 (se 0.0034)
+  gauss   mean 0.5589 (se 0.0052) median 0.4562
+  cal     mean 0.5477 (se 0.0045) median 0.4529
+  frozen  mean 0.5539 (se 0.0050) median 0.4539
+  raw     mean 0.6918 (se 0.0070) median 0.5456
+
+== (G) calibrated trace estimator ==
+m=s=5: mean/T 0.9957 (se 0.0024), Var/T^2 1.116e-02, bound 2kG/(ms) 1.659e-01
+m=s=10: mean/T 1.0010 (se 0.0013), Var/T^2 3.229e-03, bound 2kG/(ms) 4.149e-02
+m=s=20: mean/T 1.0005 (se 0.0006), Var/T^2 6.562e-04, bound 2kG/(ms) 1.037e-02
+m = R = 60: max relative error over 20 runs 3.13e-12
+
+== (H) left-scaling counterexample ==
+t=0.5: unweighted err^2 1.0000 ; weighted err^2 1.3600 ; formula 1.3600
+t=2.0: unweighted err^2 1.0000 ; weighted err^2 1.3600 ; formula 1.3600
+
+== (I) single-core tensor-train family ==
+E||omega||^2 / d^q = 1.0020 ; angle histogram [0.1266, 0.1239, 0.1253, 0.1259, 0.1264, 0.1232, 0.124, 0.1247]

@@ -1,0 +1,15 @@
+k=2  factorial=5.3  renyi(p=3/2)=22.0  renyi(opt)=8.7 at p=11.11
+k=5  factorial=9.4  renyi(p=3/2)=46.1  renyi(opt)=19.7 at p=7.14
+k=10  factorial=19.7  renyi(p=3/2)=90.2  renyi(opt)=38.5 at p=6.58
+k=20  factorial=46.9  renyi(p=3/2)=182.9  renyi(opt)=76.8 at p=6.49
+k=50  factorial=153.1  renyi(p=3/2)=471.7  renyi(opt)=193.4 at p=6.62
+k=100  factorial=368.3  renyi(p=3/2)=965.0  renyi(opt)=389.7 at p=6.76
+k=200  factorial=867.8  renyi(p=3/2)=1968.5  renyi(opt)=784.9 at p=6.9
+k=500  factorial=2615.9  renyi(p=3/2)=5028.7  renyi(opt)=1977.7 at p=7.09
+k=1000  factorial=5916.7  renyi(p=3/2)=10194.0  renyi(opt)=3975.0 at p=7.25
+k=10000  factorial=82113.5  renyi(p=3/2)=105357.8  renyi(opt)=40246.2 at p=7.58
+k=100000  factorial=1.0513038e6  renyi(p=3/2)=1.0772869e6  renyi(opt)=405987.3 at p=7.87
+k=200000  factorial=2.2412262e6  renyi(p=3/2)=2.1663099e6  renyi(opt)=813752.4 at p=7.94
+optimised-order Renyi first beats factorial at k = 128
+(81, 8.5) opt-order q=32 s=1105 b=49 m=54145
+(69, 8.0) opt-order q=32 s=1040 b=44 m=45760

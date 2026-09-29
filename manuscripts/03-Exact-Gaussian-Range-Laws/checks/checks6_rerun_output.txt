@@ -1,0 +1,12 @@
+rank-one S0  k=4 p= 20: B = 0.6562  mu2*E tr H^-1 = 1.3557  bound mu2*Cnew*k/p = 6.3301  ratio bound/B = 9.6
+rank-one S0  k=4 p= 40: B = 0.2976  mu2*E tr H^-1 = 0.4483  bound mu2*Cnew*k/p = 3.1651  ratio bound/B = 10.6
+rank-one S0  k=8 p= 36: B = 0.7220  mu2*E tr H^-1 = 1.4614  bound mu2*Cnew*k/p = 7.0335  ratio bound/B = 9.7
+rank-one S0  k=8 p= 72: B = 0.3298  mu2*E tr H^-1 = 0.4917  bound mu2*Cnew*k/p = 3.5167  ratio bound/B = 10.7
+S0 = I2/2    k=4 p= 20: B = 0.4596  mu2*E tr H^-1 = 0.6949  bound mu2*Cnew*k/p = 4.2201  ratio bound/B = 9.2
+S0 = I2/2    k=4 p= 40: B = 0.2081  mu2*E tr H^-1 = 0.2616  bound mu2*Cnew*k/p = 2.1100  ratio bound/B = 10.1
+S0 = I2/2    k=8 p= 36: B = 0.5113  mu2*E tr H^-1 = 0.7640  bound mu2*Cnew*k/p = 4.6890  ratio bound/B = 9.2
+S0 = I2/2    k=8 p= 72: B = 0.2315  mu2*E tr H^-1 = 0.2892  bound mu2*Cnew*k/p = 2.3445  ratio bound/B = 10.1
+S0 = I4/4    k=4 p= 20: B = 0.3630  mu2*E tr H^-1 = 0.4564  bound mu2*Cnew*k/p = 3.1651  ratio bound/B = 8.7
+S0 = I4/4    k=4 p= 40: B = 0.1619  mu2*E tr H^-1 = 0.1839  bound mu2*Cnew*k/p = 1.5825  ratio bound/B = 9.8
+S0 = I4/4    k=8 p= 36: B = 0.4040  mu2*E tr H^-1 = 0.5061  bound mu2*Cnew*k/p = 3.5167  ratio bound/B = 8.7
+S0 = I4/4    k=8 p= 72: B = 0.1800  mu2*E tr H^-1 = 0.2031  bound mu2*Cnew*k/p = 1.7584  ratio bound/B = 9.8

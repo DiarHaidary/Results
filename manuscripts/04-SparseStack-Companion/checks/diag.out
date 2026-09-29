@@ -1,0 +1,4 @@
+(C,B)=(69,8.0): max (T^{2q})_00^{1/2q}/eps = 0.3311 at (10000, 40, 1.0, 648, 1074); row-sum>Phi violations: 0
+(C,B)=(74,7.5): max (T^{2q})_00^{1/2q}/eps = 0.32682 at (10000, 40, 1.0, 608, 1227); row-sum>Phi violations: 0
+(C,B)=(79,7.0): max (T^{2q})_00^{1/2q}/eps = 0.3242 at (10000, 40, 1.0, 567, 1405); row-sum>Phi violations: 0
+(C,B)=(81,8.5): max (T^{2q})_00^{1/2q}/eps = 0.30432 at (10000, 40, 1.0, 689, 1186); row-sum>Phi violations: 0

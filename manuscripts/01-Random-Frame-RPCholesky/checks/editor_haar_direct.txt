@@ -1,0 +1,2 @@
+Float64  E tr R_2 = 4.41523 ± 5.0e-5
+ComplexF64  E tr R_2 = 4.43446 ± 3.0e-5

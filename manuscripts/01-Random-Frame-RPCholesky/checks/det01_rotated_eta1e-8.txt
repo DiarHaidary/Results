@@ -1,0 +1,10 @@
+real    r=2  mean E_RP tr R_r/τ = 3.0021 ± 0.0041  median 3.002  max 4.00   V_r/τ = 3.000000   2^r = 4
+real    r=3  mean E_RP tr R_r/τ = 4.0088 ± 0.0069  median 3.891  max 7.81   V_r/τ = 4.000000   2^r = 8
+real    r=4  mean E_RP tr R_r/τ = 5.0028 ± 0.0092  median 4.817  max 12.88   V_r/τ = 5.000000   2^r = 16
+real    r=5  mean E_RP tr R_r/τ = 5.9981 ± 0.0113  median 5.762  max 18.36   V_r/τ = 6.000000   2^r = 32
+real    r=6  mean E_RP tr R_r/τ = 6.9941 ± 0.0131  median 6.740  max 22.20   V_r/τ = 7.000000   2^r = 64
+complex r=2  mean E_RP tr R_r/τ = 3.0001 ± 0.0028  median 2.999  max 4.00   V_r/τ = 3.000000   2^r = 4
+complex r=3  mean E_RP tr R_r/τ = 3.9946 ± 0.0044  median 3.952  max 6.90   V_r/τ = 4.000000   2^r = 8
+complex r=4  mean E_RP tr R_r/τ = 5.0053 ± 0.0059  median 4.917  max 9.52   V_r/τ = 5.000000   2^r = 16
+complex r=5  mean E_RP tr R_r/τ = 5.9982 ± 0.0071  median 5.905  max 13.17   V_r/τ = 6.000000   2^r = 32
+complex r=6  mean E_RP tr R_r/τ = 7.0031 ± 0.0082  median 6.903  max 14.77   V_r/τ = 7.000000   2^r = 64

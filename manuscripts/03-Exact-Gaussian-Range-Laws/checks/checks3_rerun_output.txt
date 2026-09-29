@@ -1,0 +1,4 @@
+mu=(1,0.25): Gaussian MC 0.4997 exact 0.5000 | structured MC 0.5327 exact 0.5324 | ratio 1.065
+mu=(1,0.01): Gaussian MC 0.1000 exact 0.1000 | structured MC 0.1634 exact 0.1635 | ratio 1.635
+mu=(1,0.0001): Gaussian MC 0.0101 exact 0.0100 | structured MC 0.0295 exact 0.0295 | ratio 2.951
+spherical factors: ||E uu' - I/R|| = 0.0020 ; E u1^4 = 0.1990 (uniform on S^2: 0.2000)

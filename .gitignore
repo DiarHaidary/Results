@@ -1,0 +1,11 @@
+manuscripts/*/*.aux
+manuscripts/*/*.log
+manuscripts/*/*.out
+manuscripts/*/*.toc
+manuscripts/*/*.fls
+manuscripts/*/*.fdb_latexmk
+manuscripts/*/.qa/
+manuscripts/*/_qa/
+manuscripts/*/checks/qa/
+__pycache__/
+*.pyc

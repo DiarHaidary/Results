@@ -1,0 +1,61 @@
+{
+  "seed": 20260930,
+  "scope": "numerical identities and constant checks",
+  "weighted_order_statistic": {
+    "grid_size": 10000,
+    "maximum": [
+      10.55023575086152,
+      1,
+      8
+    ],
+    "bound": 10.550235750861518
+  },
+  "radial_cdf_inequality": {
+    "grid_size": 10000,
+    "passed": true
+  },
+  "head_only_quadrature": [
+    {
+      "y": 1.0,
+      "integral": 1.0,
+      "formula": 1.0,
+      "reported_quad_error": 1.1102240498573647e-14
+    },
+    {
+      "y": 0.5,
+      "integral": 1.0647627201831817,
+      "formula": 1.064762720183182,
+      "reported_quad_error": 1.1821247514630593e-14
+    },
+    {
+      "y": 0.1,
+      "integral": 1.6348638473081851,
+      "formula": 1.6348638473081853,
+      "reported_quad_error": 3.8599917509442624e-12
+    },
+    {
+      "y": 0.01,
+      "integral": 2.9511541058675723,
+      "formula": 2.951154105867573,
+      "reported_quad_error": 3.3353298766328784e-12
+    },
+    {
+      "y": 0.0001,
+      "integral": 5.863684673763727,
+      "formula": 5.8636846737637285,
+      "reported_quad_error": 1.5865176714304916e-11
+    }
+  ],
+  "matrix_identities": {
+    "covariance_error": 6.625046620029784e-16,
+    "calibration_error": 2.220446049250313e-16,
+    "product_error": 5.006153575792203e-14,
+    "spectrum_error": 8.881784197001252e-15,
+    "recovery_relative_error": 7.3802861416363235e-16,
+    "nystrom_coupling_relative_error": 7.619842783274549e-15
+  },
+  "complex_hurwitz_countercheck": {
+    "cross_covariance_real": 0.0,
+    "cross_covariance_imaginary": -0.49999999999999983
+  }
+}

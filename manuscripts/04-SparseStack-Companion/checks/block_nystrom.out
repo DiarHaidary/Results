@@ -1,0 +1,8 @@
+drift A=I12,b=3:      (2.978, 0.6, 4.96)
+drift Wishart12,b=3:  (4.272, 0.993, 4.3)
+drift A=I40,b=8:      (7.963, 0.8, 9.95)
+drift rank-1 n=12,b=3:(1.0, 0.6, 1.67)
+frob A30 (decaying), s=4,b=6: (MC = 0.568, exact = 0.568, bound2T2m = 1.019, ER2 = 0.0, blockbound = 4.077, violations = 0)
+frob Wishart12,     s=3,b=4: (MC = 8.103, exact = 8.059, bound2T2m = 16.445, ER2 = 0.0428, blockbound = 49.334, violations = 0)
+frob I_20,          s=2,b=5: (MC = 37.988, exact = 38.0, bound2T2m = 80.0, ER2 = 10.1158, blockbound = 280.0, violations = 0)
+diag training W12, s=3,b=4: (MC = 0.6045, exact = 0.6036)

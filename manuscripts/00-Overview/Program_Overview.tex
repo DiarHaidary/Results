@@ -1,0 +1,451 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=teal!70!black,urlcolor=blue!60!black]{hyperref}
+\newtheorem{conjecture}{Conjecture}[section]
+\newcommand{\E}{\mathbb E}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\title{Randomly pivoted Cholesky and structured sketches:\\ results, connections, and open questions}
+\author{Diar Heidary}
+\date{29 September 2026}
+\input{../manuscript-style.tex}
+\begin{document}
+\maketitle
+\begin{abstract}
+Six companion papers study the probability laws behind low-rank
+approximation from restricted matrix information. Their principal results
+are an all-budget comparison between Haar-frame pivoting and volume
+sampling, an order-one drift bound for arbitrary positive-semidefinite
+matrices under product probes, and robustness bounds for approximate and
+sketched pivot probabilities. Further papers characterize exact Gaussian
+range laws and refine SparseStack and two-round SRHT prescriptions. This
+overview states the results with their hypotheses, identifies the
+established tools they use, and explains the remaining gaps. In particular,
+the $O(r/\eps)$ guarantee for original coordinate pivoting remains open.
+\end{abstract}
+\tableofcontents
+
+\section{The question and its established benchmarks}
+For a positive-semidefinite matrix $A$ over $\mathbb R$ or $\mathbb C$, put
+$\tau_r(A)=\sum_{j>r}\lambda_j(A)$, where the eigenvalues are decreasing.
+This is the best rank-$r$ trace error. Original randomly pivoted Cholesky
+starts at $R_0=A$, samples a coordinate with probability
+$\pi_i=(R_t)_{ii}/\tr R_t$, and updates
+\begin{equation}\label{eq:rp}
+ R_{t+1}=R_t-\frac{R_te_ie_i^*R_t}{(R_t)_{ii}}.
+\end{equation}
+A zero residual is absorbing. Chen, Epperly, Tropp, and Webber developed
+the practical algorithm and its trace analysis \cite{CETW}. Its basic
+progress identity is
+\begin{equation}\label{eq:drift}
+ \E[\tr R_{t+1}\mid R_t]
+ =\tr R_t-\frac{\tr(R_t^2)}{\tr R_t}.
+\end{equation}
+This identity supplies an efficient completion once the trace is comparable
+to the target tail. By itself it retains dependence on the initial ratio
+$\tr A/\tau_r(A)$.
+
+\begin{conjecture}\label{conj:rp}
+There is an absolute constant $C$ such that every finite PSD input satisfies
+\[
+ \E\tr R_k\le(1+\eps)\tau_r(A)
+ \quad\text{for }k\ge Cr/\eps,\qquad 0<\eps\le1.
+\]
+The process terminates exactly if the budget reaches $\rank A$.
+\end{conjecture}
+
+Epperly's recent analysis supplies a spectrum-independent pivot bound
+\cite{Epperly}. The supporting manuscript \cite{IterLog} claims the sharper
+bound
+\[
+ K_4(r,\eps)=O\bigl(r/\eps+r\Lambda_4(r)\bigr),
+ \qquad
+ \Lambda_1(r)=\log(e+r),\quad
+ \Lambda_{j+1}(r)=\log(e+\Lambda_j(r)).
+\]
+The robustness companion imports its specified moment and finite-count
+statements. This overview summarizes that dependency and does not provide
+an independent proof of the supporting manuscript.
+
+Volume sampling provides a different law and a useful benchmark. With
+$e_k(A)$ the $k$th elementary symmetric polynomial of the eigenvalues,
+its expected residual trace obeys the established identity and tail bound
+\cite{DRVW,GS}
+\begin{equation}\label{eq:vol}
+ V_k(A)=(k+1)\frac{e_{k+1}(A)}{e_k(A)}
+ \le\frac{k+1}{k+1-r}\tau_r(A),\qquad k\ge r.
+\end{equation}
+Set $V_k(A)=0$ after exact recovery. Thus volume sampling reaches the desired
+error at $k=r-1+\lceil r/\eps\rceil$. The factorial likelihood comparison
+between adaptive sampling and volume sampling is also established
+\cite{DV}; applying it in a new setting does not make the inequality itself
+a new result.
+
+\section{Random frames: a comparison at every budget}
+Let $Q$ be a Haar orthogonal or Haar unitary matrix, independently of the
+pivots. The random-frame paper \cite{Frame} proves
+\begin{equation}\label{eq:frame}
+ \E_{Q,\mathrm{RP}}\tr R_k(QAQ^*)\le V_k(A)
+ \qquad\text{for every }k\ge0.
+\end{equation}
+Together with~\eqref{eq:vol}, this gives the volume-sampling pivot budget in
+expectation. The averaging covers both the frame and the sequential pivot
+process.
+
+The proof reduces the residual spectrum to a Markov chain with Gamma
+coordinates. A covariance inequality for ratios of those coordinates then
+compares a transition with the elementary-symmetric benchmark. Existing
+volume-sampling identities concern determinant-weighted subsets; the
+contribution here is the comparison for Haar-averaged sequential pivoting.
+The paper also studies a Dirichlet family containing the real and complex
+cases. Monotonicity within that family remains a conjecture.
+
+The limitation is computational. Dense Haar rotation can destroy cheap
+column access. Consequently~\eqref{eq:frame} does not settle
+Conjecture~\ref{conj:rp}, and it does not prove the same comparison for a
+Hadamard, sparse, or tensor-product frame. Coordinate examples with a
+$2^r$ expected-error factor at the exact budget $r$, due to Colbrook
+\cite{Colbrook}, show that the frame can
+matter strongly. The average-frame comparison shows that every fixed
+spectrum nevertheless meets the volume benchmark after averaging over
+frames.
+
+\section{Product probes: progress without an embedding hypothesis}
+On the tensor space $\bigotimes_{j=1}^q\mathbb R^{n_j}$, a legal probe has
+the form $z=x_1\otimes\cdots\otimes x_q$. The product-probe paper
+\cite{Drift} studies independent uniform spherical factors. Gaussian
+factors give the same Nystr\"om output because nonzero column scales leave
+the selected range unchanged.
+
+The main inequality holds for every PSD residual:
+\begin{equation}\label{eq:prod}
+ \E(\tr R-\tr R')\ge\frac{\tr(R^2)}{\kappa\tr R},
+ \qquad \kappa=\exp\left(\sum_{j=1}^qD_{n_j}\right).
+\end{equation}
+For the real and complex spherical laws, respectively,
+\begin{align*}
+ D_n^{\mathbb R}&=\log n+\psi(3/2)-\psi(n/2+1),\\
+ D_n^{\mathbb C}&=\log n+1-H_n.
+\end{align*}
+Here $\psi$ is the digamma function and $H_n$ is the harmonic number.
+The complex branch on a real oracle carries the simulation cost stated in
+the companion; it is not counted as one free real product query.
+
+The proof changes measure by the progress numerator and takes a fractional
+moment limit at order one. Summing the progress gives the whole-input bound
+\begin{equation}\label{eq:energy}
+ \E\norm{A-\widehat A_m}_F^2\le\frac{\kappa}{m}(\tr A)^2.
+\end{equation}
+For $\tau_r(A)>0$, scalar completion gives a sufficient budget
+\[
+ m\ge\left\lceil\kappa r\left[
+ \eps^{-1}+\log\eps^{-1}+\log\frac{\tr A}{\tau_r(A)}
+ \right]\right\rceil
+\]
+for expected trace error $(1+\eps)\tau_r(A)$. The initial trace-ratio
+logarithm is therefore still present.
+
+The product-query model and the limitations of Hutchinson-type averaging
+precede this work \cite{MSW,MA}. Holden's probability-sensitive probes and
+diagonal correction are particularly close prior results \cite{Holden}.
+The companion distinguishes those ingredients from its progress-based
+Nystr\"om reduction and proves its displayed budget comparisons.
+The constant $\kappa$ remains exponential in tensor order; its sharp drift
+exponent is only bracketed. This is not a minimax characterization of
+unrestricted adaptive product-query trace estimation.
+
+\section{Exact Gaussian range laws: a structural boundary}
+Let $V$ be an isometry onto the full relevant support, of dimension $d$.
+For independent copies of a structured probe $\omega$, the range-law paper
+\cite{Range} characterizes equality with the dense-Gaussian range law by
+\begin{equation}\label{eq:line}
+ V^\mathsf T\omega\ne0\ \text{almost surely},\qquad
+ [V^\mathsf T\omega]\ \text{uniform on }\mathbb R\mathrm P^{d-1}.
+\end{equation}
+Brackets identify vectors differing by a nonzero scalar. Independence
+between sketch columns and a condition on the complete support are both
+essential. A condition only on the leading eigenspace does not identify
+the full-input output law.
+
+Uniform projected lines produce Gaussian range laws at every sketch size;
+conversely, the size-one law recovers the condition. Random column
+magnitudes are invisible to range-determined outputs, including PSD
+Nystr\"om approximation. They need not be invisible to embedding estimates
+or to an uncalibrated two-sided formula.
+
+Conditional scalar Gaussianity is a checkable sufficient mechanism: after
+conditioning on the other factors, the projected probe is Gaussian with
+covariance $wI_d$, where $w>0$. The companion derives exact algorithm laws
+from this mechanism. The Gaussian pseudoinverse and inverse-Wishart
+formulas used afterward are standard \cite{HMT}; the structured criterion
+and its consequences are the contribution.
+
+The class is restrictive. Product probes satisfy the projective dimension
+ceiling
+\[
+ d\le1+\sum_{j=1}^q(n_j-1).
+\]
+For the conditionally Gaussian class treated in the paper, a frozen product
+environment further reduces supported matrix-vector products to an
+$n_1$-dimensional problem, and $n_1$ suitable product queries recover the
+input exactly. No growing-rank theorem for general tensor network sketches
+is claimed. A complex extension requires directly verified Hermitian scalar
+covariance; a real symmetric covariance identity alone is insufficient.
+
+\section{SparseStack and SRHT: parameters and whole-sketch energy}
+The two sketch companions \cite{Sparse,Hadamard} use operator estimates
+already present in the repository \cite{GMO,Hybrid}. Their contributions
+refine scalar calibration and applications of those estimates. The base
+constructions and their order-optimal embedding rates are prior results.
+
+\subsection{An exact SparseStack constant certificate}
+SparseStack has $s$ normalized CountSketch blocks, $b$ buckets per block,
+and $m=sb$ actual rows. Put
+\[
+ q=\max\{1,\lceil\log_4(d/\delta)\rceil\},\qquad
+ v=2q+1,\qquad D=d+v.
+\]
+The companion certifies the choices
+\[
+ (C,B)\in\{(69,8),(74,15/2),(79,7)\},\quad
+ s=\lceil Bv/\eps\rceil,\quad
+ b=\left\lceil\frac{CD}{s\eps^2}\right\rceil,
+\]
+with row accounting
+\[
+ m<\frac{Cd+(2C+2B)q+C+B+1}{\eps^2}.
+\]
+An exact rational interval certificate supplies the sharper scalar step.
+The imported operator majorant is identified in the graded framework,
+rather than in an unavailable newer private draft.
+
+For $Z=\Pi^\mathsf T\Pi-I$ and PSD $A$, a separate exact calculation gives
+\begin{equation}\label{eq:ssenergy}
+ \E\tr(AZAZ)=
+ \frac{(\tr A)^2+\norm A_F^2-2\sum_iA_{ii}^2}{m}.
+\end{equation}
+A deterministic inequality bounds the squared Frobenius Nystr\"om
+residual by this energy. The result counts all actual rows and is
+rank-blind: it does not assert an expected error relative to a rank-$r$
+tail.
+
+\subsection{A canonical two-round SRHT prescription}
+For the two-round flat-transform model, the exact row-factor allowance
+$\Lambda_q$ obeys $D_q\le\Lambda_q\le3D_q$, where $D_q=d+12q^2$ in the Walsh
+case. The companion's canonical prescription is
+\begin{align*}
+ q_*&=\max\left\{1,\left\lceil\log_4\frac{6d}{5\delta}\right\rceil\right\},\\
+ M&=\min\left\{n,\left\lceil\frac{20\Lambda_{q_*}}{\eps^2}\right\rceil\right\}.
+\end{align*}
+The sign independence level is $\min(n,4q_*)$. At $M=n$ the full unitary
+transform is retained, so the embedding is exact. The simpler coherence
+prescription is $60D_q/\eps^2$.
+
+The exact Bernoulli-to-fixed-size barycenter is already an ingredient of
+the base analyses \cite{GMO,Hybrid}. The refinement retains its sharper
+factor during scalar calibration. Yang independently analyzes the
+rerandomized two-Walsh construction with a linear-in-dimension embedding
+prescription \cite{Yang}; the companion credits that result and isolates
+its own explicit-confidence and constant refinements.
+
+For a uniformly subsampled real flat transform with the stated sign
+independence, the companion also proves
+\[
+ \E\norm{K-\operatorname{Nys}_K(S^*)}_F^2
+ \le\frac2M\left(1-\frac Mn\right)(\tr K)^2,
+ \qquad K\succeq0.
+\]
+This is an absolute energy bound. Its finite-population factor makes it
+vanish when all rows are retained. Nonadaptive Nystr\"om trace estimation
+is itself established \cite{Nyspp}; the new application here uses the
+structured shared-row energy calculation.
+
+\subsection{A fixed-reference gate for adaptive frame selection}
+Both companions analyze a fixed range and a fixed dictionary of frames.
+The selecting RPCholesky law can depend on the sketch through a
+positive-definite coefficient matrix $C$. A sketch-independent volume
+reference dominates that law with likelihood price
+\[
+ \Lambda_C=\frac{k!\det C}{\prod_{j=0}^{k-1}\tau_j(C)}\le k!.
+\]
+This permits the specified sketch-dependent selection without a union bound
+over all frames. The likelihood inequality is the established
+Deshpande--Vempala comparison \cite{DV}; the fixed-reference reuse
+application and its parameter consequences are the contributions here.
+The theorem does not cover arbitrary learned subspaces or arbitrary
+adaptive sketch reuse.
+
+\section{Approximate and sketched pivot probabilities}
+For $0<a\le1$, the robustness companion \cite{Robust} separates three
+conditions on the actual pivot probabilities:
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.27\textwidth}X@{}}
+\toprule
+Condition & Proved consequence in the companion\\
+\midrule
+$a\pi_i\le q_i\le\pi_i/a$ & The imported four-logarithm conversion survives
+with explicit losses in $a$.\\
+$q_i\ge a\pi_i$ & Scalar trace completion survives with effective rank
+$r/a$; the initial trace-ratio logarithm remains.\\
+$q_i\le\pi_i/a$ & For $a<1$, diagonal inputs prevent a uniform accuracy
+factor below $1/a$ at any fixed finite pivot budget.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The third conclusion concerns worst-case inputs at a fixed budget. It does
+not say that a particular finite matrix cannot eventually be recovered
+exactly. The two-sided pivot-count theorem already appears as Proposition
+8.1 of the supporting paper \cite{IterLog}; the companion recalls it and
+isolates its functional hypotheses. Its further contributions include the
+one-sided distinction and the reused-sketch transfer below.
+
+For sketched pivoting, write $A=F^*F$ and run the pivot process on
+$(\Pi F)^*(\Pi F)$. The proof uses embeddings of fixed low-dimensional spaces
+along a reference path. A hybrid process switches to exact pivoting at the
+first failed embedding event. Its likelihood comparison yields
+\begin{equation}\label{eq:additive}
+ \E\tr R_A(J)\le(1+\eps)\tau_r(A)+P_{\mathrm{fail}}\tr A.
+\end{equation}
+The additive term is part of the guarantee. An expectation relative to the
+tail requires enough confidence to make it small relative to $\tau_r(A)$.
+
+At fixed sketch distortion $\eta$, the hybrid conversion retains the
+four-logarithm pivot dependence. Under the stated choices, the SparseStack
+row budget has order
+\[
+ \frac{K+\log(\tr A/(\eps\tau_r(A)))}{\eta^2},
+ \qquad \tau_r(A)>0.
+\]
+The SRHT confidence allowance contains its quadratic logarithmic term;
+a general linear-in-$K$ claim for both sketches would be incorrect.
+The paper's union-of-independent-chains inequality is proved, but the
+$O(r/\eps)$ restart consequence still requires a uniform fractional
+warm-start conjecture.
+
+\section{Connections and open questions}
+The connections in Table~\ref{tab:map} distinguish established ingredients
+from the contributions being proposed.
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{0.22\textwidth}p{0.31\textwidth}X@{}}
+\toprule
+Companion & Established ingredient & Contribution\\
+\midrule
+Random frames & Volume expectation and tail inequality & All-budget
+comparison for Haar-averaged sequential pivoting.\\
+Product drift & Product-query model, directional moments, diagonal
+correction & Order-one progress and Nystr\"om consequences.\\
+Range laws & Gaussian range invariance and pseudoinverse moments &
+Structured projective criterion and exact-law reductions.\\
+SparseStack & CountSketch and graded majorants & Exact scalar certificate
+and whole-sketch energy consequences.\\
+Two-round SRHT & Fast transforms, moment kernels, exact barycenter &
+Sharper calibration and explicit prescriptions.\\
+Robust pivots & Coordinate drift, four-logarithm moments, and the existing
+two-sided bracket theorem & Functional conversion, one-sided distinction,
+and path-local sketch transfer.\\
+\bottomrule
+\end{tabularx}
+\caption{Mathematical ingredients and the isolated contributions.}
+\label{tab:map}
+\end{table}
+
+The following questions remain separate mathematical targets:
+\begin{enumerate}
+\item Does original coordinate RPCholesky satisfy
+Conjecture~\ref{conj:rp}?
+\item Can an inexpensive structured frame preserve the all-budget volume
+comparison, exactly or with a constant loss?
+\item What is the sharp product-probe drift exponent, and what is the
+unrestricted adaptive product-query complexity of trace estimation?
+\item How stable is the exact Gaussian range law under approximately scalar
+conditional covariance?
+\item Can path-local sketch failure prices be reduced enough to explain
+empirical sketch sizes while controlling~\eqref{eq:additive}?
+\end{enumerate}
+The numerical illustrations in the companions do not settle these
+questions. The supporting four-logarithm paper and the new companions are
+informal manuscripts; their use here does not assert formal verification
+or external peer review.
+
+\clearpage
+\begingroup
+\small
+\begin{thebibliography}{99}
+\setlength{\itemsep}{3pt}
+\setlength{\parsep}{0pt}
+\bibitem{CETW} Y.~Chen, E.~N.~Epperly, J.~A.~Tropp, and R.~J.~Webber.
+Randomly pivoted Cholesky: practical approximation of a kernel matrix with
+few entry evaluations. \emph{Comm. Pure Appl. Math.} 78 (2025), 995--1041.
+\href{https://arxiv.org/abs/2207.06503}{arXiv:2207.06503}.
+\bibitem{Epperly} E.~N.~Epperly. A new analysis of the randomly pivoted
+Cholesky algorithm. 2026.
+\href{https://arxiv.org/abs/2608.20633}{arXiv:2608.20633}.
+\bibitem{DRVW} A.~Deshpande, L.~Rademacher, S.~Vempala, and G.~Wang.
+Matrix approximation and projective clustering via volume sampling.
+\emph{Theory of Computing} 2 (2006), 225--247.
+\href{https://doi.org/10.4086/toc.2006.v002a012}{doi:10.4086/toc.2006.v002a012}.
+\bibitem{DV} A.~Deshpande and S.~Vempala. Adaptive sampling and fast low-rank
+matrix approximation. \emph{APPROX/RANDOM 2006}, 292--303.
+\href{https://doi.org/10.1007/11830924_28}{doi:10.1007/11830924\_28}.
+\bibitem{GS} V.~Guruswami and A.~K.~Sinop. Optimal column-based low-rank
+matrix reconstruction. \emph{SODA 2012}, 1207--1214.
+\href{https://arxiv.org/abs/1104.1732}{arXiv:1104.1732}.
+\bibitem{Colbrook} M.~J.~Colbrook. Sharp worst-case factors for randomly
+pivoted Cholesky and LU.
+11 September 2026.
+\href{https://github.com/ajt60gaibb/OpenProblemsInNLA/blob/main/references/colbrook-random-pivoting-2026-09-11/manuscripts/sharp_random_pivoting.pdf}{Public manuscript}.
+\bibitem{MSW} R.~A.~Meyer, W.~Swartworth, and D.~P.~Woodruff. Understanding
+the Kronecker matrix-vector complexity of linear algebra. \emph{ICML 2025}.
+\href{https://proceedings.mlr.press/v267/meyer25a.html}{PMLR publication}.
+\bibitem{MA} R.~A.~Meyer and H.~Avron. Hutchinson's estimator is bad at
+Kronecker-trace-estimation. \emph{SIAM J. Matrix Anal. Appl.} 47 (2026),
+353--387. \href{https://arxiv.org/abs/2309.04952}{arXiv:2309.04952}.
+\bibitem{Holden} S.~Holden. RA-11: probability-sensitive product probes and
+diagonal correction. 14 September 2026.
+\href{https://github.com/ajt60gaibb/OpenProblemsInNLA/blob/main/references/holden-further-2026-09-14/RA-11/manuscript.md}{Public manuscript}.
+\bibitem{HMT} N.~Halko, P.~G.~Martinsson, and J.~A.~Tropp. Finding structure
+with randomness: probabilistic algorithms for constructing approximate
+matrix decompositions. \emph{SIAM Review} 53 (2011), 217--288.
+\href{https://arxiv.org/abs/0909.4061}{arXiv:0909.4061}.
+\bibitem{Nyspp} D.~Persson, A.~Cortinovis, and D.~Kressner. Improved
+variants of the Hutch++ algorithm for trace estimation.
+\href{https://arxiv.org/abs/2109.10659}{arXiv:2109.10659}.
+\bibitem{Yang} Y.~Yang. Subspace embeddings with the rerandomized SRHT.
+2026. \href{https://arxiv.org/abs/2609.13946}{arXiv:2609.13946}.
+\bibitem{IterLog} Iterated-logarithmic pivot bounds for randomly pivoted
+Cholesky. 29 September 2026.
+\href{https://github.com/DiarHaidary/Results/blob/main/manuscripts/background/Iterated_Logarithmic_RPCholesky.pdf}{Supporting manuscript}.
+\bibitem{GMO} Graded Multiplication Operators for Random-Matrix Moments.
+\href{https://github.com/DiarHaidary/Results/blob/main/Graded\%20Multiplication\%20Operators\%20for\%20Random-Matrix\%20Moments.pdf}{Repository manuscript}.
+Theorem 10.6 and Appendix B for SparseStack; Theorem 10.1 and Appendix A
+for two-round SRHT.
+\bibitem{Hybrid} Two-round SRHT hybrid constants.
+\href{https://github.com/DiarHaidary/Results/blob/main/Wick-Hermite\%20Hybrid/srht_hybrid_constants_template.pdf}{Repository manuscript},
+Theorem 4.1 and Section 5.
+\bibitem{Frame} Randomly pivoted Cholesky in a random frame is dominated by
+volume sampling. 2026.
+\href{https://github.com/DiarHaidary/Results/blob/main/manuscripts/01-Random-Frame-RPCholesky/Random_Frame_RPCholesky.pdf}{Companion paper}.
+\bibitem{Drift} Product-Probe Drift, Kronecker Nystr\"om Approximation, and
+Trace Estimation. 2026.
+\href{https://github.com/DiarHaidary/Results/blob/main/manuscripts/02-Product-Probe-Drift/Product_Probe_Drift_v2.pdf}{Companion paper}.
+\bibitem{Range} Exact Gaussian range laws for structured sketches. 2026.
+\href{https://github.com/DiarHaidary/Results/blob/main/manuscripts/03-Exact-Gaussian-Range-Laws/Exact_Gaussian_Range_Laws.pdf}{Companion paper}.
+\bibitem{Sparse} SparseStack: sharper constants, whole-sketch Nystr\"om bounds,
+and adaptive frame selection. 2026.
+\href{https://github.com/DiarHaidary/Results/blob/main/manuscripts/04-SparseStack-Companion/SparseStack_Constants_Nystrom_Adaptive.pdf}{Companion paper}.
+\bibitem{Hadamard} Two-round subsampled randomized Hadamard transforms:
+canonical prescriptions, whole-sketch Nystr\"om energy, and adaptive frames.
+2026. \href{https://github.com/DiarHaidary/Results/blob/main/manuscripts/05-SRHT-Companion/SRHT_Prescriptions_Nystrom_Adaptive.pdf}{Companion paper}.
+\bibitem{Robust} RPCholesky under approximate and sketched pivot probabilities.
+2026. \href{https://github.com/DiarHaidary/Results/blob/main/manuscripts/06-Robust-Sketched-RPCholesky/RPCholesky_Approximate_Sketched_Pivots.pdf}{Companion paper}.
+\end{thebibliography}
+\endgroup
+\end{document}

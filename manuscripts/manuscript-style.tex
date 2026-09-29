@@ -1,0 +1,39 @@
+% Shared manuscript typography. Keep this file beside the manuscript folders.
+\usepackage{needspace}
+\usepackage{etoolbox}
+\linespread{1.08}
+\setlength{\parskip}{0.38em plus 0.08em minus 0.05em}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=4pt,topsep=6pt,parsep=2pt}
+\renewcommand{\arraystretch}{1.16}
+\setlength{\tabcolsep}{6pt}
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{10pt plus 2pt minus 2pt}%
+  \setlength{\belowdisplayskip}{10pt plus 2pt minus 2pt}%
+  \setlength{\abovedisplayshortskip}{5pt plus 2pt}%
+  \setlength{\belowdisplayshortskip}{8pt plus 2pt minus 2pt}%
+}
+\makeatletter
+\def\th@plain{%
+  \thm@preskip=10pt plus 2pt minus 2pt
+  \thm@postskip=10pt plus 2pt minus 2pt
+  \itshape
+}
+\def\th@definition{%
+  \thm@preskip=10pt plus 2pt minus 2pt
+  \thm@postskip=10pt plus 2pt minus 2pt
+  \normalfont
+}
+\def\th@remark{%
+  \thm@headfont{\itshape}%
+  \thm@preskip=9pt plus 2pt minus 2pt
+  \thm@postskip=9pt plus 2pt minus 2pt
+  \normalfont
+}
+\makeatother
+\AtBeginEnvironment{proof}{\Needspace{4\baselineskip}}
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\raggedbottom

@@ -1,0 +1,17 @@
+┌ Warning: Assignment to `c` in soft scope is ambiguous because a global variable by the same name exists: `c` will be treated as a new local. Disambiguate by using `local c` to suppress this warning or `global c` to assign to the existing global variable.
+└ @ F:\Sandbox\Manuscripts-2026-09-29\01-Random-Frame-RPCholesky\checks\one_step.jl:58
+┌ Warning: Assignment to `a` in soft scope is ambiguous because a global variable by the same name exists: `a` will be treated as a new local. Disambiguate by using `local a` to suppress this warning or `global a` to assign to the existing global variable.
+└ @ F:\Sandbox\Manuscripts-2026-09-29\01-Random-Frame-RPCholesky\checks\one_step.jl:58
+┌ Warning: Assignment to `u` in soft scope is ambiguous because a global variable by the same name exists: `u` will be treated as a new local. Disambiguate by using `local u` to suppress this warning or `global u` to assign to the existing global variable.
+└ @ F:\Sandbox\Manuscripts-2026-09-29\01-Random-Frame-RPCholesky\checks\one_step.jl:58
+┌ Warning: Assignment to `v` in soft scope is ambiguous because a global variable by the same name exists: `v` will be treated as a new local. Disambiguate by using `local v` to suppress this warning or `global v` to assign to the existing global variable.
+└ @ F:\Sandbox\Manuscripts-2026-09-29\01-Random-Frame-RPCholesky\checks\one_step.jl:58
+Anchor (5,3,2,1), k=2:
+  real     LHS=4.415273304  V_2=4.463414634  D=-0.132389  T1=-3.133e-03 T2=-1.293e-01  margin (RHS-LHS)/k/ES*... -D/E[S]=0.024071
+  complex  LHS=4.434463831  V_2=4.463414634  D=-0.159229  T1=-3.482e-03 T2=-1.557e-01  margin (RHS-LHS)/k/ES*... -D/E[S]=0.014475
+k=3 one-step for (5,3,2,1):
+  α=0.5  LHS=1.928877  V_3=1.967213
+  α=1.0  LHS=1.944653  V_3=1.967213
+scan: 1500 cases, 0 sign/S_k violations, max relative (LHS-RHS)/RHS = -7.34e-07
+heterogeneous Lemma G: Laplace D'=-0.60107  MC D'=-0.60149
+Lemma G heterogeneous shapes: violations = 0 / 2000;  with c reversed: 0 / 2000

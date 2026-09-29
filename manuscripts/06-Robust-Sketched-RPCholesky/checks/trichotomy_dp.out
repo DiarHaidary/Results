@@ -1,0 +1,46 @@
+r=1 m=400 H=1.0e6
+  K=1  exact=1.9996  two-sided γ=.5: 2.9992  one-sided γ=.5: 2.9992
+  K=2  exact=0.9979  two-sided γ=.5: 0.9991  one-sided γ=.5: 0.9991
+  K=4  exact=0.9925  two-sided γ=.5: 0.9925  one-sided γ=.5: 0.9925
+  K=8  exact=0.9825  two-sided γ=.5: 0.9825  one-sided γ=.5: 0.9825
+  K=16  exact=0.9625  two-sided γ=.5: 0.9625  one-sided γ=.5: 0.9625
+  K=32  exact=0.9225  two-sided γ=.5: 0.9225  one-sided γ=.5: 0.9225
+r=4 m=400 H=1.0e6
+  K=4  exact=3.0825  two-sided γ=.5: 5.1645  one-sided γ=.5: 5.1645
+  K=8  exact=0.99  two-sided γ=.5: 0.99  one-sided γ=.5: 0.99
+  K=16  exact=0.97  two-sided γ=.5: 0.97  one-sided γ=.5: 0.97
+  K=32  exact=0.93  two-sided γ=.5: 0.93  one-sided γ=.5: 0.93
+  K=64  exact=0.85  two-sided γ=.5: 0.85  one-sided γ=.5: 0.85
+  K=128  exact=0.69  two-sided γ=.5: 0.69  one-sided γ=.5: 0.69
+r=8 m=2000 H=1.0e8
+  K=8  exact=3.7178  two-sided γ=.5: 6.4356  one-sided γ=.5: 6.4356
+  K=16  exact=0.996  two-sided γ=.5: 0.996  one-sided γ=.5: 0.996
+  K=32  exact=0.988  two-sided γ=.5: 0.988  one-sided γ=.5: 0.988
+  K=64  exact=0.972  two-sided γ=.5: 0.972  one-sided γ=.5: 0.972
+  K=128  exact=0.94  two-sided γ=.5: 0.94  one-sided γ=.5: 0.94
+  K=256  exact=0.876  two-sided γ=.5: 0.876  one-sided γ=.5: 0.876
+--- DRF-06 regime: H = (m-k)(1-γ)/γ ---
+r=1 m=4000 γ=0.5 H=3000.0
+  K=2  exact=1.2445  two-sided=1.4626  one-sided=1.7495
+  K=4  exact=1.0791  two-sided=1.2849  one-sided=1.749
+  K=8  exact=1.0067  two-sided=1.107  one-sided=1.748
+  K=16  exact=0.9963  two-sided=1.012  one-sided=1.746
+  K=64  exact=0.9842  two-sided=0.9843  one-sided=1.734
+  K=250  exact=0.9377  two-sided=0.9377  one-sided=1.6875
+  K=1000  exact=0.7502  two-sided=0.7502  one-sided=1.5
+r=4 m=4000 γ=0.5 H=3000.0
+  K=8  exact=1.1576  two-sided=1.8927  one-sided=2.1788
+  K=16  exact=0.999  two-sided=1.1753  one-sided=1.819
+  K=32  exact=0.993  two-sided=0.9974  one-sided=1.7447
+  K=64  exact=0.985  two-sided=0.985  one-sided=1.7348
+  K=256  exact=0.937  two-sided=0.937  one-sided=1.6867
+  K=250  exact=0.9385  two-sided=0.9385  one-sided=1.6882
+  K=1000  exact=0.751  two-sided=0.751  one-sided=1.5007
+r=1 m=4000 γ=0.8 H=749.9999999999998
+  K=2  exact=1.1325  two-sided=1.1427  one-sided=1.187
+  K=4  exact=1.0934  two-sided=1.1083  one-sided=1.1865
+  K=8  exact=1.0456  two-sided=1.0618  one-sided=1.1855
+  K=16  exact=1.0082  two-sided=1.0178  one-sided=1.1835
+  K=64  exact=0.9843  two-sided=0.9843  one-sided=1.1715
+  K=250  exact=0.9378  two-sided=0.9378  one-sided=1.125
+  K=1000  exact=0.7502  two-sided=0.7502  one-sided=0.9375

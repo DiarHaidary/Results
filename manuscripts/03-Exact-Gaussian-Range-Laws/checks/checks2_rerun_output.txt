@@ -1,0 +1,36 @@
+== (H) hook construction: dependent-factor product probe with V'omega ~ N(0, I_{m+1}) ==
+dims [3, 2, 4]: m+1 = 7; max |V'omega - z|/|z| = 1.92e-16 ; ||cov - I|| = 0.018
+
+== (I) Grassmannian image dimension of product-probe ranges vs k(R-k) ==
+dims [2, 2, 2] k=1 R=4: image dim  3, k*m =  3, dim Gr = k(R-k) =  3, R <= k+m ? true
+dims [2, 2, 2] k=1 R=5: image dim  3, k*m =  3, dim Gr = k(R-k) =  4, R <= k+m ? false
+dims [2, 2, 2] k=2 R=5: image dim  6, k*m =  6, dim Gr = k(R-k) =  6, R <= k+m ? true
+dims [2, 2, 2] k=2 R=6: image dim  6, k*m =  6, dim Gr = k(R-k) =  8, R <= k+m ? false
+dims [2, 2, 2] k=3 R=6: image dim  9, k*m =  9, dim Gr = k(R-k) =  9, R <= k+m ? true
+dims [2, 2, 2] k=3 R=7: image dim  9, k*m =  9, dim Gr = k(R-k) = 12, R <= k+m ? false
+dims [3, 3]   k=2 R=6: image dim  8, k*m =  8, dim Gr = k(R-k) =  8, R <= k+m ? true
+dims [3, 3]   k=2 R=7: image dim  8, k*m =  8, dim Gr = k(R-k) = 10, R <= k+m ? false
+
+== (J) single-core TT family ==
+||E omega omega' - I|| (20000 samples) = 0.123 ; mean ||omega||^2/N = 0.992
+direction second moment ||E uu' - I/R|| = 0.0023 (0 for uniform)
+fourth moment of first projected coordinate / (Var)^2 = 13.36 (Gaussian 3; mixture larger)
+
+== (K) rectangular one-query power iteration and compressed matrices ==
+4 cycles of A A^T, two product queries per cycle: rel err 4.14e-16
+singular values of compressed 15x15 matrix: [5.0, 3.0, 2.0, 1.0, 0.5, 0.0]
+logdet(A+rho I_N) - [(N-n1)log rho + logdet(B+rho I_n1)] = 0.00e+00
+lifted eigenvector: ||A u - lambda u|| = 3.24e-15, ||u|| = 1.000000
+
+== (L) fully frozen GN (both environments shared) vs Gaussian GN ==
+fully frozen: mean 2.9214 median 2.2446 | Gaussian: mean 2.8919 median 2.2459
+
+== (M) exact recovery from m+1 Gaussian product queries (any PSD input of rank m+1) ==
+N = 16, rank 5, 5 product queries: rel err 1.33e-14
+
+== (N) 6r+8 budget error factor ==
+r=  1: k+p = 14 (6r+8 = 14), factor = 2.7000
+r=  2: k+p = 20 (6r+8 = 20), factor = 3.0952
+r=  5: k+p = 38 (6r+8 = 38), factor = 3.5256
+r= 10: k+p = 68 (6r+8 = 68), factor = 3.7352
+r=100: k+p = 608 (6r+8 = 608), factor = 3.9704

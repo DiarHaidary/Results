@@ -1,0 +1,4 @@
+d=10: smallest feasible (Float64, tol 1e-9) M=58396 at q=4  (bisection value 58396)
+d=100: smallest feasible (Float64, tol 1e-9) M=125750 at q=6  (bisection value 125750)
+d=1000: smallest feasible (Float64, tol 1e-9) M=346315 at q=10  (bisection value 346315)
+d=10000: smallest feasible (Float64, tol 1e-9) M=1423395 at q=18  (bisection value 1423395)

@@ -1,0 +1,22 @@
+log 10! = 15.104412573075516
+frak d (note form) = 80.73235854398736   (RA-01 form) = 76.3923421080719
+== v3.0 (81,17/2)
+independent             (7, 255, 147, 37485)
+5+5 levels              (11, 391, 102, 39882)
+10!                     (18, 629, 71, 44659)
+union binom(1000,10)    (46, 1581, 40, 63240)
+Renyi note-form         (72, 2465, 33, 81345)
+Renyi RA-01 form        (69, 2363, 33, 77979)
+== new (69,8)
+independent             (7, 240, 133, 31920)
+5+5 levels              (11, 368, 93, 34224)
+10!                     (18, 592, 64, 37888)
+union binom(1000,10)    (46, 1488, 36, 53568)
+Renyi note-form         (72, 2320, 30, 69600)
+Renyi RA-01 form        (69, 2224, 30, 66720)
+Renyi(note) first beats k! (delta=0.01) near k = 166012
+   ignoring the delta^3 cost, near k = 166012
+Renyi(RA-01) first beats k! (delta=0.01) near k = 133365
+   ignoring the delta^3 cost, near k = 133365
+spike: 3.076923076923077 vs 3.076923076923077
+max over random cases of mu/(Lambda_C nu) = 0.9613458089662161

@@ -1,0 +1,22 @@
+tr A / tau_r = 5051.2 (eta_A = 1.98e-04)
+k= 10 exact RP: E tr R_A / tau = 1.550
+   m= 10 gauss  sketched RP: E tr R_A / tau = 1.604   same-sketch regression / optimal: median 9.017  max 396.314
+   m= 10 sstack sketched RP: E tr R_A / tau = 1.909   same-sketch regression / optimal: median 7.707  max 144.893
+   m= 20 gauss  sketched RP: E tr R_A / tau = 1.571   same-sketch regression / optimal: median 1.958  max 3.235
+   m= 20 sstack sketched RP: E tr R_A / tau = 1.559   same-sketch regression / optimal: median 1.956  max 2.719
+   m= 40 gauss  sketched RP: E tr R_A / tau = 1.541   same-sketch regression / optimal: median 1.335  max 1.705
+   m= 40 sstack sketched RP: E tr R_A / tau = 1.545   same-sketch regression / optimal: median 1.321  max 1.457
+k= 20 exact RP: E tr R_A / tau = 1.071
+   m= 20 gauss  sketched RP: E tr R_A / tau = 1.067   same-sketch regression / optimal: median 12.165  max 220.135
+   m= 20 sstack sketched RP: E tr R_A / tau = 1.064   same-sketch regression / optimal: median 12.541  max 88.835
+   m= 40 gauss  sketched RP: E tr R_A / tau = 1.062   same-sketch regression / optimal: median 1.971  max 2.295
+   m= 40 sstack sketched RP: E tr R_A / tau = 1.066   same-sketch regression / optimal: median 1.972  max 2.351
+   m= 80 gauss  sketched RP: E tr R_A / tau = 1.067   same-sketch regression / optimal: median 1.329  max 1.407
+   m= 80 sstack sketched RP: E tr R_A / tau = 1.065   same-sketch regression / optimal: median 1.325  max 1.390
+k= 40 exact RP: E tr R_A / tau = 0.744
+   m= 40 gauss  sketched RP: E tr R_A / tau = 0.745   same-sketch regression / optimal: median 24.802  max 1397.387
+   m= 40 sstack sketched RP: E tr R_A / tau = 0.745   same-sketch regression / optimal: median 23.359  max 458.625
+   m= 80 gauss  sketched RP: E tr R_A / tau = 0.745   same-sketch regression / optimal: median 1.979  max 2.244
+   m= 80 sstack sketched RP: E tr R_A / tau = 0.746   same-sketch regression / optimal: median 1.984  max 2.168
+   m=160 gauss  sketched RP: E tr R_A / tau = 0.744   same-sketch regression / optimal: median 1.331  max 1.358
+   m=160 sstack sketched RP: E tr R_A / tau = 0.743   same-sketch regression / optimal: median 1.331  max 1.368

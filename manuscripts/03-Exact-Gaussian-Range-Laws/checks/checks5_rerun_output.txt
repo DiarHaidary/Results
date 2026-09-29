@@ -1,0 +1,10 @@
+== (O) GN with left covariance Sigma on the column support ==
+MC 34.9395  formula 34.9123  bound 50.1681
+
+== (P) rectangular exact recovery from n1 right + n1 left product queries ==
+rel err 5.39e-16
+
+== (Q) Phi(y) closed form vs quadrature ==
+y=0.50: quadrature 1.064763 closed form 1.064763
+y=0.10: quadrature 1.634864 closed form 1.634864
+y=0.01: quadrature 2.951154 closed form 2.951154

@@ -1,0 +1,123 @@
+{
+  "method": "independent NumPy implementation; deterministic seed 29092026",
+  "checks": {
+    "algebraic_identity_cases": 80,
+    "maximum_relative_identity_error": 2.5136186931698213e-15,
+    "good_kernel_cases": 80,
+    "robust_count_table": "all 24 entries reproduced",
+    "sketch_parameter_table": [
+      {
+        "r": 10,
+        "epsilon": 1,
+        "eta": 0.1,
+        "K": 104,
+        "ell": 59,
+        "SparseStack_rows": 1820700,
+        "SRHT_uncapped_threshold": 904543200
+      },
+      {
+        "r": 10,
+        "epsilon": 1,
+        "eta": 0.25,
+        "K": 143,
+        "ell": 80,
+        "SparseStack_rows": 399602,
+        "SRHT_uncapped_threshold": 265918464
+      },
+      {
+        "r": 100,
+        "epsilon": 1,
+        "eta": 0.1,
+        "K": 1045,
+        "ell": 75,
+        "SparseStack_rows": 9703260,
+        "SRHT_uncapped_threshold": 1480593600
+      },
+      {
+        "r": 100,
+        "epsilon": 1,
+        "eta": 0.25,
+        "K": 1436,
+        "ell": 274,
+        "SparseStack_rows": 2575908,
+        "SRHT_uncapped_threshold": 3118518144
+      },
+      {
+        "r": 100,
+        "epsilon": 0.1,
+        "eta": 0.1,
+        "K": 3554,
+        "ell": 112,
+        "SparseStack_rows": 30619125,
+        "SRHT_uncapped_threshold": 3328192800
+      },
+      {
+        "r": 100,
+        "epsilon": 0.1,
+        "eta": 0.25,
+        "K": 5127,
+        "ell": 822,
+        "SparseStack_rows": 8781010,
+        "SRHT_uncapped_threshold": 28039689216
+      },
+      {
+        "r": 1000,
+        "epsilon": 0.1,
+        "eta": 0.1,
+        "K": 35562,
+        "ell": 458,
+        "SparseStack_rows": 295489495,
+        "SRHT_uncapped_threshold": 55138989600
+      },
+      {
+        "r": 1000,
+        "epsilon": 0.1,
+        "eta": 0.25,
+        "K": 51300,
+        "ell": 7554,
+        "SparseStack_rows": 86302608,
+        "SRHT_uncapped_threshold": 2366690548608
+      }
+    ],
+    "gate_exact_enumeration_cases": 5,
+    "union_exact_enumeration_cases": 5,
+    "Renyi_crossover": {
+      "0.01": 128,
+      "1e-06": 129
+    },
+    "gate_parameter_table": [
+      [
+        7,
+        255,
+        147,
+        37485
+      ],
+      [
+        8,
+        289,
+        132,
+        38148
+      ],
+      [
+        18,
+        629,
+        71,
+        44659
+      ],
+      [
+        32,
+        1105,
+        49,
+        54145
+      ],
+      [
+        46,
+        1581,
+        40,
+        63240
+      ]
+    ],
+    "floor_edge_cases": 36
+  },
+  "status": "passed"
+}

@@ -1,0 +1,342 @@
+{
+  "checked_utc": "2026-09-29T21:33:27.949753+00:00",
+  "previous_checks_utc": "2026-09-29T21:21:45.119367+00:00",
+  "scope": "External URLs embedded in the seven revised PDFs; unchanged links reused from the earlier checks in this same audit session.",
+  "links": [
+    {
+      "url": "https://arxiv.org/abs/0710.1435",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/0710.1435"
+    },
+    {
+      "url": "https://arxiv.org/abs/0909.4061",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/0909.4061"
+    },
+    {
+      "url": "https://arxiv.org/abs/1001.2738v2",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1001.2738v2"
+    },
+    {
+      "url": "https://arxiv.org/abs/1005.4107",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1005.4107"
+    },
+    {
+      "url": "https://arxiv.org/abs/1007.2337",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1007.2337"
+    },
+    {
+      "url": "https://arxiv.org/abs/1011.1595",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1011.1595"
+    },
+    {
+      "url": "https://arxiv.org/abs/1012.1577",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1012.1577"
+    },
+    {
+      "url": "https://arxiv.org/abs/1104.1732",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1104.1732"
+    },
+    {
+      "url": "https://arxiv.org/abs/1204.0062",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1204.0062"
+    },
+    {
+      "url": "https://arxiv.org/abs/1207.6365",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1207.6365"
+    },
+    {
+      "url": "https://arxiv.org/abs/1211.1002",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1211.1002"
+    },
+    {
+      "url": "https://arxiv.org/abs/1504.05477",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1504.05477"
+    },
+    {
+      "url": "https://arxiv.org/abs/1601.07850",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1601.07850"
+    },
+    {
+      "url": "https://arxiv.org/abs/1609.00048",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1609.00048"
+    },
+    {
+      "url": "https://arxiv.org/abs/1705.06908",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1705.06908"
+    },
+    {
+      "url": "https://arxiv.org/abs/1706.05736",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1706.05736"
+    },
+    {
+      "url": "https://arxiv.org/abs/2009.11392",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2009.11392"
+    },
+    {
+      "url": "https://arxiv.org/abs/2010.09649",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2010.09649"
+    },
+    {
+      "url": "https://arxiv.org/abs/2109.10659",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2109.10659"
+    },
+    {
+      "url": "https://arxiv.org/abs/2110.02820",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2110.02820"
+    },
+    {
+      "url": "https://arxiv.org/abs/2110.02820v2",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2110.02820v2"
+    },
+    {
+      "url": "https://arxiv.org/abs/2201.10684",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2201.10684"
+    },
+    {
+      "url": "https://arxiv.org/abs/2207.06503",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2207.06503"
+    },
+    {
+      "url": "https://arxiv.org/abs/2301.07825",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2301.07825"
+    },
+    {
+      "url": "https://arxiv.org/abs/2309.04952",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2309.04952"
+    },
+    {
+      "url": "https://arxiv.org/abs/2309.04952v2",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2309.04952v2"
+    },
+    {
+      "url": "https://arxiv.org/abs/2405.11962",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2405.11962"
+    },
+    {
+      "url": "https://arxiv.org/abs/2502.08029v2",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2502.08029v2"
+    },
+    {
+      "url": "https://arxiv.org/abs/2507.23207",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2507.23207"
+    },
+    {
+      "url": "https://arxiv.org/abs/2507.23207v2",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2507.23207v2"
+    },
+    {
+      "url": "https://arxiv.org/abs/2508.21189",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2508.21189"
+    },
+    {
+      "url": "https://arxiv.org/abs/2508.21189v1",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2508.21189v1"
+    },
+    {
+      "url": "https://arxiv.org/abs/2510.02513",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2510.02513"
+    },
+    {
+      "url": "https://arxiv.org/abs/2602.05394v3",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2602.05394v3"
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.11009",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.11009"
+    },
+    {
+      "url": "https://arxiv.org/abs/2608.20633",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2608.20633"
+    },
+    {
+      "url": "https://arxiv.org/abs/2608.28094v3",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2608.28094v3"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.02978",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2609.02978"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.06287",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2609.06287"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.13946",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2609.13946"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.13946v1",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2609.13946v1"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.22548",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2609.22548"
+    },
+    {
+      "url": "https://arxiv.org/html/2608.20633v1",
+      "status": 200,
+      "final_url": "https://arxiv.org/html/2608.20633v1"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.06287v1",
+      "status": 200,
+      "final_url": "https://arxiv.org/html/2609.06287v1"
+    },
+    {
+      "url": "https://doi.org/10.1007/11830924_28",
+      "status": 200,
+      "final_url": "https://link.springer.com/chapter/10.1007/11830924_28"
+    },
+    {
+      "url": "https://doi.org/10.1007/978-1-4419-9982-5",
+      "status": 200,
+      "final_url": "https://link.springer.com/10.1007/978-1-4419-9982-5"
+    },
+    {
+      "url": "https://doi.org/10.1016/j.apnum.2007.01.003",
+      "status": 200,
+      "final_url": "https://linkinghub.elsevier.com/retrieve/pii/S0168927407000244"
+    },
+    {
+      "url": "https://doi.org/10.1080/03610918908812806",
+      "status": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://doi.org/10.1137/060673096",
+      "status": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://doi.org/10.1137/S0097539704442684",
+      "status": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://doi.org/10.1145/2559902",
+      "status": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://doi.org/10.4064/sm-70-3-231-283",
+      "status": 200,
+      "final_url": "https://www.impan.pl/pl/wydawnictwa/czasopisma-i-serie-wydawnicze/studia-mathematica/all/70/3/103223/the-best-constants-in-the-khintchine-inequality"
+    },
+    {
+      "url": "https://doi.org/10.4086/toc.2006.v002a012",
+      "status": 200,
+      "final_url": "https://theoryofcomputing.org/articles/v002a012/"
+    },
+    {
+      "url": "https://doi.org/10.4230/LIPIcs.ICALP.2025.55",
+      "status": 200,
+      "final_url": "https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ICALP.2025.55"
+    },
+    {
+      "url": "https://eccc.weizmann.ac.il/report/2006/042/",
+      "status": 200,
+      "final_url": "https://eccc.weizmann.ac.il/report/2006/042/"
+    },
+    {
+      "url": "https://github.com/ajt60gaibb/OpenProblemsInNLA/blob/main/randomized-and-low-rank-approximation/RA-11/README.md",
+      "status": 200,
+      "final_url": "https://github.com/ajt60gaibb/OpenProblemsInNLA/blob/main/randomized-and-low-rank-approximation/RA-11/README.md"
+    },
+    {
+      "url": "https://github.com/ajt60gaibb/OpenProblemsInNLA/blob/main/references/colbrook-random-pivoting-2026-09-11/manuscripts/sharp_random_pivoting.pdf",
+      "status": 200,
+      "final_url": "https://github.com/ajt60gaibb/OpenProblemsInNLA/blob/main/references/colbrook-random-pivoting-2026-09-11/manuscripts/sharp_random_pivoting.pdf"
+    },
+    {
+      "url": "https://github.com/ajt60gaibb/OpenProblemsInNLA/blob/main/references/holden-further-2026-09-14/RA-11/manuscript.md",
+      "status": 200,
+      "final_url": "https://github.com/ajt60gaibb/OpenProblemsInNLA/blob/main/references/holden-further-2026-09-14/RA-11/manuscript.md"
+    },
+    {
+      "url": "https://github.com/yuningyang19/OpenProblemsInNLA_TR-01/blob/ed21181197ac839eac95f549404f94e7e3aa6e10/manuscript.pdf",
+      "status": 200,
+      "final_url": "https://github.com/yuningyang19/OpenProblemsInNLA_TR-01/blob/ed21181197ac839eac95f549404f94e7e3aa6e10/manuscript.pdf"
+    },
+    {
+      "url": "https://jmlr.org/papers/v23/19-571.html",
+      "status": 200,
+      "final_url": "https://jmlr.org/papers/v23/19-571.html"
+    },
+    {
+      "url": "https://proceedings.mlr.press/v108/rakhshan20a.html",
+      "status": 200,
+      "final_url": "https://proceedings.mlr.press/v108/rakhshan20a.html"
+    },
+    {
+      "url": "https://proceedings.mlr.press/v202/balabanov23a.html",
+      "status": 200,
+      "final_url": "https://proceedings.mlr.press/v202/balabanov23a.html"
+    },
+    {
+      "url": "https://proceedings.mlr.press/v267/meyer25a.html",
+      "status": 200,
+      "final_url": "https://proceedings.mlr.press/v267/meyer25a.html"
+    },
+    {
+      "url": "https://theoryofcomputing.org/articles/v002a012/",
+      "status": 200,
+      "final_url": "https://theoryofcomputing.org/articles/v002a012/"
+    },
+    {
+      "url": "https://www.cs.princeton.edu/~chazelle/pubs/FJLT-sicomp09.pdf",
+      "status": 200,
+      "final_url": "https://www.cs.princeton.edu/~chazelle/pubs/FJLT-sicomp09.pdf"
+    },
+    {
+      "url": "https://www.cs.yale.edu/homes/mmahoney/pubs/matrix1_SICOMP.pdf",
+      "status": 200,
+      "final_url": "https://www.stat.berkeley.edu/~mmahoney/pubs/matrix1_SICOMP.pdf"
+    },
+    {
+      "url": "https://www.theoryofcomputing.org/articles/v002a012/",
+      "status": 200,
+      "final_url": "https://www.theoryofcomputing.org/articles/v002a012/"
+    }
+  ]
+}

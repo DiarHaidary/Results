@@ -1,0 +1,6 @@
+min over (0,1) of Phi(y)-1 = 0.000e+00 (at y=1.000000); Phi(0.5)=1.0648 Phi(0.1)=1.6349 Phi(1e-3)=4.3996
+min g(y)/(1-y) = 0.2732
+min ||D(G1 D)^+||_F - ||G1^+||_F over 10000 trials = 1.030e-03 (>= 0)
+C_new = 10.550236, 3C_new = 31.6507, 1 + 3C_new/32 = 1.9891
+complex check: E||G1^+||^2 for complex r x k: r/(k-r)
+MC 0.4990 vs r/(k-r) = 0.5000

@@ -1,0 +1,276 @@
+{
+  "scalar": {
+    "main": [
+      {
+        "d": 10,
+        "q_original": 6,
+        "q_star": 6,
+        "counts": [
+          381888,
+          369386,
+          106080,
+          102608
+        ],
+        "bisection_candidate": 58396,
+        "selected_order": 4,
+        "certificate_before": 0.01000055193874143,
+        "certificate_at_boundary": 0.00999983307798837,
+        "certificate_at_returned": 0.009992648003485453,
+        "certificate_at_canonical": 0.0012469305826539989
+      },
+      {
+        "d": 100,
+        "q_original": 8,
+        "q_star": 7,
+        "counts": [
+          749952,
+          717818,
+          165120,
+          157664
+        ],
+        "bisection_candidate": 125750,
+        "selected_order": 6,
+        "certificate_before": 0.010000226899503372,
+        "certificate_at_boundary": 0.00999972431495528,
+        "certificate_at_returned": 0.009994700083416215,
+        "certificate_at_canonical": 0.00277673069088051
+      },
+      {
+        "d": 1000,
+        "q_original": 10,
+        "q_star": 9,
+        "counts": [
+          1900800,
+          1733312,
+          473280,
+          427412
+        ],
+        "bisection_candidate": 346315,
+        "selected_order": 10,
+        "certificate_before": 0.010000299808891625,
+        "certificate_at_boundary": 0.00999999289534483,
+        "certificate_at_returned": 0.009996924327946903,
+        "certificate_at_canonical": 0.001372315520925021
+      },
+      {
+        "d": 10000,
+        "q_original": 11,
+        "q_star": 11,
+        "counts": [
+          9894528,
+          7894646,
+          2748480,
+          2192958
+        ],
+        "bisection_candidate": 1423395,
+        "selected_order": 18,
+        "certificate_before": 0.010000102617855536,
+        "certificate_at_boundary": 0.009999966674107698,
+        "certificate_at_returned": 0.009998607343679708,
+        "certificate_at_canonical": 0.000664207422903972
+      }
+    ],
+    "gate": [
+      {
+        "price": "1",
+        "q_star": 7,
+        "canonical": 157664,
+        "coherence": 165120,
+        "direct_plus_10": 125760,
+        "direct_q": 6
+      },
+      {
+        "price": "252",
+        "q_star": 11,
+        "canonical": 357798,
+        "coherence": 372480,
+        "direct_plus_10": 276534,
+        "direct_q": 8
+      },
+      {
+        "price": "3628800",
+        "q_star": 18,
+        "canonical": 921368,
+        "coherence": 957120,
+        "direct_plus_10": 696744,
+        "direct_q": 12
+      },
+      {
+        "price": "263409560461970212832400",
+        "q_star": 46,
+        "canonical": 5892073,
+        "coherence": 6118080,
+        "direct_plus_10": 4467916,
+        "direct_q": 31
+      }
+    ],
+    "atom_grid_max_ratio": 1.0,
+    "atom_argmax": [
+      2,
+      1
+    ],
+    "nonmonotonic_root_example": {
+      "n": 4,
+      "d": 1,
+      "q": 1,
+      "Lambda": 38.491933384829665,
+      "root_M2": 9.92669882010953,
+      "root_M3": 17.292646275937827
+    },
+    "kappa0": 2.074327810676173,
+    "scope": "80-decimal boundary evaluations; bisection candidates are checked, not globally proved minimal"
+  },
+  "whole_sketch": {
+    "K": [
+      [
+        5,
+        0,
+        -2,
+        2
+      ],
+      [
+        0,
+        6,
+        1,
+        -5
+      ],
+      [
+        -2,
+        1,
+        5,
+        -2
+      ],
+      [
+        2,
+        -5,
+        -2,
+        5
+      ]
+    ],
+    "X": [
+      [
+        6,
+        1,
+        -1,
+        -1
+      ],
+      [
+        1,
+        6,
+        1,
+        3
+      ],
+      [
+        -1,
+        1,
+        6,
+        0
+      ],
+      [
+        -1,
+        3,
+        0,
+        6
+      ]
+    ],
+    "cases": [
+      {
+        "law": "one-round",
+        "n": 4,
+        "M": 1,
+        "states": 64,
+        "exact_energy": "406",
+        "formula_exact": true,
+        "covariance_exact": true,
+        "mean_nystrom_residual_float": 108.25569790226214,
+        "bound": "1323/2",
+        "maximum_deterministic_violation": 0.0
+      },
+      {
+        "law": "one-round",
+        "n": 4,
+        "M": 2,
+        "states": 96,
+        "exact_energy": "406/3",
+        "formula_exact": true,
+        "covariance_exact": true,
+        "mean_nystrom_residual_float": 49.83550916521133,
+        "bound": "441/2",
+        "maximum_deterministic_violation": 0.0
+      },
+      {
+        "law": "one-round",
+        "n": 4,
+        "M": 3,
+        "states": 64,
+        "exact_energy": "406/9",
+        "formula_exact": true,
+        "covariance_exact": true,
+        "mean_nystrom_residual_float": 3.155363657033214e-26,
+        "bound": "147/2",
+        "maximum_deterministic_violation": 0.0
+      },
+      {
+        "law": "one-round",
+        "n": 4,
+        "M": 4,
+        "states": 16,
+        "exact_energy": "0",
+        "formula_exact": true,
+        "covariance_exact": true,
+        "mean_nystrom_residual_float": 6.571766489797499e-29,
+        "bound": "0",
+        "maximum_deterministic_violation": 1.5323083823533728e-28
+      },
+      {
+        "law": "two-round",
+        "n": 4,
+        "M": 1,
+        "states": 1024,
+        "exact_energy": "663/2",
+        "formula_exact": true,
+        "covariance_exact": true,
+        "mean_nystrom_residual_float": 98.8200711733544,
+        "bound": "1323/2",
+        "maximum_deterministic_violation": 0.0
+      },
+      {
+        "law": "two-round",
+        "n": 4,
+        "M": 2,
+        "states": 1536,
+        "exact_energy": "221/2",
+        "formula_exact": true,
+        "covariance_exact": true,
+        "mean_nystrom_residual_float": 39.878096291491424,
+        "bound": "441/2",
+        "maximum_deterministic_violation": 0.0
+      },
+      {
+        "law": "two-round",
+        "n": 4,
+        "M": 3,
+        "states": 1024,
+        "exact_energy": "221/6",
+        "formula_exact": true,
+        "covariance_exact": true,
+        "mean_nystrom_residual_float": 1.7027531160317467e-26,
+        "bound": "147/2",
+        "maximum_deterministic_violation": 0.0
+      },
+      {
+        "law": "two-round",
+        "n": 4,
+        "M": 4,
+        "states": 256,
+        "exact_energy": "0",
+        "formula_exact": true,
+        "covariance_exact": true,
+        "mean_nystrom_residual_float": 3.5457977976282745e-29,
+        "bound": "0",
+        "maximum_deterministic_violation": 7.623909240653537e-29
+      }
+    ]
+  },
+  "verification": "finite scalar and exact rational law checks; not formal verification"
+}

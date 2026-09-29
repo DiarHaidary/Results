@@ -1,0 +1,6 @@
+n=4 m=1 covdiff=0.0 diagdiff=0.0
+n=4 m=2 covdiff=0.0 diagdiff=0.0
+n=4 m=3 covdiff=0.0 diagdiff=0.0
+n=8 m=1 covdiff=1.4210854715202004e-14 diagdiff=0.0
+n=8 m=3 covdiff=6.252776074688882e-13 diagdiff=4.547473508864641e-13
+n=8 m=5 covdiff=1.8118839761882555e-13 diagdiff=1.0231815394945443e-12
