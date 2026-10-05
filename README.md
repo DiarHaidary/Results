@@ -2,6 +2,14 @@
 
 Research manuscripts on randomized matrix approximation and structured sketches.
 
+## October 2026 finite-moment refinements
+
+[Finite-moment refinements for SRHT and Khatri-Rao sketches](manuscripts/07-Finite-Moment-Sketch-Refinements/Finite_Moment_Sketch_Refinements.pdf)
+contains ordered-prefix SRHT bounds, covariance-sensitive Khatri-Rao
+comparisons, fourth-order calibrations, and an extension to independent
+spherical-product probes. The [source and reproducible checks](manuscripts/07-Finite-Moment-Sketch-Refinements/)
+include full proofs and explicit limits on the constant comparisons.
+
 ## September 2026 companion manuscripts
 
 The [manuscript index](manuscripts/README.md) contains six revised papers,
@@ -36,3 +44,4 @@ For SRHT, there is another proof by [Yang](https://github.com/yuningyang19/OpenP
 For Graph Matrices, there is another proof by [Xu et al.](https://arxiv.org/abs/2609.14266v1).
 
 Motivated by a common proof chain in the first three proofs, the [Calculus](Overlap-Aware%20Calculus%20for%20Polynomial%20Random%20Matrices.pdf) was developed. Due to its breadth, it was abandoned to a narrower [framework](Graded%20Multiplication%20Operators%20for%20Random-Matrix%20Moments.pdf) which might be useful for researchers. **The framework is not yet formalized in Lean**. It has been audited multiple times by different LLMs. The appendices include self-contained proofs of these 4 problems. The proof manuscripts are formalized in Lean so it was decided to not make any changes to them; the appendices resolve the same conjectures, but with better constants, using the improvements that were naturally obtained during the development of the framework.
+

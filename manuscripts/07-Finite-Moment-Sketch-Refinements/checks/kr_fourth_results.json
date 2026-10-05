@@ -1,0 +1,23 @@
+[
+  {
+    "certificate": "generic_gaussian_envelope",
+    "m": 2104,
+    "rational_verification_passed": true,
+    "failure_upper": 0.009992182040274201,
+    "failure_lower_at_m_minus_one": 0.010001798213680139
+  },
+  {
+    "certificate": "certified_kappa_envelope",
+    "m": 1974,
+    "rational_verification_passed": true,
+    "failure_upper": 0.009996155772272957,
+    "failure_lower_at_m_minus_one": 0.010006435076928511
+  },
+  {
+    "certificate": "exact_covariance_pairing",
+    "m": 1928,
+    "rational_verification_passed": true,
+    "failure_upper": 0.009997788179778404,
+    "failure_lower_at_m_minus_one": 0.010008325548524898
+  }
+]

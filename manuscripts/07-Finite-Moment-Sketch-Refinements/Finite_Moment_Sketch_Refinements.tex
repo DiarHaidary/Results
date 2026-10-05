@@ -1,0 +1,1185 @@
+% Standalone manuscript. Compile with XeLaTeX or Tectonic; no external assets.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=24mm,headheight=15pt]{geometry}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}\usepackage[utf8]{inputenc}\usepackage{lmodern}
+\else
+  \usepackage{fontspec}
+  \IfFontExistsTF{CMU Serif}{\setmainfont{CMU Serif}}{\setmainfont{Latin Modern Roman}}
+  \setsansfont{NotoSans}[Extension=.ttf,UprightFont=*-Regular,BoldFont=*-Bold,
+    ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic,Scale=MatchLowercase]
+\fi
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage{booktabs,tabularx,array,enumitem,xcolor,titlesec,fancyhdr,needspace}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\definecolor{LinkGreen}{HTML}{176B4A}
+\definecolor{LinkPurple}{HTML}{70459B}
+\definecolor{Ink}{HTML}{20384D}
+\usepackage[colorlinks=true,linkcolor=LinkGreen,citecolor=LinkGreen,urlcolor=LinkPurple,
+  bookmarksnumbered=true,pdfusetitle]{hyperref}
+\usepackage{xurl}
+\urlstyle{same}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\Tr}{\operatorname{Tr}}\newcommand{\tr}{\operatorname{Tr}}
+\newcommand{\norm}[1]{\lVert#1\rVert}\newcommand{\ip}[2]{\langle#1,#2\rangle}
+\newcommand{\diag}{\operatorname{diag}}
+\numberwithin{equation}{section}
+\titleformat{\section}{\large\sffamily\bfseries}{\thesection}{.6em}{}
+\titleformat{\subsection}{\normalsize\sffamily\bfseries}{\thesubsection}{.6em}{}
+\titlespacing*{\section}{0pt}{15pt}{7pt}
+\titlespacing*{\subsection}{0pt}{10pt}{5pt}
+\setlength{\parindent}{1.1em}\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\allowdisplaybreaks[1]\raggedbottom
+\clubpenalty=10000\widowpenalty=10000
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize Finite-moment sketch refinements}
+\fancyhead[R]{\sffamily\footnotesize SRHT and Khatri--Rao}
+\fancyfoot[C]{\sffamily\small\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\setcounter{tocdepth}{1}
+\title{Finite-moment refinements for\\SRHT and Khatri--Rao sketches}
+\author{Diar Heidary}
+\date{5 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We refine finite-moment bounds for two structured subspace embeddings by
+retaining information that is lost in a terminal operator-norm estimate.
+For two-round SRHT, successive polynomial prefixes use smaller sign
+cutoffs, yielding an ordered product of nonnegative comparison matrices.
+For Gaussian Khatri--Rao sketches, an ordered first-return comparison
+retains the covariance spectrum at the vacuum boundary, and exact
+fourth-order calibration gives additional finite-sample certificates.
+We also transfer every even trace-moment bound for Gaussian product
+probes to independent normalized spherical product probes by conditional
+Jensen, compute their exact covariance reduction, and give an exact
+fourth-moment example. A conditional spherical Jacobi comparison explains
+the related linear-pencil case. The proofs identify the estimates
+imported from earlier manuscripts and distinguish finite-parameter gains
+from changes to universal asymptotic constants.
+\end{abstract}
+\tableofcontents
+\section{Scope and contributions}\label{sec:introduction}
+For a self-adjoint random matrix $Z$, an even trace moment gives the
+sufficient tail certificate
+\begin{equation}\label{eq:markov}
+ \Prob\{\norm Z>\varepsilon\}
+ \le \varepsilon^{-2q}\E\Tr Z^{2q},\qquad q\ge1.
+\end{equation}
+Throughout, $\Tr$ is the unnormalized trace, $\norm\cdot$ is the operator
+norm, and comparison vectors use the Euclidean norm. A sufficient sample
+count obtained from \eqref{eq:markov} is not asserted to be an optimal
+threshold.
+
+The common starting point is multiplication by the original random
+matrix on vector-valued $L^2$. The constant functions form the vacuum.
+A cutoff containing the first $q$ vacuum iterates preserves the
+$2q$-th trace moment. The estimates below keep the probability law of the
+original SRHT or Gaussian Khatri--Rao sketch; the spherical-product
+section explicitly introduces a different probe law.
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.22\linewidth}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+Setting & Information retained & Resulting refinement\\
+\midrule
+Two-round SRHT & Moment-step cutoffs and selector occupation & Ordered-prefix moment and row certificates\\
+Gaussian Khatri--Rao & Covariance eigenvalues and exact fourth-order reuse & Boundary comparison and calibrated fourth moments\\
+Spherical products & Gaussian radius--direction decomposition & All-order transfer and a sharper covariance\\
+Spherical linear pencils & Conditional covariance and Hermite grade costs & Finite Jacobi comparison\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\paragraph{Provenance.}
+The original-law multiplication representation, positive-selector
+estimates, and ordered covariance-spectrum comparison are developed in
+\cite{GradedSource}. The SRHT row-factor estimates come from
+\cite{SRHTSource}, and the nonlinear Khatri--Rao repeated-visit envelope
+comes from \cite{KRSource}. The Gaussian creation estimate used here is
+due to Bandeira, Kunisky, Nizi\'{c}-Nikolac, Pesenti, and Wang
+\cite{Bandeira}. Gaussian Wick contraction, Gaussian polar decomposition,
+conditional Jensen, and the Schur-complement renewal identity are
+classical ingredients. Our purpose is to prove the stated refinements
+and extensions from these inputs; no exhaustive literature-priority
+claim is made for the combinations. These new statements have not been
+formally verified in Lean.
+
+\paragraph{What the numerical comparisons establish.}
+Every displayed row count is tied to a specified moment order, model,
+and comparison bound. The SRHT table improves a terminal-grade
+certificate. The covariance-spectrum Khatri--Rao table improves a
+stationary scalar-boundary certificate, while the fourth-order table
+compares fourth-order certificates. None of these comparisons alone
+replaces a universal leading constant in the strongest available
+all-order theorem.
+
+
+% Required macros: \E, \Tr, \norm{...}; theorem/lemma/corollary/remark environments.
+% Bibliography keys: SRHTSource, GradedSource.
+\section{Two-round SRHT: selector returns and ordered prefixes}
+\label{sec:srht-prefix}
+
+The refinement in this section changes how the existing local row estimates
+are assembled. It retains selector grades, then uses the smaller sign spaces
+reached by successive prefixes of the moment word. The distribution of the
+sketch, its coherence parameters, and the local coefficient contractions are
+unchanged. In particular, the argument uses the original sign law.
+
+Let $A,B\in\mathbb C^{n\times n}$ be unitary and let
+$U\in\mathbb C^{n\times d}$ satisfy $U^*U=I_d$. Define
+\[
+ \alpha=n\max_{r,a}|A_{ra}|^2,\qquad
+ \beta=n\max_{a,i}|B_{ai}|^2,\qquad
+ W=AD_yBD_xU,
+\]
+where $D_x,D_y$ are independent diagonal matrices of independent unbiased
+signs. Write $w_r^*=e_r^*W$. Independently choose a uniform $m$-element
+subset $T\subseteq[n]$, and set
+\begin{equation}
+ E_T=\frac nm\sum_{r\in T}w_rw_r^*-I_d.
+ \label{eq:srht-error}
+\end{equation}
+For flat unitary transforms, including normalized Walsh transforms,
+$\alpha=\beta=1$.
+
+\subsection{The finite-moment certificate}
+
+Fix an integer $q\ge1$ and $1\le m<n$, and write
+\[
+ \rho=m/n,\qquad u=\sqrt{(1-\rho)/\rho},\qquad
+ z=|1-2\rho|/\rho,
+ \qquad
+ \underline c=\max\left\{\frac12,
+       1-\frac1{2\sqrt{m(1-m/n)}}\right\}.
+\]
+For $1\le j\le q$ and $1\le k\le\min(j,n)$, define
+\begin{align}
+ \Lambda_{j,k}
+ &=\left(\sqrt{\alpha k(2j+1)}
+      +\sqrt{2\{\beta(d+8j^2)+\alpha k(2j-1)\}}\right)^2,
+       \label{eq:srht-Lambda}\\
+ \ell_{j,k}&=\min\{1,\Lambda_{j,k}/n\},\qquad \ell_{j,0}=0.
+       \label{eq:srht-ell}
+\end{align}
+Let $G^{[j]}$ be the symmetric nonnegative matrix on indices $0,\ldots,q$
+whose nonzero entries are confined to $0,\ldots,\min(j,n)$ and satisfy
+\begin{equation}
+ G^{[j]}_{kk}=z\ell_{j,k},\qquad
+ G^{[j]}_{k,k+1}=G^{[j]}_{k+1,k}=u\sqrt{\ell_{j,k+1}}.
+ \label{eq:srht-stage-matrix}
+\end{equation}
+Here and below $e_0$ is the first standard basis vector of this scalar
+comparison space.
+
+\begin{theorem}[Ordered-prefix SRHT certificate]
+\label{thm:srht-prefix}
+Under the preceding assumptions,
+\begin{equation}
+ \boxed{\displaystyle
+ \E\Tr E_T^{2q}
+ \le d\,\underline c^{-2q}
+       \bigl\|G^{[q]}G^{[q-1]}\cdots G^{[1]}e_0\bigr\|_2^2.}
+ \label{eq:srht-prefix-moment}
+\end{equation}
+Consequently the right-hand side divided by $\varepsilon^{2q}$ bounds
+$\mathbb P\{\norm{E_T}>\varepsilon\}$. Moreover,
+\begin{equation}
+ \bigl\|G^{[q]}\cdots G^{[1]}e_0\bigr\|_2^2
+ \le\bigl\|(G^{[q]})^qe_0\bigr\|_2^2
+ =\bigl((G^{[q]})^{2q}\bigr)_{00}.
+ \label{eq:srht-terminal-comparison}
+\end{equation}
+Thus the ordered-prefix certificate is never worse than the terminal-cutoff
+selector certificate with the same parameters. For $m=n$, $E_T=0$ exactly.
+The conclusions also hold when each sign family is
+$\min(n,4q)$-wise independent, provided the two families remain mutually
+independent and independent of $T$.
+\end{theorem}
+
+The order in \eqref{eq:srht-prefix-moment} matters. The matrices
+$G^{[j]}$ need not commute, and the squared norm of their product is not
+generally a vacuum entry of the power of one matrix. The prefactor remains
+$d$: the retained sign space does not supply extra initial trace states.
+
+\subsection{Local row estimates and the legal cutoff}
+
+We record explicitly which local estimates are inherited from the existing
+proof. In the Boolean character basis of the two sign families, multiplication
+by $x_i$ is $X_i=a_{x,i}+a_{x,i}^*$, where creation inserts an unoccupied
+index and annihilation removes an occupied index. In particular,
+$X_i^*X_i=I$. Sign grades count occupied coordinates.
+
+Let $P_{\mathrm{sig},j}$ retain grades at most $\min(2j,n)$ in each sign
+family, with the external $\mathbb C^d$ factor included. On its range define
+the positive effects
+\begin{equation}
+ A_r^{[j]}=P_{\mathrm{sig},j}\,M_{w_rw_r^*}\,P_{\mathrm{sig},j},
+ \qquad \sum_{r=1}^n A_r^{[j]}=I,
+ \label{eq:srht-effects}
+\end{equation}
+where $M_F$ denotes pointwise multiplication by the matrix-valued function
+$F$. The last identity follows from $W^*W=I_d$ pointwise.
+
+\begin{lemma}[Subset allowance at a prefix cutoff]
+\label{lem:srht-prefix-subsets}
+For $S\subseteq[n]$ with $|S|\le k\le\min(j,n)$,
+\begin{equation}
+ \left\|\sum_{r\in S}A_r^{[j]}\right\|\le\ell_{j,k}.
+ \label{eq:srht-prefix-subsets}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $\mathcal R_S$ be the row multiplication map
+$(\mathcal R_Sf)_r=w_r^*f$, for $r\in S$, with the row label retained as
+an orthogonal output coordinate. Crucially, its output sign grades are not
+truncated. Then
+\[
+ \sum_{r\in S}A_r^{[j]}
+   =(\mathcal R_SP_{\mathrm{sig},j})^*
+     (\mathcal R_SP_{\mathrm{sig},j}).
+\]
+Decompose $\mathcal R_S=\mathcal C_S+\mathcal A_S$ according to creation
+or annihilation in the second sign family, keeping the two first-family
+transitions joined in $\mathcal C_S$.
+
+Here are the precise coefficient estimates used. Set $c_i=e_i^*U$ and
+$(g_{ri})_a=\sqrt n\,\overline{A_{ra}B_{ai}}$. Unitarity gives
+\[
+ \left\|\sum_i t_i g_{ri}\right\|^2\le\alpha\sum_i|t_i|^2,
+ \qquad
+ \sum_r|g_{ri}\rangle\langle g_{ri}|\preceq\beta I,
+ \qquad \sum_i c_i^*c_i=I_d.
+\]
+These inequalities hold with passive Hilbert-space factors. Before a
+second-family creation, the first inequality and $X_i^*X_i=I$ bound the
+whole mixed-first-grade coefficient map by $\sqrt\alpha$ for each row.
+Insertion into second-family grade $s$ costs $\sqrt{s+1}$. Orthogonality
+of the output grades therefore yields
+\begin{equation}
+ n\norm{\mathcal C_SP_{\mathrm{sig},j}}^2
+       \le\alpha k(2j+1).
+ \label{eq:srht-creation-row}
+\end{equation}
+
+For completeness, the fixed-input annihilation estimates inherited from
+the coefficient-map and Boolean-kernel arguments of
+\cite{GradedSource,SRHTSource} are, on input grades $(r,s)$,
+\begin{align*}
+ n\norm{\mathcal R_S^{+-}}^2&\le\beta(r+1)s,\\
+ n\norm{\mathcal R_S^{--}}^2
+      &\le\beta(d+p+pv)+\alpha |S|v,
+      \qquad p=(r-1)_+,\quad v=(s-1)_+.
+\end{align*}
+The superscripts are the signs of the changes in the two sign grades.
+The first estimate factors through a second-family extraction and a
+first-family insertion. The second is the collective double-annihilation
+estimate, including the original Boolean occupation correction; this
+technical kernel estimate is an input from the cited proofs, not a Gaussian
+replacement or a new assertion here.
+
+For fixed input grades these two outputs are orthogonal. Each fixed output
+grade under $\mathcal A_S$ has at most two possible input grades, so
+Cauchy--Schwarz contributes a factor of two when mixed input grades are
+assembled. Since $r,s\le2j$ implies
+$p+pv+(r+1)s\le8j^2$, this gives
+\begin{equation}
+ n\norm{\mathcal A_SP_{\mathrm{sig},j}}^2
+    \le2\{\beta(d+8j^2)+\alpha k(2j-1)\}.
+ \label{eq:srht-annihilation-row}
+\end{equation}
+The triangle inequality applied after
+\eqref{eq:srht-creation-row}--\eqref{eq:srht-annihilation-row} proves
+the allowance $\Lambda_{j,k}/n$. Positivity and
+\eqref{eq:srht-effects} cap it at one.
+\end{proof}
+
+This is the existing retained row-factor argument with two parameters
+kept separate: $j$ controls the sign cutoff, while $k$ controls the number
+of selected row effects. Substituting $k$ for $j$ throughout
+\eqref{eq:srht-Lambda} is unjustified: a low selector grade can coexist
+with a high sign grade.
+
+\subsection{Proof of the moment and sampling comparisons}
+
+\begin{proof}[Proof of Theorem~\ref{thm:srht-prefix}]
+First use independent Bernoulli selectors $\eta_r$ of mean $\rho$,
+independent of the signs, and put
+\[
+ E_\rho=\rho^{-1}\sum_r\eta_rw_rw_r^*-I_d.
+\]
+In the orthonormal basis
+$1,(\eta_r-\rho)/\sqrt{\rho(1-\rho)}$, multiplication by
+$\eta_r/\rho-1$ is
+\[
+ \begin{pmatrix}0&u\\u&\theta\end{pmatrix},
+ \qquad \theta=(1-2\rho)/\rho.
+\]
+Selector grades are therefore subset cardinalities. On the stage-$j$
+sign space and selector grades at most $\min(j,n)$, the compressed
+multiplier has the exact form
+\[
+ M_j=u(K_j+K_j^*)+\theta D_j,
+\]
+where
+\[
+ (K_jf)_S=\sum_{r\in S}A_r^{[j]}f_{S\setminus\{r\}},
+ \qquad
+ (D_jf)_S=\left(\sum_{r\in S}A_r^{[j]}\right)f_S.
+\]
+
+We give the positive-effects estimate behind its block bounds. For an
+output set $S$ of size $k+1$,
+\[
+ \left\|\sum_{r\in S}A_r^{[j]}v_r\right\|^2
+ \le\left\|\sum_{r\in S}A_r^{[j]}\right\|
+       \sum_{r\in S}\langle v_r,A_r^{[j]}v_r\rangle.
+\]
+This follows by factoring the row through the square roots of the
+positive effects. Sum over $S$, noting that each input set $J$ is charged
+$\sum_{r\notin J}A_r^{[j]}\preceq I$. Lemma~\ref{lem:srht-prefix-subsets}
+then gives
+\[
+ \norm{K_j:\text{grade }k\to k+1}\le\sqrt{\ell_{j,k+1}},
+ \qquad
+ \norm{D_j:\text{grade }k\to k}\le\ell_{j,k}.
+\]
+The reverse edge has the same bound by adjointness. These are precisely
+the entries of \eqref{eq:srht-stage-matrix} after taking absolute values.
+
+Let $M$ denote the uncompressed multiplication operator for $E_\rho$,
+and let $\Omega_a$ be the constant vector $e_a$, with both sign families
+and the selector family in their vacuum states. Multiplication raises
+each sign grade by at most two and the selector grade by at most one.
+Hence $f_j=M^j\Omega_a$ lies in the stage-$j$ space, and, with the
+nested spaces identified isometrically,
+\[
+ f_j=M_j f_{j-1}.
+\]
+This identity is asserted for these actual prefixes; it does not assert
+that compressions preserve arbitrary products. Let $b_j(k)$ be the norm
+of the selector-grade-$k$ component of $f_j$, including all its sign
+coordinates. The block bounds imply componentwise
+\[
+ b_j\le G^{[j]}b_{j-1},\qquad b_0=e_0.
+\]
+All entries are nonnegative, so iteration and orthogonality give
+\begin{equation}
+ \E\Tr E_\rho^{2q}
+   =\sum_{a=1}^d\norm{M^q\Omega_a}^2
+   \le d\,\bigl\|G^{[q]}\cdots G^{[1]}e_0\bigr\|_2^2.
+ \label{eq:srht-bernoulli-prefix}
+\end{equation}
+
+We now transfer to the original fixed-size law, spelling out the centered
+coupling because it is distinct from a with-replacement comparison. Draw
+a Bernoulli subset $\mathcal B$ of size $K\sim\mathrm{Bin}(n,\rho)$.
+If $K>m$, remove uniformly chosen elements until $m$ remain; if $K<m$,
+add uniformly chosen missing elements. The resulting $T$ is a uniform
+$m$-subset and is independent of $K$. Set
+\[
+ a=\E(K-m)_+=\E(m-K)_+,\qquad v=m(1-m/n).
+\]
+The conditional inclusion probabilities of $\mathcal B$ inside and
+outside $T$ are $1-a/m$ and $a/(n-m)$, respectively. Consequently, for
+arbitrary deterministic Hermitian matrices $H_r$,
+\[
+ Z_{\mathcal B}=\sum_r(\mathbf1_{r\in\mathcal B}-\rho)H_r,
+ \quad Z_T=\sum_r(\mathbf1_{r\in T}-\rho)H_r,
+ \qquad
+ \E[Z_{\mathcal B}\mid T]=cZ_T,
+ \quad c=1-a/v.
+\]
+The binomial identity $k\binom nk=n\binom{n-1}{k-1}$ shows that
+\[
+ a=v\,\mathbb P\{\mathrm{Bin}(n-1,\rho)=m\}.
+\]
+The atoms at $m-1$ and $m$ of this latter binomial law are equal, so
+$c\ge1/2$. Also
+$a=\frac12\E|K-m|\le\sqrt v/2$, proving $c\ge\underline c$.
+Convexity of $Z\mapsto\Tr Z^{2q}=\norm{Z}_{S_{2q}}^{2q}$ on Hermitian
+matrices and conditional Jensen yield
+\[
+ \E\Tr Z_T^{2q}\le c^{-2q}\E\Tr Z_{\mathcal B}^{2q}.
+\]
+Apply this conditionally on the signs with $H_r=w_rw_r^*$, then rescale
+by $\rho^{-1}$ and use \eqref{eq:srht-bernoulli-prefix}. This proves
+\eqref{eq:srht-prefix-moment}.
+
+For fixed $k\ge1$, $\Lambda_{j,k}$ is nondecreasing in $j$. After zero
+embedding, $0\le G^{[j]}\le G^{[q]}$ entrywise for every $j\le q$.
+Nonnegative induction proves \eqref{eq:srht-terminal-comparison}.
+Finally, $\Tr E_T^{2q}$ has degree at most $4q$ in each sign family.
+Moment matching therefore transfers the fully independent proof to the
+stated limited-independent signs. Markov's inequality and
+$\norm{E_T}^{2q}\le\Tr E_T^{2q}$ finish the proof.
+\end{proof}
+
+\subsection{Certified sufficient sample counts}
+
+Table~\ref{tab:srht-prefix-counts} keeps the same moment order, sampling
+transfer, and target failure probability in both columns. It compares
+the two sides of \eqref{eq:srht-terminal-comparison}, not against a
+coarser universal scalar prescription.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrrr}
+\toprule
+$d$ & $q$ & Terminal cutoff & Ordered prefixes & Reduction\\
+\midrule
+$10$ & $6$ & $28\,080$ & $9\,928$ & $64.64\%$\\
+$100$ & $8$ & $60\,271$ & $26\,685$ & $55.72\%$\\
+$1\,000$ & $10$ & $169\,157$ & $117\,011$ & $30.83\%$\\
+$10\,000$ & $11$ & $1\,011\,962$ & $933\,686$ & $7.74\%$\\
+\bottomrule
+\end{tabular}
+\caption{Sufficient row counts for $n=2^{30}$, $\alpha=\beta=1$,
+$\varepsilon=1/2$, $\delta=1/100$, and
+$q=\lceil\log_4(4d/\delta)\rceil$. These are certified prescriptions
+valid for every fixed isometry $U$, not empirical thresholds or optimal
+sample counts.}
+\label{tab:srht-prefix-counts}
+\end{table}
+
+The displayed counts were located by a floating-point search, increased
+by one percent, and then verified using rational arithmetic. Every square
+root in a matrix entry was rounded upward to a rational with denominator
+$10^{18}$; the square root used to lower-bound $\underline c$ was rounded
+downward. The nonnegative vector recurrences were evaluated exactly.
+For the ordered-prefix column, the certified upper bounds on
+$d\underline c^{-2q}\|G^{[q]}\cdots G^{[1]}e_0\|_2^2/
+(\delta\varepsilon^{2q})$ are, rounded upward,
+$0.937586$, $0.918227$, $0.899509$, and $0.890415$.
+The exact rational comparisons, rather than these decimal summaries,
+certify sufficiency; the accompanying \texttt{checks/check\_srht.py} and
+\texttt{checks/check\_srht\_terminal.py} reproduce the two columns.
+
+The improvement does not change the local term
+$\beta(d+8j^2)$, the two-round structure, or the confidence exponent of
+the underlying theorem. No smaller universal scalar row coefficient is
+claimed. The new contribution here is the explicit original-law
+selector certificate and its ordered-prefix refinement; the row
+contractions, positive-effects mechanism, and centered sampling coupling
+are inherited from \cite{GradedSource,SRHTSource}.
+
+
+\section{Khatri--Rao: covariance-sensitive boundaries and fourth-order calibration}
+\label{sec:kr}
+
+Fix an isometry $U:\mathbb R^r\to\mathbb R^{n_1}\otimes\mathbb R^{n_2}$.
+For independent standard Gaussian vectors $g_i,h_i$, put
+\[
+ y_i=U^{\mathsf T}(g_i\otimes h_i),\qquad
+ X_i=y_i y_i^{\mathsf T}-I_r,\qquad
+ Z=\frac1m\sum_{i=1}^m X_i,\qquad W=\mathbb E X_1^2.
+\]
+Thus $\mathbb EX_i=0$, and $\|Z\|\le\varepsilon$ is the usual squared-norm
+embedding guarantee on the fixed subspace $\operatorname{ran}U$. All traces
+below are unnormalized. The coefficients and the subspace are fixed before
+the sketch is drawn.
+
+The original Khatri--Rao proof already propagates ordered, stage-dependent
+comparison matrices and permits the exact value of $\|W\|$ in its activation
+bounds~\cite{KRSource}. Our additional stationary comparison retains the entire
+spectrum of $W$ at the vacuum boundary. A separate fourth-order calculation
+retains the exact contribution of one original sample and improves the
+Gaussian pairing contribution. Neither argument identifies the quartic
+Gaussian polynomial $X_i$ with a linear Gaussian matrix series.
+
+\subsection{An ordered first-return comparison}
+
+We record the trace comparison used below, including its proof to make the
+noncommutative step explicit. This is the covariance-spectrum comparison of
+\cite[Theorem 4.3 and Corollary 4.4]{GradedSource}; the underlying renewal identity
+is the classical block-resolvent expansion.
+
+\begin{lemma}[Covariance at the boundary]\label{lem:kr-boundary}
+Let $M$ be a finite-dimensional self-adjoint operator with decomposition
+\[
+ M=\begin{pmatrix}0&B^*\\B&C\end{pmatrix},\qquad V=B^*B,
+\]
+relative to a vacuum space $\mathcal H_0$ and its orthogonal complement.
+Decompose the complement into sectors $\mathcal H_1,\ldots,\mathcal H_K$,
+assume $\operatorname{ran}B\subseteq\mathcal H_1$, and suppose the symmetric
+entrywise nonnegative matrix $G$ satisfies $\|P_iCP_j\|\le G_{ij}$.
+For $v\ge0$, set
+\[
+ T(v)=\begin{pmatrix}0&\sqrt v\,e_1^{\mathsf T}\\
+                       \sqrt v\,e_1&G\end{pmatrix}.
+\]
+For every integer $q\ge1$,
+\begin{equation}\label{eq:kr-boundary-general}
+ \operatorname{Tr}_{\mathcal H_0}(P_0M^{2q}P_0)
+ \le\sum_{\lambda\in\operatorname{spec}V}(T(\lambda)^{2q})_{00}.
+\end{equation}
+Eigenvalues are counted with multiplicity. If $s\ge\|V\|$ and $s>0$, the
+right side is at most $(\operatorname{Tr}V/s)(T(s)^{2q})_{00}$.
+\end{lemma}
+
+\begin{proof}
+Put $K_j=P_0M^jP_0|_{\mathcal H_0}$ and $F_j=B^*C^{j-2}B$ for $j\ge2$.
+Resolvent expansion, or splitting a vacuum walk at its first return, gives
+\[
+ K_0=I,\quad K_1=0,\qquad K_n=\sum_{j=2}^n F_jK_{n-j}.
+\]
+The order of the factors is retained. Write the polar decomposition
+$B=QV^{1/2}$. Then
+$F_j=V^{1/2}A_jV^{1/2}$, where
+$A_j=Q^*C^{j-2}Q$ and $\|A_j\|\le c_j:=(G^{j-2})_{11}$.
+The last inequality follows by block-norm propagation inside the complement;
+$Q$ is a contraction with range in sector one.
+For any composition $j_1+\cdots+j_\ell=n$ with $j_t\ge2$, cyclicity and
+Schatten H\"older give
+\[
+ \left|\operatorname{Tr}(F_{j_1}\cdots F_{j_\ell})\right|
+ =\left|\operatorname{Tr}(A_{j_1}V\cdots A_{j_\ell}V)\right|
+ \le\left(\prod_{t=1}^{\ell}c_{j_t}\right)\operatorname{Tr}V^\ell.
+\]
+For the scalar matrix $T(v)$ the corresponding first-return weight is
+$v c_j$. Expanding both renewals and summing the preceding estimate proves
+\eqref{eq:kr-boundary-general}. In particular,
+$f_q(v)=(T(v)^{2q})_{00}$ is a polynomial with nonnegative coefficients and
+zero constant term. For $0\le v\le s$, $f_q(v)\le(v/s)f_q(s)$, proving the
+last assertion. No Loewner substitution inside ordered products is used.
+\end{proof}
+
+\subsection{The original-law Khatri--Rao certificate}
+
+For $q\ge1$, set $K=\min(q,m)$ and
+\[
+ \mathcal B_q(r)=e(27rq+192q^2+24q).
+\]
+Choose any certified $\nu\ge\|W\|$; the original Wick estimate permits
+$\nu=4r+4$. For $v\ge0$, define a symmetric tridiagonal matrix
+$T_{q,m}^{\nu}(v)$ on $0,\ldots,K$ by
+\begin{align}
+ (T_{q,m}^{\nu}(v))_{00}&=0,&
+ (T_{q,m}^{\nu}(v))_{kk}&=\mathcal B_q(r)/m\quad(1\le k\le K),\notag\\
+ (T_{q,m}^{\nu}(v))_{01}&=(T_{q,m}^{\nu}(v))_{10}=\sqrt v,&
+ (T_{q,m}^{\nu}(v))_{k,k+1}
+ &=\frac{\sqrt{(k+1)(m-k)\nu}}m\quad(1\le k<K).
+ \label{eq:kr-T}
+\end{align}
+The symmetric counterparts of the last entries are understood. The positive
+diagonal allowance accounts for repeated visits to an already active sample.
+
+\begin{theorem}[Covariance-spectrum Khatri--Rao bound]\label{thm:kr-spectrum}
+Let $\lambda_1,\ldots,\lambda_r$ be the eigenvalues of $W$. Then
+\begin{align}
+ \mathbb E\operatorname{Tr}Z^{2q}
+ &\le\sum_{a=1}^r
+   \left(T_{q,m}^{\nu}(\lambda_a/m)^{2q}\right)_{00}
+ \label{eq:kr-spectrum}\\
+ &\le\frac{\operatorname{Tr}W}{\nu}
+   \left(T_{q,m}^{\nu}(\nu/m)^{2q}\right)_{00}.
+ \label{eq:kr-effective}
+\end{align}
+Consequently, either right side being at most $\delta\varepsilon^{2q}$
+is sufficient for $\mathbb P\{\|Z\|>\varepsilon\}\le\delta$.
+\end{theorem}
+
+\begin{proof}
+Work in $\mathbb R^r\otimes\bigotimes_{i=1}^mL^2(g_i,h_i)$ and let
+$\mathcal M_Z$ be multiplication by $Z$ on vector polynomials. Restrict to
+functions even under each separate sign flip of $g_i$ and $h_i$. Compress
+to total Hermite degree at most $4q$ and at most $q$ nonconstant sample
+registers. Denote the projection by $\Pi_q$ and the compressed operator by
+$M_q=\Pi_q\mathcal M_Z\Pi_q$.
+This is a finite-dimensional symmetric matrix. Multiplication raises total
+degree by at most four and activates at most one sample. Thus, for every
+vacuum vector $v$ and $j\le q$,
+$M_q^jv=\mathcal M_Z^jv$, and therefore
+\[
+ \mathbb E\operatorname{Tr}Z^{2q}
+ =\operatorname{Tr}_{\mathbb R^r}(P_0M_q^{2q}P_0).
+\]
+This uses only finite polynomial moments; the full Gaussian multiplier need
+not be bounded.
+
+Grade by the number of nonconstant registers. Centering gives a zero vacuum
+block. Distinct samples applied to vacuum are orthogonal, so its first-step
+Gram is exactly $B^*B=W/m$, and $B$ lands in grade one. The fresh-sample
+contraction of \cite[Chain C, ``Fresh-sample contraction'']{KRSource} gives
+\[
+ \|P_{k+1}M_qP_k\|
+ \le\frac{\sqrt{(k+1)(m-k)\nu}}m.
+\]
+For completeness, each missing sample contributes a map with squared norm
+at most $\nu/m^2$; an output set of size $k+1$ receives $k+1$ inputs, and
+each input set has $m-k$ missing labels. Cauchy--Schwarz and orthogonality
+give the displayed estimate on the full grade, not just on a basis vector.
+
+For the diagonal block we import exactly the proved original-law bound
+\cite[Chain C, ``Sum of already-active sample interactions'']{KRSource}:
+$\|P_kM_qP_k\|\le\mathcal B_q(r)/m$ for $k\ge1$.
+Its inputs are the local-degree estimate
+\[
+ \|y^{\mathsf T}f_d\|_2^2
+ \le e\bigl[(2d+1)r+4d^2+2d\bigr]\|f_d\|_2^2
+\]
+and the fact that at most three input degrees overlap at any output degree.
+Summing over the actual local degrees $d_i$, using
+$\sum d_i\le4q$, $\sum d_i^2\le16q^2$, and at most $q$ active registers,
+gives $\mathcal B_q(r)$. Centering contributes a lower bound $-qI$, also
+covered by $\mathcal B_q(r)$. This retains the nonlinear repeated-sample
+costs of the original proof. Apply Lemma~\ref{lem:kr-boundary} to the rest
+matrix specified in \eqref{eq:kr-T}, then use trace Markov.
+\end{proof}
+
+If $W=sI_r$ and $\nu=s$, \eqref{eq:kr-spectrum} is exactly the old scalar
+stationary certificate with exact variance. Thus flat covariance does not
+illustrate an additional spectrum gain. A nonflat example does. Represent
+$y_a=g^{\mathsf T}B_a h$ using
+\[
+ B_1=\operatorname{diag}(a,b),\qquad
+ B_2=\frac1{\sqrt2}\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad
+ a^2+b^2=1,\quad ab=\frac1{12}.
+\]
+These matrices are Frobenius-orthonormal. Wick's formula gives
+$\mathbb Ey_1^4=107/12$, $\mathbb Ey_2^4=6$ and
+$\mathbb Ey_1^2y_2^2=19/6$; the off-diagonal covariance vanishes by sign
+symmetry. Hence
+\[
+ W=\operatorname{diag}(133/12,49/6),\qquad
+ \|W\|=133/12,\qquad
+ \frac{\operatorname{Tr}W}{\|W\|}=\frac{231}{133}<2.
+\]
+At $q=3$, $\varepsilon=1/2$, and $\delta=1/100$, the following are sufficient
+row counts for the same stationary repeated-visit allowance:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Activation/boundary information retained & Sufficient $m$\\
+\midrule
+Uniform allowance $4r+4$ at all edges & $10\,581$\\
+Exact norm $\|W\|$ at all edges & $10\,403$\\
+Exact spectrum at the boundary, exact norm inside & $10\,107$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The accompanying rational verification checks each displayed integer and
+failure of its predecessor. The certificate decreases for $m\ge2q$:
+$1/m$ decreases, and each squared interior edge is proportional to
+$(m-k)/m^2$, whose derivative is $(2k-m)/m^3\le0$ in this range.
+These are comparisons of stationary certificates: the original manuscript
+also has stronger ordered degree-allocation certificates, whose minimum
+with \eqref{eq:kr-spectrum} remains a valid choice.
+
+\subsection{Exact fourth-order calibration}
+
+This next statement applies beyond Khatri--Rao. Let $X$ be a centered real
+symmetric random matrix with finite fourth moment, let $X_1,\ldots,X_m$ be
+independent copies, and put $Z=m^{-1}\sum_iX_i$. Choose a centered Gaussian
+symmetric matrix $G=\sum_{\ell=1}^N\gamma_\ell A_\ell$ whose complete
+matrix-entry covariance matches that of $X$. Such a representation exists
+by factoring the covariance on the finite-dimensional real symmetric matrix
+space. Then
+\[
+ W=\mathbb EX^2=\sum_\ell A_\ell^2,\qquad
+ \kappa_G^2=\lambda_{\max}\bigl([A_jA_i]_{i,j=1}^N\bigr).
+\]
+The block matrix here is symmetric, even though its individual blocks need
+not be. It is the crossed coefficient kernel appearing in the Gaussian
+creation estimates of Bandeira et al.~\cite{Bandeira}.
+
+\begin{proposition}[Original-component fourth-order certificate]
+\label{prop:kr-fourth}
+With $\mu_4=\mathbb E\operatorname{Tr}X^4$,
+\begin{align}
+ \mathbb E\operatorname{Tr}Z^4
+ &=\frac{\mu_4+(m-1)\mathbb E\operatorname{Tr}G^4}{m^3}
+ \label{eq:kr-fourth-exact}\\
+ &\le\frac{\mu_4+(m-1)
+    \bigl(2\operatorname{Tr}W^2+\kappa_G^2\operatorname{Tr}W\bigr)}{m^3}.
+ \label{eq:kr-fourth-kappa}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Centering and independence eliminate words with a singleton sample label.
+There are $m$ all-equal contributions. The words with two distinct labels
+give $m(m-1)$ times the three covariance pairings, precisely the Gaussian
+fourth moment. This proves \eqref{eq:kr-fourth-exact}, the trace specialization
+of the fourth-order calibration in \cite[Lemma 8.2]{GradedSource}.
+Wick expansion gives
+\[
+ \mathbb E\operatorname{Tr}G^4
+ =2\operatorname{Tr}W^2+
+   \sum_{i,j}\operatorname{Tr}(A_iA_jA_iA_j).
+\]
+Let $S$ be the block column with entries $A_i$ and let
+$C=[A_jA_i]_{i,j}$. The last sum is $\operatorname{Tr}(S^*CS)$,
+which is at most $\kappa_G^2\operatorname{Tr}(S^*S)
+=\kappa_G^2\operatorname{Tr}W$. This proves the bound directly.
+\end{proof}
+
+The baseline Gaussian bound is $3\operatorname{Tr}W^2$; consequently
+\eqref{eq:kr-fourth-kappa} improves it when
+$\kappa_G^2\operatorname{Tr}W<\operatorname{Tr}W^2$.
+The original component term $\mu_4$ remains exact. Matching the covariance of
+the row $y$ instead of the centered matrix $yy^{\mathsf T}-I$ would not
+justify this proposition.
+
+\subsection{An analytic full-product benchmark}
+
+Take the whole product space, $y=g\otimes h$ with
+$g\sim N(0,I_a)$ and $h\sim N(0,I_b)$. Put
+$r=ab$ and $L=(a+2)(b+2)$. Then
+\begin{equation}\label{eq:kr-product-pairing}
+ W=(L-1)I_r,\qquad
+ \mathbb E\operatorname{Tr}G^4=r(2L^2+3L+3).
+\end{equation}
+To verify the second formula, let $X'$ be an independent copy of $X$.
+Covariance matching and Wick expansion imply
+\[
+ \mathbb E\operatorname{Tr}G^4
+ =3\operatorname{Tr}W^2-\tfrac12\mathbb E\|[X,X']\|_F^2.
+\]
+For rank-one matrices $P=yy^{\mathsf T}$ and $P'=y'y'^{\mathsf T}$,
+\[
+ \tfrac12\|[P,P']\|_F^2
+ =\|y\|^2\|y'\|^2\langle y,y'\rangle^2-\langle y,y'\rangle^4.
+\]
+For independent $d$-dimensional standard Gaussian vectors $u,u'$, direct
+conditioning yields
+\[
+ \mathbb E\|u\|^2\|u'\|^2\langle u,u'\rangle^2=d(d+2)^2,
+ \qquad \mathbb E\langle u,u'\rangle^4=3d(d+2).
+\]
+The two factors separate, so the expected half-commutator square is
+$rL(L-9)$. Substitution proves \eqref{eq:kr-product-pairing}.
+
+We also give a small analytic certificate for the crossed kernel, so the
+intermediate comparison does not depend on a floating-point eigenvalue.
+Let $\{A_i^{(d)}\}$ be the GOE coefficient family
+$\sqrt2 E_{jj}$ and $E_{jk}+E_{kj}$ for $j<k$. A Gaussian covariance match
+for $X$ consists of the three coefficient families
+\[
+ A_i^{(a)}\otimes I_b,\qquad
+ I_a\otimes A_j^{(b)},\qquad
+ A_i^{(a)}\otimes A_j^{(b)}.
+\]
+Indeed, writing $gg^{\mathsf T}=I_a+A$ and $hh^{\mathsf T}=I_b+B$ gives
+$X=A\otimes I_b+I_a\otimes B+A\otimes B$; the three summands are pairwise
+uncorrelated, and $A,B$ have GOE covariance. Thus block-norm comparison gives
+\begin{equation}\label{eq:kr-kappa-3x3}
+ \kappa_G^2\le\lambda_{\max}
+ \begin{pmatrix}
+  2&\sqrt{(a+1)(b+1)}&2\sqrt{b+1}\\
+  \sqrt{(a+1)(b+1)}&2&2\sqrt{a+1}\\
+  2\sqrt{b+1}&2\sqrt{a+1}&4
+ \end{pmatrix}.
+\end{equation}
+Here are the needed block norms. The GOE row map has squared norm $d+1$
+because $\sum_i(A_i^{(d)})^2=(d+1)I_d$. Its crossed kernel, identified with
+an operator on tensors $u_{ij,k}=u_{ji,k}$, sends
+$u_{ij,k}$ to $u_{ik,j}+u_{jk,i}$, and hence has norm at most two by the
+triangle inequality for coordinate permutations. The three diagonal blocks
+therefore have norms at most $2,2,4$. The first off-diagonal block is a
+product of two row/column maps, while each remaining block is the tensor
+product of one crossed kernel and one row/column map. Their norms are the
+off-diagonal allowances in \eqref{eq:kr-kappa-3x3}. Applying the scalar
+Rayleigh bound to the norms of the three vector blocks proves the claim.
+
+For $a=b=2$, $r=4$, $L=16$, and
+\[
+ W=15I_4,\qquad
+ \kappa_G^2\le\frac{9+\sqrt{97}}2,\qquad
+ \mathbb E\operatorname{Tr}G^4=2252.
+\]
+The kernel bound follows by separating the antisymmetric vector $(1,-1,0)$
+from the remaining two-dimensional block of \eqref{eq:kr-kappa-3x3}.
+Writing $t=\|y\|^2$, the rank-one identity gives
+\[
+ \operatorname{Tr}(yy^{\mathsf T}-I_4)^4=t^4-4t^3+6t^2-4t+4.
+\]
+Since $\mathbb Et^j=\prod_{k=0}^{j-1}(2+2k)^2$, this yields
+$\mu_4=138612$. Therefore the exact fourth trace moment is
+\begin{equation}\label{eq:kr-product-exact-fourth}
+ \mathbb E\operatorname{Tr}Z^4
+ =\frac{138612+2252(m-1)}{m^3}.
+\end{equation}
+At $\varepsilon=1/2$, $\delta=1/100$, fourth-order trace Markov gives:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Gaussian pairing allowance & Value & Sufficient $m$\\
+\midrule
+Generic $3\operatorname{Tr}W^2$ & $2700$ & $2104$\\
+Crossed-kernel certificate & $1800+30(9+\sqrt{97})$ & $1974$\\
+Exact covariance pairing & $2252$ & $1928$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The attached verifier uses rational upper and lower bounds on $\sqrt{97}$
+and checks both the stated count and its predecessor. These improvements
+are respectively $6.18\%$ and $8.37\%$ relative to the generic fourth-order
+certificate. They do not assert improvement over an optimized all-order
+certificate, or a new universal constant in the Khatri--Rao embedding theorem.
+The exact pairing formula is a direct covariance calculation; the comparison
+with the crossed kernel records explicitly what the combined operator input
+contributes.
+
+
+\section{Independent spherical-product rows}
+\label{sec:spherical-product}
+
+The Gaussian Khatri--Rao guarantees extend to a different, bounded row
+distribution by conditional expectation.  This extension uses independent
+rows; the rows of a single Haar frame are not independent instances of this
+model.
+
+Fix positive integers $a,b,r$ and an isometry
+$U\in\mathbb R^{ab\times r}$, $U^{\mathsf T}U=I_r$.  For each sample
+$i=1,\ldots,m$, let $u_i\in S^{a-1}$ and $v_i\in S^{b-1}$ be independent
+uniform unit vectors, independent also across samples.  Define
+\[
+ y_i^{\rm sph}=U^{\mathsf T}(\sqrt a\,u_i\otimes\sqrt b\,v_i),
+ \qquad
+ Z_{\rm sph}=\frac1m\sum_{i=1}^m
+       \bigl(y_i^{\rm sph}(y_i^{\rm sph})^{\mathsf T}-I_r\bigr).
+\]
+Let $y_i^{\rm gau}=U^{\mathsf T}(g_i\otimes h_i)$ and $Z_{\rm gau}$
+denote the corresponding rows and centered empirical covariance for
+independent $g_i\sim N(0,I_a)$ and $h_i\sim N(0,I_b)$.  Both row models
+are isotropic on $\mathbb R^r$.
+
+\begin{theorem}[Convex transfer and exact spherical covariance]
+\label{thm:spherical-transfer}
+For every convex function $F$ on real symmetric $r\times r$ matrices
+for which the expectations exist,
+\begin{equation}\label{eq:spherical-convex}
+ \mathbb E F(Z_{\rm sph})\le \mathbb E F(Z_{\rm gau}).
+\end{equation}
+In particular, for every integer $q\ge1$,
+\begin{equation}\label{eq:spherical-trace-transfer}
+ \mathbb E\operatorname{Tr}Z_{\rm sph}^{2q}
+ \le \mathbb E\operatorname{Tr}Z_{\rm gau}^{2q}.
+\end{equation}
+For a single row, write
+$W_{\star}=\mathbb E(y^{\star}(y^{\star})^{\mathsf T}-I_r)^2$.
+Then, with $c_{a,b}=ab/((a+2)(b+2))$,
+\begin{equation}\label{eq:spherical-covariance}
+ W_{\rm sph}=c_{a,b}(W_{\rm gau}+I_r)-I_r.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Gaussian polar decomposition gives a coupling
+\[
+ g_i=R_i u_i,\qquad h_i=S_i v_i,\qquad
+ y_i^{\rm gau}=\sqrt{\tau_i}\,y_i^{\rm sph},\qquad
+ \tau_i=\frac{R_i^2S_i^2}{ab},
+\]
+where $R_i^2\sim\chi_a^2$, $S_i^2\sim\chi_b^2$, and all radii are
+independent of all directions.  Since $\mathbb E\tau_i=1$,
+\[
+ \mathbb E[Z_{\rm gau}\mid (u_i,v_i)_{i=1}^m]=Z_{\rm sph}.
+\]
+Conditional Jensen proves \eqref{eq:spherical-convex}.  For symmetric
+$A$, $\operatorname{Tr}A^{2q}=\|A\|_{S_{2q}}^{2q}$ is convex,
+which proves \eqref{eq:spherical-trace-transfer}.  Finally,
+$\mathbb E\tau_i^2=(a+2)(b+2)/(ab)$ and isotropy give
+\[
+ W_{\rm gau}+I_r
+ =\mathbb E\bigl(y^{\rm gau}(y^{\rm gau})^{\mathsf T}\bigr)^2
+ =c_{a,b}^{-1}
+   \mathbb E\bigl(y^{\rm sph}(y^{\rm sph})^{\mathsf T}\bigr)^2
+ =c_{a,b}^{-1}(W_{\rm sph}+I_r).
+\]
+\end{proof}
+
+\begin{corollary}[Transfer of moment-based embedding certificates]
+\label{cor:spherical-ose}
+If a Gaussian Khatri--Rao certificate proves
+$\mathbb E\operatorname{Tr}Z_{\rm gau}^{2q}\le C_q(m)$ and
+$C_q(m)\le\delta\varepsilon^{2q}$, then the spherical-product sketch
+satisfies
+\[
+ \mathbb P(\|Z_{\rm sph}\|>\varepsilon)\le\delta.
+\]
+Consequently, every sufficient row count obtained by this moment method,
+including the refinements above, remains valid for independent
+spherical-product rows.
+\end{corollary}
+
+\begin{proof}
+For a symmetric matrix $A$, $\|A\|^{2q}\le\operatorname{Tr}A^{2q}$.
+Apply Markov's inequality and Theorem~\ref{thm:spherical-transfer}.
+\end{proof}
+
+The transfer concerns moment certificates, not a comparison of the two
+failure probabilities at every threshold.  It introduces a new row model
+without worsening those certificates.  Although
+\eqref{eq:spherical-covariance} also gives $W_{\rm sph}\preceq W_{\rm gau}$,
+substituting this smaller covariance into every Gaussian interior block
+estimate would require a new proof: the multiplication laws have changed.
+The argument uses classical radius--direction independence and Jensen's
+inequality; the Gaussian certificates being transferred are those of
+\cite{KRSource} and the present refinements.
+
+\subsection{An exact fourth-moment certificate for the full product space}
+
+For the full product space, fixed spherical radii permit a stronger
+calculation than simply transferring the Gaussian certificate.
+
+\begin{proposition}[Full-product spherical fourth moment]
+\label{prop:spherical-fourth}
+Let $r=ab$, $L=(a+2)(b+2)$, $U=I_r$, and
+$x=yy^{\mathsf T}-I_r$ for one spherical-product row.  Then
+\[
+ W_{\rm sph}=(r-1)I_r,\qquad
+ \beta_{a,b}:=\mathbb E\operatorname{Tr}x^4=(r-1)^4+r-1.
+\]
+Define
+\[
+ \gamma_{a,b}
+ =3r(r-1)^2-r^3\left(1-\frac9L\right).
+\]
+For every positive integer $m$,
+\begin{equation}\label{eq:spherical-exact-fourth}
+ \mathbb E\operatorname{Tr}Z_{\rm sph}^4
+ =\frac{\beta_{a,b}+(m-1)\gamma_{a,b}}{m^3}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Since $\|y\|^2=r$, the eigenvalues of $x$ are $r-1$ once and
+$-1$ with multiplicity $r-1$.  This proves the value of $\beta_{a,b}$;
+isotropy and $(yy^{\mathsf T})^2=r\,yy^{\mathsf T}$ prove the covariance.
+Let $x'$ and $y'$ be independent copies.  Put
+\[
+ \Delta=\frac12\mathbb E\|[x,x']\|_F^2
+ =\operatorname{Tr}W_{\rm sph}^2
+       -\mathbb E\operatorname{Tr}(xx'xx').
+\]
+The rank-one commutator identity gives
+\[
+ \Delta=r^2\mathbb E\langle y,y'\rangle^2
+              -\mathbb E\langle y,y'\rangle^4.
+\]
+For independent uniform unit vectors $u,u'\in S^{a-1}$,
+\[
+ \mathbb E\langle\sqrt a\,u,\sqrt a\,u'\rangle^2=a,
+ \qquad
+ \mathbb E\langle\sqrt a\,u,\sqrt a\,u'\rangle^4
+       =\frac{3a^3}{a+2}.
+\]
+These standard spherical moments follow by conditioning on $u'$ and
+using rotational invariance, or by Gaussian polar decomposition.
+Multiplication of the two independent factor moments yields
+$\mathbb E\langle y,y'\rangle^2=r$ and
+$\mathbb E\langle y,y'\rangle^4=9r^3/L$.
+Thus $\Delta=r^3(1-9/L)$.
+
+In expanding the fourth trace moment of a sum of independent centered
+$x_i$, only one-name words and two-name pairings survive.  Cyclicity
+of trace gives
+\[
+ \mathbb E\operatorname{Tr}\left(\sum_{i=1}^m x_i\right)^4
+ =m\beta_{a,b}
+  +m(m-1)\left(2\operatorname{Tr}W_{\rm sph}^2
+                     +\mathbb E\operatorname{Tr}(xx'xx')\right).
+\]
+The bracket is $3\operatorname{Tr}W_{\rm sph}^2-\Delta
+=\gamma_{a,b}$.  Division by $m^4$ proves the result.
+\end{proof}
+
+For $a=b=2$, these quantities are $r=4$, $W_{\rm sph}=3I_4$,
+$\beta_{2,2}=84$, and $\gamma_{2,2}=80$.  Therefore
+\begin{equation}\label{eq:spherical-fourth-example}
+ \mathbb E\operatorname{Tr}Z_{\rm sph}^4
+       =\frac{80m+4}{m^3}.
+\end{equation}
+At $\varepsilon=1/2$ and $\delta=1/100$, the smallest integer satisfying
+the resulting fourth-order Markov certificate is $m=358$:
+\[
+ 1600(80\cdot358+4)\le358^3,
+ \qquad
+ 1600(80\cdot357+4)>357^3.
+\]
+The certificate decreases with $m$.  The corresponding Gaussian
+fourth-moment certificate in the preceding section requires $m=1928$.
+This comparison quantifies the benefit of the spherical-product model
+for this particular sufficient certificate; it is not a reduction of
+the Gaussian theorem's constant or a comparison with the best available
+all-order certificate.
+
+
+\section{Reproducibility and use of the bounds}
+The accompanying \texttt{checks} directory uses only the Python standard
+library. The script \texttt{run\_checks.py} runs the SRHT ordered-prefix and
+terminal comparisons, the Khatri--Rao covariance-spectrum recurrence,
+the Gaussian fourth-order certificates, and the spherical fourth-order
+calculation. Floating-point searches locate SRHT candidates; every reported
+sufficiency claim is then checked by rational upper bounds. The
+Khatri--Rao verifiers additionally check the preceding integer for the
+specified monotone certificate. The spherical example is checked both
+by exact integer threshold inequalities and by an independent explicit
+covariance basis.
+
+These numerical checks verify evaluation of the displayed certificates.
+The probabilistic and operator comparisons are justified by the proofs
+and the explicitly stated imported lemmas. For any fixed application,
+one may take the minimum of independently valid sufficient moment bounds.
+This applies, in particular, to the new stationary Khatri--Rao bound and
+the earlier degree-allocated bounds, and to the transferred Gaussian
+certificate and the direct spherical fourth-order certificate.
+
+\appendix
+
+
+\section{Conditional spherical linear pencils}
+\label{sec:conditional-spherical}
+
+For a linear matrix pencil, Gaussian polar decomposition gives an exact
+moment correction rather than only the convex comparison of
+Section~\ref{sec:spherical-product}.  This is a complementary extension:
+the centered Khatri--Rao covariance error is nonlinear in its factors and
+is not itself the linear pencil considered here.  Fresh spherical
+directions in conditional frame arguments, such as those in
+\cite{HSSSource}, provide one setting where the following hypotheses apply.
+
+\begin{theorem}[Conditional spherical Jacobi comparison]
+\label{thm:conditional-spherical-jacobi}
+Condition on a sigma-field $\mathcal F$.  Let $u$ be conditionally uniform
+on the real unit sphere $S^{h-1}$ and let
+$B_1,\ldots,B_h$ be $\mathcal F$-measurable Hermitian $D\times D$ matrices.
+Set
+\[
+ Y=\sqrt h\sum_{i=1}^h u_iB_i,\quad
+ W=\sum_iB_i^2\ne0,\quad s=\|W\|,\quad
+ \kappa^2=\lambda_{\max}([B_jB_i]_{i,j=1}^h).
+\]
+For $p\ge1$, let $J_p(v)$ be the symmetric tridiagonal matrix on
+$0,\ldots,p$ with zero diagonal and edges
+\[
+ [J_p(v)]_{0,1}=\sqrt v,\qquad
+ [J_p(v)]_{k,k+1}=\sqrt{s+k\kappa^2}\quad(1\le k<p).
+\]
+With $a_{h,p}=\prod_{j=0}^{p-1}h/(h+2j)$, almost surely,
+\begin{align}
+ \mathbb E[\operatorname{Tr}Y^{2p}\mid\mathcal F]
+ &\le a_{h,p}\sum_{\lambda\in\operatorname{spec}(W)}
+                    (J_p(\lambda)^{2p})_{00}\label{eq:spherical-jacobi}\\
+ &\le a_{h,p}\frac{\operatorname{Tr}W}{s}
+                    (J_p(s)^{2p})_{00}.\nonumber
+\end{align}
+Eigenvalues are counted with multiplicity.  At fourth order the sharper
+bound
+\begin{equation}\label{eq:spherical-linear-fourth}
+ \mathbb E[\operatorname{Tr}Y^4\mid\mathcal F]
+ \le\frac{h}{h+2}
+          \left(2\operatorname{Tr}W^2+\kappa^2\operatorname{Tr}W\right)
+\end{equation}
+also holds.  If $W=0$, then $Y=0$ and the conclusions are interpreted
+as zero without the displayed division by $s$.
+\end{theorem}
+
+\begin{proof}
+Fix the conditioned coefficients and take independent standard real
+Gaussians $g_i$.  Set $X=\sum_i g_iB_i$.  The decomposition
+$g=Ru$, with $R$ independent of $u$ and $R^2\sim\chi_h^2$, gives the
+matrix identity
+\begin{equation}\label{eq:spherical-radial-identity}
+ \mathbb E[Y^{2p}\mid\mathcal F]=a_{h,p}\mathbb E_gX^{2p}.
+\end{equation}
+
+For completeness, the interior Gaussian bound used in
+\eqref{eq:spherical-jacobi} is the bosonic specialization of the creation
+estimate in \cite[Proposition 4.1]{Bandeira}.  On Gaussian Hermite space
+write $L=\sum_i B_i\otimes a_i^*$, where $a_i^*$ and $a_i$ are creation
+and annihilation.  If $R_k f=(a_i f)_i$ on degree $k$, the canonical
+commutation relation gives
+\[
+ L^*L=W\otimes I+R_k^*[B_jB_i]_{i,j}R_k,
+ \qquad R_k^*R_k=kI.
+\]
+Consequently $\|L|_{\text{degree }k}\|^2\le s+k\kappa^2$.
+The degree-$p$ cutoff of $L+L^*$ preserves its first $p$ vacuum iterates,
+so its vacuum moment of order $2p$ equals $\mathbb E_gX^{2p}$.
+The vacuum-to-degree-one Gram is exactly $W$.
+The covariance-spectrum comparison of Lemma~\ref{lem:kr-boundary},
+equivalently \cite[Corollary 4.4]{GradedSource}, therefore bounds this
+Gaussian trace moment by the sum in \eqref{eq:spherical-jacobi}.
+Its nonnegative return-polynomial relaxation gives the second inequality.
+Multiplication by $a_{h,p}$ proves both spherical comparisons.
+
+For the fourth-order refinement, Wick's formula gives
+\[
+ \mathbb E_g\operatorname{Tr}X^4
+ =2\operatorname{Tr}W^2
+       +\sum_{i,j}\operatorname{Tr}(B_iB_jB_iB_j).
+\]
+Regarding $(B_i)_i$ as a vector in the direct sum of Hilbert--Schmidt
+spaces, its quadratic form against $[B_jB_i]_{i,j}$ is the last sum.
+It is at most $\kappa^2\sum_i\operatorname{Tr}B_i^2
+=\kappa^2\operatorname{Tr}W$.  Apply
+\eqref{eq:spherical-radial-identity} at $p=2$.
+\end{proof}
+
+The fourth-order right side improves the $p=2$ Jacobi right side by
+$\frac{h}{h+2}(s\operatorname{Tr}W-\operatorname{Tr}W^2)\ge0$.
+The spherical factor is exact and equals one at second order.
+Its role is to extend a Gaussian comparison to the stated conditional
+law; it does not improve a proof already using exact conditional second
+moments.  The ingredients have separate origins: classical polar
+decomposition supplies the radial factor, \cite{Bandeira} supplies the
+interior creation inequality, and \cite{GradedSource} supplies the
+covariance-sensitive boundary comparison.  No joint-frame or accumulated
+adaptive-process bound follows merely from the one-direction conditional
+statement.
+
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{GradedSource}
+D. Heidary.
+\emph{Graded Multiplication Operators for Random-Matrix Moments},
+version 11, 19 September 2026.
+Theorem 4.3, Corollary 4.4, Lemmas 3.11--3.12, Lemma 8.2,
+and the SRHT appendix.
+\href{https://github.com/DiarHaidary/Results/blob/3a93d33c8b80326615b5b6e63654f3d84edf431d/Graded\%20Multiplication\%20Operators\%20for\%20Random-Matrix\%20Moments.pdf}{Public manuscript}.
+
+\bibitem{SRHTSource}
+D. Heidary.
+\emph{Two-round SRHT: hybrid constants and proof-chain comparison}.
+Retained row-factor, positive-effects, and fixed-size sampling arguments.
+\href{https://github.com/DiarHaidary/Results/blob/3a93d33c8b80326615b5b6e63654f3d84edf431d/Wick-Hermite\%20Hybrid/srht_hybrid_constants_template.tex}{Public source}.
+
+\bibitem{KRSource}
+D. Heidary.
+\emph{Sharp Gaussian Khatri--Rao Embeddings: Three Proof Chains:
+Concentration, Framework, and Wick--Hermite}.
+Consolidated proof-chain manuscript, Chain C: fresh-sample contraction,
+sum of already-active sample interactions, and exact covariance examples.
+\href{https://github.com/DiarHaidary/Results/blob/3a93d33c8b80326615b5b6e63654f3d84edf431d/Wick-Hermite\%20Hybrid/A\%20Tight\%20Analysis\%20of\%20Khatri-Rao\%20Oblivious\%20Subspace\%20Embeddings/khatri_rao_three_proof_chains_with_chainD_main.tex}{Public source}.
+
+\bibitem{Bandeira}
+A. S. Bandeira, D. Kunisky, P. Nizi\'{c}-Nikolac, L. Pesenti,
+and R. Wang.
+\emph{Matrix Concentration and Equivalent Operators on Fock Spaces}.
+arXiv:2610.01982v1, 2026.
+\href{https://arxiv.org/abs/2610.01982v1}{arXiv manuscript}.
+
+\bibitem{HSSSource}
+D. Heidary.
+\emph{HSS: all routes and obstructions}.
+Conditional frame laws and local Haar comparisons.
+\href{https://github.com/DiarHaidary/Results/blob/3a93d33c8b80326615b5b6e63654f3d84edf431d/HSS/HSS\%20all\%20routes\%20and\%20obstructions.tex}{Public source}.
+\end{thebibliography}
+\end{document}

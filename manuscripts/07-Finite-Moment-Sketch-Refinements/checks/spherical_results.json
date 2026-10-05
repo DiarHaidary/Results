@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "covariance_diagonal": 3,
+  "component_fourth": 84,
+  "crossing": 8,
+  "pairing": 80,
+  "sufficient_rows": 358,
+  "failure_upper": 0.00998859875588871,
+  "failure_at_previous_integer": 0.010044639594729527,
+  "method": "Exact rational Pauli covariance basis and integer threshold"
+}

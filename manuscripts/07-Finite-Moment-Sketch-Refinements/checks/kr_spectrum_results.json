@@ -1,0 +1,90 @@
+{
+  "status": "passed",
+  "method": "Exact rational positive-path recurrence with Taylor bounds on e",
+  "cases": [
+    {
+      "model": "full 2x2 product",
+      "case": 0,
+      "m": 14514,
+      "positive_margin": 4.282143114621936e-08,
+      "previous_excess": 9.738065539821163e-09
+    },
+    {
+      "model": "full 2x2 product",
+      "case": 1,
+      "m": 13668,
+      "positive_margin": 1.7530275862962673e-08,
+      "previous_excess": 3.842081635869296e-08
+    },
+    {
+      "model": "full 2x2 product",
+      "case": 2,
+      "m": 13606,
+      "positive_margin": 5.256901777779899e-08,
+      "previous_excess": 3.8665518103265106e-09
+    },
+    {
+      "model": "full 2x2 product",
+      "case": 3,
+      "m": 13606,
+      "positive_margin": 5.256901777779899e-08,
+      "previous_excess": 3.8665518103265106e-09
+    },
+    {
+      "model": "rank10 common factor",
+      "case": 0,
+      "m": 24869,
+      "positive_margin": 1.2763459979517474e-08,
+      "previous_excess": 1.7048596957656856e-08
+    },
+    {
+      "model": "rank10 common factor",
+      "case": 1,
+      "m": 23649,
+      "positive_margin": 1.1760784903859982e-08,
+      "previous_excess": 1.9708390662607073e-08
+    },
+    {
+      "model": "rank10 common factor",
+      "case": 2,
+      "m": 23447,
+      "positive_margin": 1.7356217301917677e-08,
+      "previous_excess": 1.4616178726445266e-08
+    },
+    {
+      "model": "rank10 common factor",
+      "case": 3,
+      "m": 23447,
+      "positive_margin": 1.7356217301917677e-08,
+      "previous_excess": 1.4616178726445266e-08
+    },
+    {
+      "model": "anisotropic rank2 source example",
+      "case": 0,
+      "m": 10581,
+      "positive_margin": 3.2842651383943144e-10,
+      "previous_excess": 7.259233881671915e-08
+    },
+    {
+      "model": "anisotropic rank2 source example",
+      "case": 1,
+      "m": 10115,
+      "positive_margin": 4.8885765230608544e-08,
+      "previous_excess": 2.7444515050035096e-08
+    },
+    {
+      "model": "anisotropic rank2 source example",
+      "case": 2,
+      "m": 10403,
+      "positive_margin": 7.356170769606186e-08,
+      "previous_excess": 6.554142370959473e-10
+    },
+    {
+      "model": "anisotropic rank2 source example",
+      "case": 3,
+      "m": 10107,
+      "positive_margin": 1.8737060391692288e-08,
+      "previous_excess": 5.772375947005702e-08
+    }
+  ]
+}

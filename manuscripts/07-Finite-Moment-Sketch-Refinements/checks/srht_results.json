@@ -1,0 +1,54 @@
+[
+  {
+    "n": 1073741824,
+    "d": 10,
+    "q": 6,
+    "epsilon": 0.5,
+    "delta": 0.01,
+    "old_terminal_grade_M": 28080,
+    "float_candidate": 9829,
+    "certified_prefix_stage_M": 9928,
+    "reduction": 0.6464387464387464,
+    "exact_rational_inequality_passed": true,
+    "failure_bound_over_delta": 0.9375849650440645
+  },
+  {
+    "n": 1073741824,
+    "d": 100,
+    "q": 8,
+    "epsilon": 0.5,
+    "delta": 0.01,
+    "old_terminal_grade_M": 60271,
+    "float_candidate": 26420,
+    "certified_prefix_stage_M": 26685,
+    "reduction": 0.5572497552720214,
+    "exact_rational_inequality_passed": true,
+    "failure_bound_over_delta": 0.9182253241403642
+  },
+  {
+    "n": 1073741824,
+    "d": 1000,
+    "q": 10,
+    "epsilon": 0.5,
+    "delta": 0.01,
+    "old_terminal_grade_M": 169157,
+    "float_candidate": 115852,
+    "certified_prefix_stage_M": 117011,
+    "reduction": 0.3082698321677495,
+    "exact_rational_inequality_passed": true,
+    "failure_bound_over_delta": 0.8995070394367398
+  },
+  {
+    "n": 1073741824,
+    "d": 10000,
+    "q": 11,
+    "epsilon": 0.5,
+    "delta": 0.01,
+    "old_terminal_grade_M": 1011962,
+    "float_candidate": 924441,
+    "certified_prefix_stage_M": 933686,
+    "reduction": 0.07735073056102892,
+    "exact_rational_inequality_passed": true,
+    "failure_bound_over_delta": 0.8904137312908299
+  }
+]
