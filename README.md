@@ -2,6 +2,11 @@
 
 Research manuscripts on randomized matrix approximation and structured sketches.
 
+## Khatri-Rao embeddings and approximation
+
+[The Sharp Logarithmic Cost of Khatri-Rao Subspace Embeddings](manuscripts/08-Khatri-Rao-Embeddings-and-Approximation/Khatri_Rao_Embeddings_and_Approximation_Focused.pdf)
+(14 October 2026). [LaTeX source](manuscripts/08-Khatri-Rao-Embeddings-and-Approximation/Khatri_Rao_Embeddings_and_Approximation_Focused.tex).
+
 ## October 2026 finite-moment refinements
 
 [Finite-moment refinements for SRHT and Khatri-Rao sketches](manuscripts/07-Finite-Moment-Sketch-Refinements/Finite_Moment_Sketch_Refinements.pdf)
