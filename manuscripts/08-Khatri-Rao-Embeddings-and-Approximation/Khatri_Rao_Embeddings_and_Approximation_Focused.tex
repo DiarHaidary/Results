@@ -83,11 +83,11 @@ claims and proofs, all citations and attributions, and any remaining errors.
 \endgroup
 \vspace{13pt}
 \begin{abstract}
+Khatri--Rao sketches use tensor products of small random vectors.
 For fixed tensor order $d\ge2$, accuracy, confidence, and directional
-sub-Gaussian parameters, we establish the worst-case Khatri--Rao
-subspace embedding dimension $\Theta(r\log^{d-1}(er))$. A general
-upper bound and matching Gaussian, Rademacher, and spherical lower
-bounds determine the sharp rank logarithm. In contrast, bounded
+sub-Gaussian parameters, we establish the worst-case subspace embedding
+dimension $\Theta(r\log^{d-1}(er))$. Matching Gaussian, Rademacher,
+and spherical lower bounds establish sharpness. In contrast, bounded
 directional fourth moments suffice for $(1+\varepsilon)$-relative-error
 low-rank approximation and regression with $O(r)$ samples at fixed
 parameters. This distinction holds on the same input: approximation
@@ -221,30 +221,34 @@ The last row is a distributional comparison on the specified support class.}
 \subsection{Why the logarithm appears}\label{sec:heuristics}
 Write $y_i=U^\top z_i$ and
 $M=U^\top\Omega\Omega^\top U=m^{-1}\sum_i y_i y_i^\top$ for the
-Gram matrix restricted to the subspace. Since every summand is positive
-semidefinite,
+restricted Gram matrix. The lower-bound mechanism has three steps.
+\begin{enumerate}
+\item \textbf{One large row breaks embedding.} Positivity gives
 \[
  \lambda_{\max}(M)\ge\frac{\max_i\norm{y_i}^2}{m}.
 \]
-Thus a single projected probe with
-$\norm{y_i}^2>(1+\varepsilon)m$ is enough to violate the embedding
-condition. The common-factor Gaussian witness makes the source of
-such a large probe explicit. For
-$Ue_a=e_a\otimes e_1\otimes\cdots\otimes e_1$, the projected vector is
+Thus $\norm{y_i}^2>(1+\varepsilon)m$ for even one probe violates
+the embedding condition.
+
+\item \textbf{A shared scalar amplifies all coordinates.}
+On the Gaussian common-factor witness
+$Ue_a=e_a\otimes e_1\otimes\cdots\otimes e_1$,
 \[
  y_i=\left(\prod_{j=2}^d\eta_{i,j}\right)\xi_i,
  \qquad \xi_i\sim N(0,I_r),\quad \eta_{i,j}\sim N(0,1),
 \]
-with all the displayed Gaussian variables independent. The scalar
-weight $w_i=\prod_{j=2}^d\eta_{i,j}^2$ multiplies the squared norm of
-the entire vector: $\norm{y_i}^2=w_i\norm{\xi_i}^2$. A large value of
-$w_i$ therefore amplifies all $r$ coordinates simultaneously. At fixed
-$d$, the maximum of these weights has order $(\log m)^{d-1}$, while
-$\norm{\xi_i}^2$ concentrates around $r$. This produces the necessary
-term $r\log^{d-1}r$ in the witness constructions. Independent
-Rademacher coordinates reproduce the same mechanism through rare
-alignment with a shared direction in modes of dimension proportional
-to $\log r$ (Proposition~\ref{lower:prop:rademacher}).
+with all displayed Gaussian variables independent. The weight
+$w_i=\prod_{j=2}^d\eta_{i,j}^2$ multiplies the entire squared norm:
+$\norm{y_i}^2=w_i\norm{\xi_i}^2$.
+
+\item \textbf{The largest weight supplies the logarithm.}
+At fixed $d$, the maximum weight has order $(\log m)^{d-1}$,
+while $\norm{\xi_i}^2$ concentrates around $r$. Together these give
+the necessary term $r\log^{d-1}r$ in the witness constructions.
+Rademacher factors reproduce the mechanism through rare alignment
+in common modes of dimension proportional to $\log r$
+(Proposition~\ref{lower:prop:rademacher}).
+\end{enumerate}
 
 The upper bound must control these extremes uniformly over the target
 subspace, as well as the collective covariance fluctuations. Under
@@ -315,7 +319,7 @@ general fourth-moment laws, while sub-Gaussian product laws admit
 polylogarithmic confidence cost
 (Theorem~\ref{app:thm:subgauss-confidence}).
 
-\item \textbf{A separation on the same input.}
+\item \textbf{Linear-size approximation despite embedding failure.}
 At $m=O(r)$, Gaussian and Rademacher sketches achieve relative error
 on fixed inputs whose leading-space Gram matrices have a bounded
 lower edge and an excessive upper edge
@@ -1002,64 +1006,11 @@ relative-error rangefinding, low-rank approximation, and regression with
 sketch size linear in the target rank at fixed accuracy and confidence.
 Use iid isotropic probes with the normalization \eqref{eq:intro:model}.
 The first results assume \eqref{app:eq:fourth};
-Corollary~\ref{app:cor:input} later replaces this global condition by
-moments on the leading space and its residual interaction.
-The mechanism is visible in SVD coordinates. If the leading block $\Omega_1$ has full row
-rank, the rank-$r$ competitor $B_*=(A\Omega)\Omega_1^\dagger V_1^\top$
-satisfies
-\[
- \norm{A-B_*}_{\F}^2
- =\norm{A-A_r}_{\F}^2+
-   \norm{\Sigma_2\Omega_2\Omega_1^\dagger}_{\F}^2.
-\]
-Lower injection controls the inverse factor, while orthogonal fourth
-moments control the interaction between the leading and trailing singular
-directions. These estimates play separate roles: only $\norm{M^{-1}}$
-is used, with $M$ the leading Gram matrix, so no upper spectral bound on
-$M$ is needed. The residual interaction is controlled in mean square
-and may be dependent on $M$.
-The deterministic reduction and approximate-matrix-product step are
-classical~\cite{Sarlos2006,CW2009,HMT2011,CNW2016}. The contribution
-here is a single product fourth-moment hypothesis that supplies both
-lower injection and orthogonal residual control, with explicit constants.
+Corollary~\ref{app:cor:input} later retains only the leading-space
+moment and its residual interaction. Product laws satisfy the global
+condition by Lemma~\ref{app:lem:product} in Appendix~\ref{appendix:injection}.
 
-\begin{lemma}[Product fourth moments]\label{app:lem:product}
-If independent isotropic factors $x_j$ obey directional fourth-moment
-bounds $c_j$, their product $z=x_1\otimes\cdots\otimes x_d$ obeys
-\eqref{app:eq:fourth} with $\Cfour=\prod_j c_j$. Independent centered, unit-variance coordinates with fourth
-moment $\mu_4$ have $c_j=\max\{3,\mu_4\}$, by expanding the fourth power.
-Thus Gaussian and sign factors admit $c_j=3$, including four-wise
-independent sign coordinates, while standardized sparse signs of density
-$\zeta_j$ admit $c_j=\max\{3,\zeta_j^{-1}\}$.
-Under \eqref{core:eq:model}, one may instead use $c_j=c_{\rm sg}$
-from Lemma~\ref{core:lem:sharp-sg-fourth}.
-For fully independent signs and normalized spherical factors,
-the respective exact constants are $3-2/n_j$ and $3n_j/(n_j+2)$;
-their higher moments are given in Appendix~\ref{core:sec:law-profiles}.
-\end{lemma}
-\begin{proof}
-Use the Hilbert-valued extension: for coefficient vectors $a_b$,
-\[
- \E\left(\sum_b\ip{a_b}{x_j}^2\right)^2
- \le c_j\left(\sum_b\norm{a_b}^2\right)^2,
-\]
-by Cauchy--Schwarz on each pair of components. Successive contractions
-of the coefficient tensor, conditioning on one independent factor at a
-time, give the claimed product constant; the same induction gives
-isotropy. 
-For centered independent coordinates $\xi_b$ with unit variance and
-$\E\xi_b^4\le\mu_4$, expansion gives
-\[
- \E\Bigl(\sum_b a_b\xi_b\Bigr)^4
- =3\Bigl(\sum_ba_b^2\Bigr)^2+
-   \sum_b(\E\xi_b^4-3)a_b^4
- \le\max\{3,\mu_4\}\norm a^4.
-\]
-The same expansion uses only fourth-order joint moments, which also
-justifies the four-wise-independent sign example.
-\end{proof}
-
-
+\subsection{The relative-error guarantee}
 For $s>0$ and $0<\alpha,\eta<1$, define
 \begin{align}
  A_s^{\rm inj}(\beta)&=1+\frac{2(s+2)}\beta
@@ -1072,139 +1023,17 @@ For $s>0$ and $0<\alpha,\eta<1$, define
                   \label{app:eq:injection-certificate}
 \end{align}
 Set $\mathfrak m_{\rm inj}(C,0;\alpha,\eta)=0$.
-The minimum exists for $s>0$; the choice $\beta=2(s+2)$ gives
-\begin{equation}\label{app:eq:injection-simple}
- \mathfrak m_{\rm inj}(C,s;\alpha,\eta)
- \le\frac{14C}{3(1-\alpha)^2}
-       \left(s+2+2\log\frac2\eta\right).
-\end{equation}
+The minimum exists for $s>0$.
 
-\begin{lemma}[Explicit lower injection]\label{app:lem:injection}
-For a fixed isometry $Q\in\R^{N\times r}$ and $0<\alpha,\eta<1$,
-$m\ge\mathfrak m_{\rm inj}(\Cfour,r;\alpha,\eta)$ implies
-\[
- \Pp\{Q^\top\Omega\Omega^\top Q\succeq\alpha\Id_r\}\ge1-\eta.
-\]
-In particular, half injection with failure at most $\delta/2$ holds if
-\begin{equation}\label{app:eq:injection-budget}
- m\ge\mathfrak m_{\rm inj}(\Cfour,r;1/2,\delta/2).
-\end{equation}
-A sufficient count requiring no minimization is
-$\frac{56}{3}\Cfour[r+2+2\log(4/\delta)]$.
-\end{lemma}
-The \hyperref[proof:injection]{proof in Appendix~\ref*{appendix:injection}}
-uses Gaussian smoothing and Catoni's logarithmic influence function
-\cite{Oliveira2016,Catoni2012}. At fixed $\eta$,
-\[
- \mathfrak m_{\rm inj}(C,r;1/2,\eta)
- =\left[8\left(1+\frac2{\sqrt3}\right)+o(1)\right]Cr
- \qquad(r\to\infty).
-\]
-The lower-covariance method and rate are classical; the profile supplies
-finite constants for the raw iid sketch.
-
-After lower injection, the remaining quantity is the interaction of the
-leading subspace with its orthogonal residual. The next bound extracts
-the required mixed moment from the directional fourth-moment assumption;
-Lemma~\ref{app:lem:cross} then controls the mean-square Frobenius
-interaction by averaging over the independent probes.
-
-\begin{lemma}[Orthogonal fourth moments]\label{core:lem:orthogonal-fourth}
-Let $y\in\R^s$ be isotropic and satisfy
-$\E\ip uy^4\le c\norm u^4$ for all $u$, with $c\ge1$. Define
-\begin{equation}\label{core:eq:orthogonal-gamma}
- \gamma(c)=\min\{c/2,c-1\}.
-\end{equation}
-For orthogonal unit vectors $u,v$,
-\begin{equation}\label{core:eq:orthogonal-fourth}
- \E\ip uy^2\ip vy^2\le\gamma(c).
-\end{equation}
-Consequently,
-\begin{equation}\label{core:eq:orthogonal-variance}
- \E(yy^{\mathsf T})^2\preceq
- [c+(s-1)\gamma(c)]I_s.
-\end{equation}
-\end{lemma}
-\begin{proof}
-Put $A=\ip uy$, $B=\ip vy$, and $h=\E A^2B^2$.
-The fourth-moment bounds in the directions $(u+v)/\sqrt2$ and
-$(u-v)/\sqrt2$ give
-\[
- \E A^4+\E B^4+6h\le4c.
-\]
-Cauchy--Schwarz gives $\E A^4+\E B^4\ge2h$, hence $h\le c/2$.
-Isotropy and Jensen also give
-$\E A^4+\E B^4+2h=\E(A^2+B^2)^2\ge4$, hence $h\le c-1$.
-To prove the matrix assertion, extend a unit test vector to an
-orthonormal basis. Its own fourth moment contributes at most $c$ to
-$\E\norm y^2\ip uy^2$, and each of the other $s-1$ coordinates
-contributes at most $\gamma(c)$.
-\end{proof}
 For the approximation theorems, let $B_r$ bound the aggregate
 interaction with a unit residual direction:
 \begin{equation}\label{app:eq:aggregate-budget}
  \E\norm{Q^\top z}^2\ip vz^2\le B_r
  \quad(Q^\top Q=I_r,\ \norm v=1,\ Q^\top v=0).
 \end{equation}
-The following choices follow from the bilinear and Wick calculations in
-Appendix~\ref{appendix:wick}; take the minimum of applicable bounds.
-\begin{center}\small
-\begin{tabularx}{\linewidth}{@{}Yl@{}}
-\toprule Probe law & Aggregate bound $B_r$\\\midrule
-Directional fourth moment $\Cfour$ & $r\gamma(\Cfour)$\\
-Gaussian or four-wise-independent sign factors & $r(3^d-1)/2$\\
-Independent factors with four-wise-independent coordinates & $r(C_{\rm coord}-1)/2$\\
-Order two, coordinate fourth moments at most three & $\Xi_r=\min\{4r,3r+2\sqrt r\}$\\
-Two normalized spherical factors & $\varsigma_2\Xi_r$\\
-\bottomrule
-\end{tabularx}
-\end{center}
-In the coordinate row, coordinates are centered with variance one and
-$C_{\rm coord}=\prod_j\max\{3,\mu_{4,j}\}$, where $\mu_{4,j}$ bounds
-their fourth moments. Factors are mutually independent throughout.
-For spheres, $\varsigma_2=\prod_{j=1}^2n_j/(n_j+2)$.
-The leading coefficient three in $\Xi_r$ is sharp for Gaussian factors.
-These are aggregate bounds; dividing $B_r$ by $r$ need not give a
-valid bound for each individual pair of directions.
-
-
-\begin{lemma}[Orthogonal cross moment]\label{app:lem:cross}
-Let $Q\in\R^{N\times r}$ be an isometry and let $Q^\top W=0$.
-For $W\ne0$ define
-\begin{equation}\label{app:eq:mixed-parameter}
- \kappa(Q,W)=
- \frac{\E[\norm{Q^\top z}^2\norm{W^\top z}^2]}{\norm W_\F^2},
- \qquad \Omega=m^{-1/2}[z_1\ \cdots\ z_m].
-\end{equation}
-For iid isotropic $z_i$, whenever the displayed expectation is finite,
-\begin{equation}\label{app:eq:cross-exact}
- \E\norm{Q^\top(\Omega\Omega^\top-\Id_N)W}_\F^2
- =\frac{\kappa(Q,W)}m\norm W_\F^2.
-\end{equation}
-Under \eqref{app:eq:aggregate-budget}, $\kappa(Q,W)\le B_r$, so
-\begin{equation}\label{app:eq:cross}
- \E\norm{Q^\top(\Omega\Omega^\top-\Id_N)W}_\F^2
- \le\frac{B_r}{m}\norm W_\F^2.
-\end{equation}
-\end{lemma}
-\begin{proof}
-The matrix $(Q^\top z)(z^\top W)$ has mean zero and squared Frobenius
-norm $\norm{Q^\top z}^2\norm{W^\top z}^2$. Independence across samples
-gives \eqref{app:eq:cross-exact}. Apply \eqref{app:eq:aggregate-budget} to each nonzero residual
-column $w_b/\norm{w_b}$ and sum to obtain the upper bound.
-The case $W=0$ is immediate.
-\end{proof}
-
-The same calculation retains subspace geometry at second order.
-For two Gaussian factors, Lemma~\ref{core:lem:order-two-wick} gives
-an exact formula using the partial traces and partial transpose of
-the head projector, and the uniform centered bound
-\[
- \E(H-I_r)^2\preceq
- \min\{4r+4,3r+3+2\sqrt r\}I_r.
-\]
-These smaller variance inputs enter the finite-profile recurrence
-without changing its higher-order budgets.
+One may always take $B_r=r\gamma(\Cfour)$, where
+$\gamma(c)=\min\{c/2,c-1\}$, by Lemma~\ref{core:lem:orthogonal-fourth}.
+Appendix~\ref{appendix:wick} gives smaller law-specific choices.
 
 \begin{theorem}[Relative error for rangefinding and regression]
 \label{app:thm:relative}
@@ -1241,7 +1070,72 @@ Then the residual in the original space obeys
 The failure bound is independent of the number of response columns.
 \end{enumerate}
 \end{theorem}
+
+\subsection{Lower injection and residual interaction}
+The mechanism is visible in SVD coordinates. If the leading block $\Omega_1$ has full row
+rank, the rank-$r$ competitor $B_*=(A\Omega)\Omega_1^\dagger V_1^\top$
+satisfies
+\[
+ \norm{A-B_*}_{\F}^2
+ =\norm{A-A_r}_{\F}^2+
+   \norm{\Sigma_2\Omega_2\Omega_1^\dagger}_{\F}^2.
+\]
+Lower injection controls the inverse factor, while orthogonal fourth
+moments control the interaction between the leading and trailing singular
+directions. These estimates play separate roles: only $\norm{M^{-1}}$
+is used, with $M$ the leading Gram matrix, so no upper spectral bound on
+$M$ is needed. The residual interaction is controlled in mean square
+and may be dependent on $M$.
+The deterministic reduction and approximate-matrix-product step are
+classical~\cite{Sarlos2006,CW2009,HMT2011,CNW2016}. The contribution
+here is a single product fourth-moment hypothesis that supplies both
+lower injection and orthogonal residual control, with explicit constants.
+
+\begin{lemma}[Explicit lower injection]\label{app:lem:injection}
+For a fixed isometry $Q\in\R^{N\times r}$ and $0<\alpha,\eta<1$,
+$m\ge\mathfrak m_{\rm inj}(\Cfour,r;\alpha,\eta)$ implies
+\[
+ \Pp\{Q^\top\Omega\Omega^\top Q\succeq\alpha\Id_r\}\ge1-\eta.
+\]
+In particular, half injection with failure at most $\delta/2$ holds if
+\begin{equation}\label{app:eq:injection-budget}
+ m\ge\mathfrak m_{\rm inj}(\Cfour,r;1/2,\delta/2).
+\end{equation}
+A sufficient count requiring no minimization is
+$\frac{56}{3}\Cfour[r+2+2\log(4/\delta)]$.
+\end{lemma}
+Its proof is in Appendix~\ref{appendix:injection}; that appendix also
+gives the numerical profile and optimizes the injection level used in
+Theorem~\ref{app:thm:relative}.
+
+\begin{lemma}[Orthogonal cross moment]\label{app:lem:cross}
+Let $Q\in\R^{N\times r}$ be an isometry and let $Q^\top W=0$.
+For $W\ne0$ define
+\begin{equation}\label{app:eq:mixed-parameter}
+ \kappa(Q,W)=
+ \frac{\E[\norm{Q^\top z}^2\norm{W^\top z}^2]}{\norm W_\F^2},
+ \qquad \Omega=m^{-1/2}[z_1\ \cdots\ z_m].
+\end{equation}
+For iid isotropic $z_i$, whenever the displayed expectation is finite,
+\begin{equation}\label{app:eq:cross-exact}
+ \E\norm{Q^\top(\Omega\Omega^\top-\Id_N)W}_\F^2
+ =\frac{\kappa(Q,W)}m\norm W_\F^2.
+\end{equation}
+Under \eqref{app:eq:aggregate-budget}, $\kappa(Q,W)\le B_r$, so
+\begin{equation}\label{app:eq:cross}
+ \E\norm{Q^\top(\Omega\Omega^\top-\Id_N)W}_\F^2
+ \le\frac{B_r}{m}\norm W_\F^2.
+\end{equation}
+\end{lemma}
 \begin{proof}
+The matrix $(Q^\top z)(z^\top W)$ has mean zero and squared Frobenius
+norm $\norm{Q^\top z}^2\norm{W^\top z}^2$. Independence across samples
+gives \eqref{app:eq:cross-exact}. Apply \eqref{app:eq:aggregate-budget} to each nonzero residual
+column $w_b/\norm{w_b}$ and sum to obtain the upper bound.
+The case $W=0$ is immediate.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{app:thm:relative}]
 For the first assertion, initially suppose $\rank A>r$ and write a reduced
 SVD $A=U_1\Sigma_1V_1^\top+U_2\Sigma_2V_2^\top$, with the first block of
 size $r$. Define $\Omega_j=V_j^\top\Omega$, $\Delta_\Omega =\Omega\Omega^\top-\Id_N$,
@@ -1327,24 +1221,7 @@ For the order-two common-Schmidt law, the interaction is therefore
 $r(1+2\rho)$. The universal fourth-moment bound would give the larger
 allowance $3r(1+2\rho)/2$.
 
-\paragraph{Optimizing the injection level.}
-For a deterministic failure allocation $0<\eta<\delta$, set
-\[
- h_\eta=\tfrac14\mathfrak m_{\rm inj}(\Cfour,r;1/2,\eta),\qquad
- k_\eta=\frac{B_r}{\varepsilon(\delta-\eta)}.
-\]
-The proof of Theorem~\ref{app:thm:relative}, with lower level $\alpha$,
-requires $m\ge\max\{h_\eta/(1-\alpha)^2,k_\eta/\alpha^2\}$.
-For $B_r>0$, the minimizing level
-$\alpha=\sqrt{k_\eta}/(\sqrt{h_\eta}+\sqrt{k_\eta})$ gives
-\begin{equation}\label{app:eq:relative-balanced}
- m\ge(\sqrt{h_\eta}+\sqrt{k_\eta})^2.
-\end{equation}
-The allocation $\eta$ can also be optimized before sampling. The same
-formula applies to Corollary~\ref{app:cor:input} with
-$(\Cfour,B_r)$ replaced by $(C_Q,\kappa(Q,W))$; zero interaction
-requires only injection.
-
+\subsection{PSD approximation and range confidence}
 \Needspace{14\baselineskip}
 For a positive semidefinite matrix $K$, write
 \[
@@ -1378,143 +1255,6 @@ necessary: Proposition~\ref{app:prop:regression-lower} proves a
 $1/(\varepsilon\delta)$ lower bound for the raw solve, already at rank one.
 It does not assert this lower bound for a fixed Gaussian tensor law.
 
-
-\subsection{High confidence under sub-Gaussian factors}
-\label{app:sec:subgauss-confidence}
-
-Fourth moments alone give the inverse-confidence cost in
-Theorem~\ref{app:thm:relative}. Higher directional moments give a
-polylogarithmic confidence certificate for the same raw regression solve.
-The underlying Hilbert-space moment principle is classical
-\cite{Pinelis1994,Latala1997}; the following formulation keeps the
-tensor moment budgets and the orthogonal interaction explicit.
-
-Fix an integer $q\ge1$. Let $A_j$ be any valid directional moment bound
-$\E|\ip u z|^{2j}\le A_j\norm u^{2j}$, for $2\le j\le2q$.
-One may use Lemma~\ref{core:lem:factor} or the law-specific profiles
-in Appendix~\ref{core:sec:law-profiles}. Let $\Gamma_{\perp}>0$ bound
-the mixed fourth moment of any two orthogonal unit directions.
-Choose an aggregate budget $B_r$ as in
-\eqref{app:eq:aggregate-budget}, taking its minimum with $r\Gamma_{\perp}$
-if necessary. One may take $\Gamma_{\perp}=\gamma(\Cfour)$ whenever that
-number is positive, or use the coordinate or Gaussian constants above.
-If $B_r=0$, every orthogonal interaction vanishes almost surely and
-only the lower-injection condition below is needed; omit the formulas
-dividing by $B_r$. Otherwise set
-\begin{equation}\label{app:eq:hilbert-budgets}
- \nu_H=B_r,\qquad b_j^H=r^{j/2}A_j\ (3\le j\le2q),\qquad
- \Rmom_q^H=\max_{3\le j\le2q}
-       \left(\frac{2b_j^H}{j!\nu_H}\right)^{1/(j-2)}.
-\end{equation}
-For $q=1$ the empty maximum is zero. Write $c_q=\gmom_q^{1/(2q)}$
-and $h_q$ as in Theorem~\ref{closed:thm:moment}.
-
-\begin{theorem}[A confidence certificate for the raw solve]
-\label{app:thm:subgauss-confidence}
-Assume \eqref{app:eq:fourth}, fix $r\ge1$ and $\varepsilon,\delta\in(0,1)$,
-and suppose the directional budgets above hold. The rangefinding,
-rank-$r$, and regression conclusions of Theorem~\ref{app:thm:relative}
-hold with probability at least $1-\delta$ if
-\begin{align}\label{app:eq:high-confidence}
- m&\ge\mathfrak m_{\rm inj}(\Cfour,r;1/2,\delta/2),\nonumber\\
- (2/\delta)^{1/(2q)}c_q
- \left(\sqrt{\nu_H/m}+h_q\Rmom_q^H/m\right)
- &\le\sqrt\varepsilon/2.
-\end{align}
-In particular, in the sub-Gaussian tensor model, with
-$t=\log(2/\delta)$, a sufficient sample count is
-\begin{equation}\label{app:eq:high-confidence-rate}
- m\ge C_{d,\Ksg}\left[
-       \frac{rt}{\varepsilon}
-       +\sqrt{\frac r\varepsilon}\,t^d\right].
-\end{equation}
-This statement concerns each fixed input and has no dependence on
-the number of response columns.
-\end{theorem}
-Appendix~\ref{appendix:hilbert} proves the certificate and gives a
-second comparison that keeps the weak Hilbert variance separately.
-Its leading term is at most $\sqrt{(B_r+\Gamma_{\perp}(q-1))/m}$ before the
-confidence multiplier, compared with
-$\gmom_q^{1/(2q)}\sqrt{B_r/m}$ above. The two higher-order radii
-need not be ordered, so the smaller valid allowance may be used.
-
-\subsection{An angular-moment bound for the full sampled range}
-\label{app:sec:angular-drift}
-
-For Gaussian or spherical product columns, a complementary expected-error
-bound uses moments near order two rather than directional fourth moments.
-The use of entropy-scale moments for product probes is motivated by
-Holden's product-probe note~\cite{Holden2026}; the scalar residual
-recursion follows the RPCholesky analysis of
-Chen--Epperly--Tropp--Webber~\cite{CETW2025}. We give the fractional-moment
-conversion explicitly. The normalization step is the Gaussian/spherical
-range invariance recorded in~\cite[Section~5.4]{CEMT2025}.
-
-For positive integer mode dimensions $n_1,\ldots,n_d$, define
-\begin{equation}\label{app:eq:angular-kappa}
- \begin{split}
- c_n^{\rm sph}(p)&=\frac{n^p\Gamma(p+1/2)\Gamma(n/2)}
-                    {\Gamma(1/2)\Gamma(n/2+p)},\\
- H_{\rm ang}(p)&=\prod_{j=1}^d c_{n_j}^{\rm sph}(p),\\
- \varkappa_{\rm ang}
- &=\exp\!\left[\sum_{j=1}^d
-   \{\log n_j+\psi(3/2)-\psi(n_j/2+1)\}\right],
- \end{split}
-\end{equation}
-where $p\ge1$ is real and $\psi=(\log\Gamma)'$.
-In particular, $c_n^{\rm sph}(1)=1$, and a one-dimensional mode contributes one
-to $\varkappa_{\rm ang}$.
-
-\begin{theorem}[Expected approximation of the full sampled range]
-\label{app:thm:angular-range}
-Let $A$ be fixed, let the columns of $\Omega$ be independent real
-Gaussian product probes or independent product probes whose mode-$j$
-factor is uniform on the sphere of radius $\sqrt{n_j}$, and put
-$P=P_{\range(A\Omega)}$.
-Fix $1\le r<\rank A$ and $0<\varepsilon\le1$, and set
-\[
- T=\norm A_\F^2,\qquad
- \tau=\norm{A-A_r}_\F^2,\qquad
- u_0=T/\tau-1.
-\]
-If $u_0\le\varepsilon$, the desired bound holds already for the empty
-range. Otherwise, the explicit condition
-\begin{equation}\label{app:eq:angular-budget-exact}
- m\ge\left\lceil\varkappa_{\rm ang}r
- \left[\frac1\varepsilon-\frac1{u_0}
-                     +\log\frac{u_0}{\varepsilon}\right]\right\rceil
-\end{equation}
-implies
-\begin{equation}\label{app:eq:angular-range-error}
- \E\norm{(I-P)A}_\F^2\le(1+\varepsilon)\tau.
-\end{equation}
-In particular, a simpler sufficient condition is
-\begin{equation}\label{app:eq:angular-budget-simple}
- m\ge\left\lceil\varkappa_{\rm ang}r
- \left[\varepsilon^{-1}+\log(\varepsilon^{-1})
-                              +\log(T/\tau)\right]\right\rceil.
-\end{equation}
-For PSD $K$, the same budgets, with $T=\tr K$ and
-$\tau=\sum_{i>r}\lambda_i(K)$, give
-$\E\tr(K-\mathcal N_K(\Omega))\le(1+\varepsilon)\tau$ for the full
-Nystr\"om approximation.
-\end{theorem}
-
-The proof is in Appendix~\ref{appendix:angular}.
-The conclusion concerns the entire sampled range and expectation.
-Its constant $\varkappa_{\rm ang}$ can be smaller than the fourth-moment
-constant, but its budget contains the trace-to-tail ratio.
-The theorem does not assert the same estimate for a rank-$r$ truncation,
-for regression, or for the Gram distortion of an unnormalized sketch.
-
-The angular constant obeys
-\[
- \varkappa_{\rm ang}\le(e^{2-\gamma_{\rm E}}/2)^d
- =(2.0743278106\ldots)^d.
-\]
-It improves the spherical fourth-moment product when some mode has
-dimension greater than one. Appendix~\ref{appendix:angular} also gives
-the corresponding Frobenius estimate for the full PSD residual.
 
 \subsection{A separation on the same input}
 \label{exact:sec:laws}
@@ -1909,16 +1649,160 @@ a sufficient explicit order is
  \left[\log\frac{e(r+\log(1/\delta))}{\varepsilon\delta}\right]^{d-1}.
 \]
 
-The common-Schmidt spectrum therefore has three distinct roles:
-range-based outputs have the Gaussian law, fixed-rank regression
-fluctuations carry the factor $1+2\rho$, and embedding width depends
-on $L$. The regression limit fixes $r$ and does not assert the
-finite-sample identity $\E\mathcal E_m^{\rm reg}=r\mu_2/m$ or convergence of
-unconditional means. Its confidence certificate also needs weight-tail
-control; arbitrary mixing weights need not give polylogarithmic cost.
-The general fourth-moment obstruction in
-Proposition~\ref{app:prop:regression-lower} remains applicable outside
-these Gaussian support classes.
+The order-two Gaussian common-Schmidt model summarizes the distinction:
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lY@{}}
+\toprule Task & Role of the shared weight\\\midrule
+Range-based approximation & Nonzero scales cancel; the Gaussian output law
+requires the entire relevant support.\\
+Regression, fixed $r$ & The limiting variance factor is $\mu_2=1+2\rho$.\\
+Embedding & The width retains an extreme-row contribution governed by $L$.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The regression limit does not assert the finite-sample identity
+$\E\mathcal E_m^{\rm reg}=r\mu_2/m$ or convergence of unconditional means.
+Its confidence certificate still needs weight-tail control; arbitrary
+mixing weights need not give polylogarithmic cost. The fourth-moment
+obstruction in Proposition~\ref{app:prop:regression-lower} remains
+applicable outside these Gaussian support classes.
+
+\subsection{High confidence under sub-Gaussian factors}
+\label{app:sec:subgauss-confidence}
+
+Fourth moments alone give the inverse-confidence cost in
+Theorem~\ref{app:thm:relative}. Higher directional moments give a
+polylogarithmic confidence certificate for the same raw regression solve.
+The underlying Hilbert-space moment principle is classical
+\cite{Pinelis1994,Latala1997}; the following formulation keeps the
+tensor moment budgets and the orthogonal interaction explicit.
+
+Fix an integer $q\ge1$. Let $A_j$ be any valid directional moment bound
+$\E|\ip u z|^{2j}\le A_j\norm u^{2j}$, for $2\le j\le2q$.
+One may use Lemma~\ref{core:lem:factor} or the law-specific profiles
+in Appendix~\ref{core:sec:law-profiles}. Let $\Gamma_{\perp}>0$ bound
+the mixed fourth moment of any two orthogonal unit directions.
+Choose an aggregate budget $B_r$ as in
+\eqref{app:eq:aggregate-budget}, taking its minimum with $r\Gamma_{\perp}$
+if necessary. One may take $\Gamma_{\perp}=\gamma(\Cfour)$ whenever that
+number is positive, or use the coordinate or Gaussian constants in Appendix~\ref{appendix:wick}.
+If $B_r=0$, every orthogonal interaction vanishes almost surely and
+only the lower-injection condition below is needed; omit the formulas
+dividing by $B_r$. Otherwise set
+\begin{equation}\label{app:eq:hilbert-budgets}
+ \nu_H=B_r,\qquad b_j^H=r^{j/2}A_j\ (3\le j\le2q),\qquad
+ \Rmom_q^H=\max_{3\le j\le2q}
+       \left(\frac{2b_j^H}{j!\nu_H}\right)^{1/(j-2)}.
+\end{equation}
+For $q=1$ the empty maximum is zero. Write $c_q=\gmom_q^{1/(2q)}$
+and $h_q$ as in Theorem~\ref{closed:thm:moment}.
+
+\begin{theorem}[A confidence certificate for the raw solve]
+\label{app:thm:subgauss-confidence}
+Assume \eqref{app:eq:fourth}, fix $r\ge1$ and $\varepsilon,\delta\in(0,1)$,
+and suppose the directional budgets above hold. The rangefinding,
+rank-$r$, and regression conclusions of Theorem~\ref{app:thm:relative}
+hold with probability at least $1-\delta$ if
+\begin{align}\label{app:eq:high-confidence}
+ m&\ge\mathfrak m_{\rm inj}(\Cfour,r;1/2,\delta/2),\nonumber\\
+ (2/\delta)^{1/(2q)}c_q
+ \left(\sqrt{\nu_H/m}+h_q\Rmom_q^H/m\right)
+ &\le\sqrt\varepsilon/2.
+\end{align}
+In particular, in the sub-Gaussian tensor model, with
+$t=\log(2/\delta)$, a sufficient sample count is
+\begin{equation}\label{app:eq:high-confidence-rate}
+ m\ge C_{d,\Ksg}\left[
+       \frac{rt}{\varepsilon}
+       +\sqrt{\frac r\varepsilon}\,t^d\right].
+\end{equation}
+This statement concerns each fixed input and has no dependence on
+the number of response columns.
+\end{theorem}
+Appendix~\ref{appendix:hilbert} proves the certificate and gives a
+second comparison that keeps the weak Hilbert variance separately.
+Its leading term is at most $\sqrt{(B_r+\Gamma_{\perp}(q-1))/m}$ before the
+confidence multiplier, compared with
+$\gmom_q^{1/(2q)}\sqrt{B_r/m}$ above. The two higher-order radii
+need not be ordered, so the smaller valid allowance may be used.
+
+\subsection{An angular-moment bound for the full sampled range}
+\label{app:sec:angular-drift}
+
+For Gaussian or spherical product columns, a complementary expected-error
+bound uses moments near order two rather than directional fourth moments.
+The use of entropy-scale moments for product probes is motivated by
+Holden's product-probe note~\cite{Holden2026}; the scalar residual
+recursion follows the RPCholesky analysis of
+Chen--Epperly--Tropp--Webber~\cite{CETW2025}. We give the fractional-moment
+conversion explicitly. The normalization step is the Gaussian/spherical
+range invariance recorded in~\cite[Section~5.4]{CEMT2025}.
+
+For positive integer mode dimensions $n_1,\ldots,n_d$, define
+\begin{equation}\label{app:eq:angular-kappa}
+ \begin{split}
+ c_n^{\rm sph}(p)&=\frac{n^p\Gamma(p+1/2)\Gamma(n/2)}
+                    {\Gamma(1/2)\Gamma(n/2+p)},\\
+ H_{\rm ang}(p)&=\prod_{j=1}^d c_{n_j}^{\rm sph}(p),\\
+ \varkappa_{\rm ang}
+ &=\exp\!\left[\sum_{j=1}^d
+   \{\log n_j+\psi(3/2)-\psi(n_j/2+1)\}\right],
+ \end{split}
+\end{equation}
+where $p\ge1$ is real and $\psi=(\log\Gamma)'$.
+In particular, $c_n^{\rm sph}(1)=1$, and a one-dimensional mode contributes one
+to $\varkappa_{\rm ang}$.
+
+\begin{theorem}[Expected approximation of the full sampled range]
+\label{app:thm:angular-range}
+Let $A$ be fixed, let the columns of $\Omega$ be independent real
+Gaussian product probes or independent product probes whose mode-$j$
+factor is uniform on the sphere of radius $\sqrt{n_j}$, and put
+$P=P_{\range(A\Omega)}$.
+Fix $1\le r<\rank A$ and $0<\varepsilon\le1$, and set
+\[
+ T=\norm A_\F^2,\qquad
+ \tau=\norm{A-A_r}_\F^2,\qquad
+ u_0=T/\tau-1.
+\]
+If $u_0\le\varepsilon$, the desired bound holds already for the empty
+range. Otherwise, the explicit condition
+\begin{equation}\label{app:eq:angular-budget-exact}
+ m\ge\left\lceil\varkappa_{\rm ang}r
+ \left[\frac1\varepsilon-\frac1{u_0}
+                     +\log\frac{u_0}{\varepsilon}\right]\right\rceil
+\end{equation}
+implies
+\begin{equation}\label{app:eq:angular-range-error}
+ \E\norm{(I-P)A}_\F^2\le(1+\varepsilon)\tau.
+\end{equation}
+In particular, a simpler sufficient condition is
+\begin{equation}\label{app:eq:angular-budget-simple}
+ m\ge\left\lceil\varkappa_{\rm ang}r
+ \left[\varepsilon^{-1}+\log(\varepsilon^{-1})
+                              +\log(T/\tau)\right]\right\rceil.
+\end{equation}
+For PSD $K$, the same budgets, with $T=\tr K$ and
+$\tau=\sum_{i>r}\lambda_i(K)$, give
+$\E\tr(K-\mathcal N_K(\Omega))\le(1+\varepsilon)\tau$ for the full
+Nystr\"om approximation.
+\end{theorem}
+
+The proof is in Appendix~\ref{appendix:angular}.
+The conclusion concerns the entire sampled range and expectation.
+Its constant $\varkappa_{\rm ang}$ can be smaller than the fourth-moment
+constant, but its budget contains the trace-to-tail ratio.
+The theorem does not assert the same estimate for a rank-$r$ truncation,
+for regression, or for the Gram distortion of an unnormalized sketch.
+
+The angular constant obeys
+\[
+ \varkappa_{\rm ang}\le(e^{2-\gamma_{\rm E}}/2)^d
+ =(2.0743278106\ldots)^d.
+\]
+It improves the spherical fourth-moment product when some mode has
+dimension greater than one. Appendix~\ref{appendix:angular} also gives
+the corresponding Frobenius estimate for the full PSD residual.
 
 \section{Numerical illustration}\label{sec:numerics}
 The experiments compare the exact range-law mechanism with approximation
@@ -3859,6 +3743,78 @@ with tensor order, distortion, and confidence fixed.
 \section{Approximation details}\label{appendix:approximation}
 \subsection{Lower injection under fourth moments}\label{appendix:injection}
 
+\begin{lemma}[Product fourth moments]\label{app:lem:product}
+If independent isotropic factors $x_j$ obey directional fourth-moment
+bounds $c_j$, their product $z=x_1\otimes\cdots\otimes x_d$ obeys
+\eqref{app:eq:fourth} with $\Cfour=\prod_j c_j$. Independent centered, unit-variance coordinates with fourth
+moment $\mu_4$ have $c_j=\max\{3,\mu_4\}$, by expanding the fourth power.
+Thus Gaussian and sign factors admit $c_j=3$, including four-wise
+independent sign coordinates, while standardized sparse signs of density
+$\zeta_j$ admit $c_j=\max\{3,\zeta_j^{-1}\}$.
+Under \eqref{core:eq:model}, one may instead use $c_j=c_{\rm sg}$
+from Lemma~\ref{core:lem:sharp-sg-fourth}.
+For fully independent signs and normalized spherical factors,
+the respective exact constants are $3-2/n_j$ and $3n_j/(n_j+2)$;
+their higher moments are given in Appendix~\ref{core:sec:law-profiles}.
+\end{lemma}
+\begin{proof}
+Use the Hilbert-valued extension: for coefficient vectors $a_b$,
+\[
+ \E\left(\sum_b\ip{a_b}{x_j}^2\right)^2
+ \le c_j\left(\sum_b\norm{a_b}^2\right)^2,
+\]
+by Cauchy--Schwarz on each pair of components. Successive contractions
+of the coefficient tensor, conditioning on one independent factor at a
+time, give the claimed product constant; the same induction gives
+isotropy.
+For centered independent coordinates $\xi_b$ with unit variance and
+$\E\xi_b^4\le\mu_4$, expansion gives
+\[
+ \E\Bigl(\sum_b a_b\xi_b\Bigr)^4
+ =3\Bigl(\sum_ba_b^2\Bigr)^2+
+   \sum_b(\E\xi_b^4-3)a_b^4
+ \le\max\{3,\mu_4\}\norm a^4.
+\]
+The same expansion uses only fourth-order joint moments, which also
+justifies the four-wise-independent sign example.
+\end{proof}
+
+
+The choice $\beta=2(s+2)$ gives
+\begin{equation}\label{app:eq:injection-simple}
+ \mathfrak m_{\rm inj}(C,s;\alpha,\eta)
+ \le\frac{14C}{3(1-\alpha)^2}
+       \left(s+2+2\log\frac2\eta\right).
+\end{equation}
+
+At fixed $\eta$,
+\[
+ \mathfrak m_{\rm inj}(C,r;1/2,\eta)
+ =\left[8\left(1+\frac2{\sqrt3}\right)+o(1)\right]Cr
+ \qquad(r\to\infty).
+\]
+The lower-covariance method and rate are classical; the profile supplies
+finite constants for the raw iid sketch.
+
+\paragraph{Optimizing the injection level.}
+For a deterministic failure allocation $0<\eta<\delta$, set
+\[
+ h_\eta=\tfrac14\mathfrak m_{\rm inj}(\Cfour,r;1/2,\eta),\qquad
+ k_\eta=\frac{B_r}{\varepsilon(\delta-\eta)}.
+\]
+The proof of Theorem~\ref{app:thm:relative}, with lower level $\alpha$,
+requires $m\ge\max\{h_\eta/(1-\alpha)^2,k_\eta/\alpha^2\}$.
+For $B_r>0$, the minimizing level
+$\alpha=\sqrt{k_\eta}/(\sqrt{h_\eta}+\sqrt{k_\eta})$ gives
+\begin{equation}\label{app:eq:relative-balanced}
+ m\ge(\sqrt{h_\eta}+\sqrt{k_\eta})^2.
+\end{equation}
+The allocation $\eta$ can also be optimized before sampling. The same
+formula applies to Corollary~\ref{app:cor:input} with
+$(\Cfour,B_r)$ replaced by $(C_Q,\kappa(Q,W))$; zero interaction
+requires only injection.
+
+
 \begin{lemma}[Gaussian-smoothed lower covariance]
 \label{app:lem:lower-smoothing}
 Let $v_1,\ldots,v_m\in\R^k$ be iid, with
@@ -3999,6 +3955,72 @@ on the effective dimension is sufficient.
 \end{proof}
 
 \subsection{Bilinear moments and order-two Wick geometry}\label{appendix:wick}
+
+\begin{lemma}[Orthogonal fourth moments]\label{core:lem:orthogonal-fourth}
+Let $y\in\R^s$ be isotropic and satisfy
+$\E\ip uy^4\le c\norm u^4$ for all $u$, with $c\ge1$. Define
+\begin{equation}\label{core:eq:orthogonal-gamma}
+ \gamma(c)=\min\{c/2,c-1\}.
+\end{equation}
+For orthogonal unit vectors $u,v$,
+\begin{equation}\label{core:eq:orthogonal-fourth}
+ \E\ip uy^2\ip vy^2\le\gamma(c).
+\end{equation}
+Consequently,
+\begin{equation}\label{core:eq:orthogonal-variance}
+ \E(yy^{\mathsf T})^2\preceq
+ [c+(s-1)\gamma(c)]I_s.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $A=\ip uy$, $B=\ip vy$, and $h=\E A^2B^2$.
+The fourth-moment bounds in the directions $(u+v)/\sqrt2$ and
+$(u-v)/\sqrt2$ give
+\[
+ \E A^4+\E B^4+6h\le4c.
+\]
+Cauchy--Schwarz gives $\E A^4+\E B^4\ge2h$, hence $h\le c/2$.
+Isotropy and Jensen also give
+$\E A^4+\E B^4+2h=\E(A^2+B^2)^2\ge4$, hence $h\le c-1$.
+To prove the matrix assertion, extend a unit test vector to an
+orthonormal basis. Its own fourth moment contributes at most $c$ to
+$\E\norm y^2\ip uy^2$, and each of the other $s-1$ coordinates
+contributes at most $\gamma(c)$.
+\end{proof}
+The following choices for $B_r$ in \eqref{app:eq:aggregate-budget}
+follow from the bilinear and Wick calculations below; take the minimum
+of applicable bounds.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}Yl@{}}
+\toprule Probe law & Aggregate bound $B_r$\\\midrule
+Directional fourth moment $\Cfour$ & $r\gamma(\Cfour)$\\
+Gaussian or four-wise-independent sign factors & $r(3^d-1)/2$\\
+Independent factors with four-wise-independent coordinates & $r(C_{\rm coord}-1)/2$\\
+Order two, coordinate fourth moments at most three & $\Xi_r=\min\{4r,3r+2\sqrt r\}$\\
+Two normalized spherical factors & $\varsigma_2\Xi_r$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+In the coordinate row, coordinates are centered with variance one and
+$C_{\rm coord}=\prod_j\max\{3,\mu_{4,j}\}$, where $\mu_{4,j}$ bounds
+their fourth moments. Factors are mutually independent throughout.
+For spheres, $\varsigma_2=\prod_{j=1}^2n_j/(n_j+2)$.
+The leading coefficient three in $\Xi_r$ is sharp for Gaussian factors.
+These are aggregate bounds; dividing $B_r$ by $r$ need not give a
+valid bound for each individual pair of directions.
+
+
+The bilinear calculations also retain subspace geometry at second order.
+For two Gaussian factors, Lemma~\ref{core:lem:order-two-wick} gives
+an exact formula using the partial traces and partial transpose of
+the head projector, and the uniform centered bound
+\[
+ \E(H-I_r)^2\preceq
+ \min\{4r+4,3r+3+2\sqrt r\}I_r.
+\]
+These smaller variance inputs enter the finite-profile recurrence
+without changing its higher-order budgets.
+
 \begin{lemma}[Centered bilinear moment]
 \label{sharp:lem:bilinear}
 For an isotropic random vector $z$ satisfying the directional fourth
