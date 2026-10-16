@@ -83,17 +83,20 @@ claims and proofs, all citations and attributions, and any remaining errors.
 \endgroup
 \vspace{13pt}
 \begin{abstract}
-For fixed tensor order $d\ge2$, accuracy, confidence, and sub-Gaussian
-parameters, we establish the worst-case Khatri--Rao embedding dimension
-$\Theta(r\log^{d-1}(er))$, with matching Gaussian, Rademacher, and
-spherical lower bounds. Bounded directional fourth moments instead
-give $1+\varepsilon$ relative approximation with $O(r)$ samples at
-fixed parameters. We show that approximation can succeed while
-embedding fails on the same input, and identify Gaussian supports
-with an exact dense-Gaussian law for range-based outputs. Sharper
-moment profiles give explicit finite certificates, polylogarithmic
-confidence bounds for raw regression, and angular-moment bounds for
-expected full-range error.
+For fixed tensor order $d\ge2$, accuracy, confidence, and directional
+sub-Gaussian parameters, we establish the worst-case Khatri--Rao
+subspace embedding dimension $\Theta(r\log^{d-1}(er))$. A general
+upper bound and matching Gaussian, Rademacher, and spherical lower
+bounds determine the sharp rank logarithm. In contrast, bounded
+directional fourth moments suffice for $(1+\varepsilon)$-relative-error
+low-rank approximation and regression with $O(r)$ samples at fixed
+parameters. This distinction holds on the same input: approximation
+can succeed with high probability while the embedding condition fails.
+On specified Gaussian support classes, range-based outputs have exactly
+the dense-Gaussian distribution. Our analysis also yields explicit
+finite-sample moment certificates, polylogarithmic confidence bounds
+for raw regression under sub-Gaussian factors, and angular-moment
+bounds for expected full-range error.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Khatri--Rao sketches; subspace embeddings;
@@ -111,25 +114,35 @@ relative-error approximation; matrix moments; tensor geometry.
 
 \section{Introduction}\label{sec:introduction}
 
-The worst-case cost of embedding an $r$-dimensional subspace with an
-order-$d$ Khatri--Rao sketch is exactly $\Theta(r\log^{d-1}(er))$ at
-fixed accuracy, confidence, and factor-law parameters. Beretta--Musco
-\cite{BM2026} establish a nearly linear upper bound, with polylogarithmic
-factors suppressed in their abstract. We determine the exact rank
-logarithm and prove that it is necessary, including for bounded-entry
-and spherical factors.
-
-Khatri--Rao sketches represent each measurement as a tensor product of
-small random vectors. They store the factors rather than an ambient
-random matrix, and can exploit Kronecker, CP, or tensor-train structure
-when forming a sketch. These advantages motivate applications to tensor
-compression, polynomial kernels, regression, and eigensolvers
+Khatri--Rao sketches represent each randomized measurement probe as a
+rank-one tensor $z=\bigotimes_{j=1}^d g^{(j)}$. Storing the small factor
+vectors instead of an ambient random matrix reduces storage, while
+Kronecker, canonical polyadic (CP), or tensor-train structure can make
+the sketch efficient to apply. These advantages motivate applications
+to tensor compression, polynomial kernels, regression, and eigensolvers
 \cite{Ahle2020,RakhshanRabusseau2020,ChenJin2021,BGKL2026,SVB2026}.
 
-Embedding and relative approximation have different sample requirements:
-at fixed parameters, the worst-case embedding logarithm coexists with
-$O(r)$-sample relative approximation. We prove this separation on the
-same input and identify Gaussian supports with dense-Gaussian range-output laws.
+The computational advantages raise two sample-complexity questions:
+how many probes are needed to preserve every vector in a fixed
+$r$-dimensional subspace, and must downstream approximation tasks use
+the same number? Beretta--Musco~\cite[Theorem~1.3]{BM2026} establish
+the nearly linear embedding bound $O(r\log^{d+1}(er))$ for
+sub-Gaussian factors at fixed parameters. We determine the sharp
+worst-case order $\Theta(r\log^{d-1}(er))$, saving two rank logarithms,
+and prove that the remaining logarithmic factor is necessary for
+Gaussian, Rademacher, and spherical factors.
+
+Relative-error approximation has a different sample requirement.
+Embedding demands two-sided spectral control, including an upper bound
+that can fail because of a single large projected probe. The
+approximation guarantees instead follow from lower injection and
+control of the average interaction with the residual. Bounded
+directional fourth moments suffice for these two ingredients, yielding
+$(1+\varepsilon)$-relative-error low-rank approximation and regression
+with $O(r)$ samples at fixed parameters. We prove that approximation
+can succeed while embedding fails on the same input, and identify
+Gaussian supports on which range-based outputs have exactly the
+dense-Gaussian law.
 
 \subsection{Setting and guarantees}\label{sec:setting}
 Let $N=\prod_{j=1}^d n_j$ and let the tensor order satisfy $d\ge2$.
@@ -142,7 +155,8 @@ We draw iid probes with independent isotropic factors:
 The sketch size $m$ counts probe vectors, equivalently columns of
 $\Omega$ or rows of $\Pi$. Coordinates within a factor may be dependent
 unless specified otherwise. Every input and subspace is deterministic
-before sampling. The dense embedding theorem assumes
+before sampling. For two-sided embedding, we assume the directional
+sub-Gaussian condition
 \begin{equation}\label{core:eq:model}
  \E\exp\!\left(\frac{\ip{u}{g^{(j)}}^2}{\Ksg^2}\right)\le2
  \qquad(\norm u=1),
@@ -205,46 +219,70 @@ The last row is a distributional comparison on the specified support class.}
 \end{table}
 
 \subsection{Why the logarithm appears}\label{sec:heuristics}
-Write $M=m^{-1}\sum_i y_i y_i^\top$ for the Gram matrix restricted to
-the subspace. Positivity always gives
+Write $y_i=U^\top z_i$ and
+$M=U^\top\Omega\Omega^\top U=m^{-1}\sum_i y_i y_i^\top$ for the
+Gram matrix restricted to the subspace. Since every summand is positive
+semidefinite,
 \[
  \lambda_{\max}(M)\ge\frac{\max_i\norm{y_i}^2}{m}.
 \]
-Under the present moment assumptions, the covariance route also
-gives, at its stated confidence,
+Thus a single projected probe with
+$\norm{y_i}^2>(1+\varepsilon)m$ is enough to violate the embedding
+condition. The common-factor Gaussian witness makes the source of
+such a large probe explicit. For
+$Ue_a=e_a\otimes e_1\otimes\cdots\otimes e_1$, the projected vector is
+\[
+ y_i=\left(\prod_{j=2}^d\eta_{i,j}\right)\xi_i,
+ \qquad \xi_i\sim N(0,I_r),\quad \eta_{i,j}\sim N(0,1),
+\]
+with all the displayed Gaussian variables independent. The scalar
+weight $w_i=\prod_{j=2}^d\eta_{i,j}^2$ multiplies the squared norm of
+the entire vector: $\norm{y_i}^2=w_i\norm{\xi_i}^2$. A large value of
+$w_i$ therefore amplifies all $r$ coordinates simultaneously. At fixed
+$d$, the maximum of these weights has order $(\log m)^{d-1}$, while
+$\norm{\xi_i}^2$ concentrates around $r$. This produces the necessary
+term $r\log^{d-1}r$ in the witness constructions. Independent
+Rademacher coordinates reproduce the same mechanism through rare
+alignment with a shared direction in modes of dimension proportional
+to $\log r$ (Proposition~\ref{lower:prop:rademacher}).
+
+The upper bound must control these extremes uniformly over the target
+subspace, as well as the collective covariance fluctuations. Under
+the present moment assumptions, the covariance route gives, at its
+stated confidence,
 \[
  \norm{M-I_r}\lesssim_{d,\Ksg}
  \sqrt{r/m}+\frac{\max_i\norm{y_i}^2}{m}.
 \]
-These are bounds, not an additive formula for the top eigenvalue.
-Gaussian averaging bounds the largest projected row by
+Gaussian averaging bounds the largest squared projected row norm by
 $O_{d,\Ksg}(rs^{d-1}+s^d)$ with $s=\log(m/\beta)$ and failure
-probability $\beta$. On the common-factor witness, all $r$ coordinates
-share a scalar weight $w=\prod_{j=2}^d\eta_j^2$; its maximum has order
-$(\log m)^{d-1}$ at fixed $d$. This explains the necessary term
-$r\log^{d-1}r$ and why bounded signs can reproduce it by rare alignment.
-The upper estimate is uniform in the subspace; matching extremes are
-asserted only for the constructed witnesses.
+probability $\beta$. The resulting term
+$(rt^{d-1}+t^d)/\varepsilon$ in \eqref{eq:intro:sharp} reflects the
+large-row scale. Its term $rt/\varepsilon^2$ includes a logarithm
+from the trace-moment proof, rather than an unavoidable
+dense-Gaussian fluctuation cost: the covariance route reduces it to
+$r/\varepsilon^2$ when $\delta\ge2/r$. These estimates are bounds,
+not an additive formula for the top eigenvalue; matching extremes
+are asserted only for the constructed witnesses.
 
-Embedding must control these extremes as well as collective
-fluctuations. The term $(rt^{d-1}+t^d)/\varepsilon$ in
-\eqref{eq:intro:sharp} reflects the large-row scale. Its term
-$rt/\varepsilon^2$ includes a logarithm from the trace-moment proof,
-not an unavoidable dense-Gaussian fluctuation cost: the covariance route
-reduces it to $r/\varepsilon^2$ when $\delta\ge2/r$.
-For common-Schmidt weights, $w=\sum_b\lambda_bh_b^2$ and
-$L=\max_b\lambda_b$ give the scale $1+L\log m$ for the maximum, up
-to constants at fixed confidence. Spreading the weights therefore
-explains the transition $r[1+L\log(er)]$.
+Subspace geometry can reduce the shared fluctuation. In the order-two
+Gaussian common-Schmidt model, the weight becomes
+$w=\sum_b\lambda_bh_b^2$, and $L=\max_b\lambda_b$ gives the scale
+$1+L\log m$ for its maximum, up to constants at fixed confidence.
+Spreading the weights therefore explains the transition
+$r[1+L\log(er)]$.
 
-Approximation uses a different part of the same random matrix.
-Its error is bounded using $\norm{M^{-1}}$ and a mean-square
-interaction between the leading subspace and its residual. Lower
-injection controls the inverse, and fourth moments control that
-interaction without estimating a sample maximum. A large leading
-eigenvalue needs no upper cap in this argument. It can still accompany
-a large residual interaction; it does not make the realized error
-monotone in the sample weights.
+\paragraph{Why approximation needs less.}
+Relative-error approximation is controlled by two quantities: the
+inverse $\norm{M^{-1}}$ on the leading subspace and a mean-square
+interaction between that subspace and the residual. Lower injection
+bounds the inverse, while fourth moments bound the interaction in
+Frobenius norm without estimating a sample maximum. Neither step
+requires an upper bound on $\lambda_{\max}(M)$, which allows
+$O(r)$ samples at fixed accuracy and confidence. This is a statement
+about the requirements of the error bound: a large leading eigenvalue
+can still accompany a large residual interaction, and the realized
+approximation error need not be monotone in the sample weights.
 
 \subsection{Main results}
 \begin{enumerate}
@@ -269,7 +307,8 @@ and regression guarantees under bounded directional fourth moments, with
  m=O\!\left(\Cfour r+\Cfour\log(2/\delta)
                     +\frac{\Cfour r}{\varepsilon\delta}\right).
 \end{equation}
-For range-based objectives, confidence amplification improves this to
+For range-based objectives, concatenating independent sketches and
+using range containment improves the confidence dependence to
 $O(\Cfour r\varepsilon^{-1}[1+\log(1/\delta)])$.
 For raw regression, the inverse-confidence cost is necessary over
 general fourth-moment laws, while sub-Gaussian product laws admit
@@ -282,7 +321,8 @@ on fixed inputs whose leading-space Gram matrices have a bounded
 lower edge and an excessive upper edge
 (Corollary~\ref{separation:cor:same-input}). On Gaussian common-factor
 supports, Proposition~\ref{exact:prop:separation} strengthens this to an
-exact dense-Gaussian output law with its classical expected-error coefficient.
+exact dense-Gaussian law for range-based outputs, including the classical
+expected-error bound.
 
 \item \textbf{Subspace geometry.}
 Theorem~\ref{geom:thm:schmidt} identifies the order-two common-Schmidt
@@ -386,12 +426,14 @@ before sampling, and the guarantees concern exact arithmetic.
 \section{Sharp embedding dimension}
 \label{core:sec:embedding}
 
-The covariance route proves the sharp fixed-parameter order.
-A separate rank-one moment certificate supplies explicit constants
-and a complementary high-confidence bound; its proof is deferred to
-Appendix~\ref{appendix:covariance}. Gaussian and Rademacher
-witnesses establish necessity; spherical factors are treated in
-Section~\ref{geom:subsec:geometry}.
+Two effects govern the embedding dimension: accumulated covariance
+fluctuations and unusually large projected rows. The covariance route
+controls both and proves the sharp fixed-parameter order. A separate
+rank-one moment certificate supplies explicit constants and a complementary
+high-confidence bound; its proof is deferred to
+Appendix~\ref{appendix:covariance}. Gaussian and Rademacher witnesses
+show that a single large row can force the logarithmic overhead;
+spherical factors are treated in Section~\ref{geom:subsec:geometry}.
 
 Work in the tensor model of Section~\ref{sec:setting}, under
 the sub-Gaussian condition \eqref{core:eq:model}. Fix an isometry
@@ -442,6 +484,8 @@ Thus, outside an event of probability $\delta$,
 \]
 Here $v=O_{d,\Ksg}(r)$ and
 $q\Rmom_q=O_{d,\Ksg}(rq^{d-1}+q^d)$.
+The square-root term controls covariance fluctuations, while the term
+proportional to $m^{-1}$ accounts for large projected rows.
 Choosing the constant in \eqref{core:eq:ose} so that each term is at
 most $\varepsilon/2$ proves the claimed upper bound. For $d=2$, the
 term $rt/\varepsilon$ is absorbed by $rt/\varepsilon^2$.
@@ -468,10 +512,10 @@ general-confidence covariance bound when $\delta<2/r$.
 \subsection{Directional moments and covariance bounds}
 \label{core:sec:local}
 
-Isotropy has already fixed the quadratic moment of every unit
-projection. We use that information before estimating higher moments:
-after subtracting the constant and linear terms from the exponential
-moment, the remaining expectation is at most
+Isotropy fixes the quadratic moment of every unit projection.
+Subtracting this known contribution, together with the constant term,
+from the exponential moment leaves a smaller bound for the higher
+moments. Set
 \begin{equation}\label{core:eq:notation}
  \theta=1-\Ksg^{-2},\qquad
  \beta_p=\sup_{x>0}\frac{x^p}{e^x-1-x}\quad(p\ge2).
@@ -591,18 +635,20 @@ explicit moment certificate.
 
 \subsection{Why the logarithms are necessary}
 \label{core:sec:necessity}
-Both constructions exploit one large sample. For signs, aligning
-$h$ coordinates costs probability $2^{-h}$ and produces a squared
-projection of size $h$. Choosing $h$ proportional to $\log r$ makes
-an alignment likely among the sampled rows while retaining the same
-logarithmic scale as the Gaussian extreme. Positivity gives
+Both constructions separate two regimes. When $m<r$, rank deficiency
+forces covariance error at least one. When $m\ge r$, a single large
+sample suffices: positivity gives
 \[
  \lambda_{\max}\!\left(m^{-1}\sum_i y_iy_i^\top\right)
  \ge m^{-1}\max_i\norm{y_i}^2.
 \]
 On a common-factor subspace, $y_i$ is an isotropic $r$-vector multiplied
-by a product of scalar projections. We first use Gaussian extremes,
-then obtain the same effect from alignment of bounded signs.
+by a product of scalar projections. Gaussian extremes amplify this
+common scalar weight. For signs, prescribing all $h$ coordinates in one
+factor to be $+1$ has probability $2^{-h}$ and produces a squared
+projection of size $h$. Choosing $h$ proportional to $\log r$ makes
+simultaneous alignment across the common factors likely among $m\ge r$
+rows, at the same logarithmic scale as the Gaussian extreme.
 \subsubsection{Gaussian factors}\label{core:sec:lower}
 \begin{proof}[Gaussian lower bound in Theorem~\ref{core:thm:ose}]
 Choose
@@ -681,6 +727,8 @@ Theorem~\ref{core:thm:ose} is also necessary when the factor law is
 restricted to independent Rademacher coordinates.
 \end{proposition}
 \begin{proof}
+For $m<r$, rank deficiency makes the covariance deviation at least $1$
+deterministically. It remains to consider $m\ge r$.
 Take $r\ge2^{4(d-1)}$, and put
 \[
  h=\left\lfloor\frac{\log_2r}{2(d-1)}\right\rfloor,
@@ -710,14 +758,14 @@ semidefinite, so the occurrence of any $E_i$ implies
 The assumption on $r$ gives
 $h\ge\log r/[4(d-1)\log2]$. Thus the right side of
 \eqref{lower:eq:rademacher-spike} is at least $2$ throughout
-$m\le c_dr(\log r)^{d-1}$. For $m\ge r$, the probability that
+$m\le c_dr(\log r)^{d-1}$. The probability that
 no $E_i$ occurs is at most
 \[
  (1-r^{-1/2})^m\le\exp(-m/\sqrt r)\le\exp(-\sqrt r).
 \]
-For $m<r$, the sample covariance has a zero eigenvalue
-deterministically. In both cases the displayed deviation is at least
-$1$ on the stated event. This proves the uniform bound.
+Thus the covariance deviation is at least $1$ except on an event of
+probability at most $\exp(-\sqrt r)$. Together with the rank-deficient
+regime, this proves the uniform bound.
 
 Finally, Rademacher vectors are isotropic and satisfy
 $\E e^{t\langle g,u\rangle}\le e^{t^2/2}$ for unit $u$
@@ -727,13 +775,15 @@ when $\Ksg^2\ge8/3$, verifying \eqref{core:eq:model}.
 \end{proof}
 
 \begin{remark}\label{lower:rem:bounded-entries}
-The witness uses only entries of absolute value one. Bounded factor
-entries therefore do not remove the worst-case logarithmic overhead:
-the unit directional projection $\langle b,g\rangle$ can still attain
-$\sqrt h$ when its $h$ coordinates align. The dimensions of the common
-factors grow with $r$; the proposition does not address a restriction
-that keeps those mode dimensions fixed. Nor does coordinatewise
-boundedness supply a bound $\|y_i\|^2\le C_dr$ uniform in $r$.
+The witness uses only entries of absolute value one. Its logarithmic
+overhead comes from directional alignment across tensor factors:
+$\langle b,g\rangle$ can attain $\sqrt h$ when its $h$ coordinates align.
+The prescribed simultaneous alignment is rare for an individual row,
+but occurs with probability tending to one among $m\ge r$ independent
+rows for the chosen $h$. The dimensions of the common factors grow
+with $r$; the proposition does not address a restriction that keeps
+those mode dimensions fixed. Coordinatewise boundedness therefore
+does not supply a bound $\|y_i\|^2\le C_dr$ uniform in $r$.
 \end{remark}
 
 
@@ -822,6 +872,13 @@ without new probabilistic assumptions.
 
 \section{Geometry beyond the worst case}
 \label{geom:subsec:geometry}
+The following supports isolate the scalar amplification behind the
+worst-case logarithm. On a common-factor support, alignment in the
+shared modes amplifies every projected coordinate at once. The
+common-Schmidt construction replaces this product weight by a weighted
+sum of squared contractions. For order-two Gaussian probes, the largest
+Schmidt weight determines how much of the logarithmic penalty remains.
+
 \subsection{Common-factor and common-Schmidt supports}
 \begin{definition}[Common-factor and common-Schmidt supports]
 \label{exact:prop:supports}
@@ -877,8 +934,10 @@ with $g$ independent of the weight. Direct Gaussian moments give
  \E(yy^\top-\Id_r)^2
  =\bigl[r+1+2(r+2)\rho\bigr]\Id_r.
 \end{equation}
-Variance alone does not determine the embedding width: the largest
-Schmidt weight controls a rare row large enough to violate the upper edge.
+The variance depends on the quadratic weight sum $\rho$, but the
+embedding width also depends on extreme rows. The largest Schmidt
+weight $L$ controls the size of a rare row that can violate the upper
+spectral bound.
 \begin{theorem}[Common-Schmidt transition]\label{geom:thm:schmidt}
 For independent rows of the order-two common-Schmidt law, a universal
 constant $C$ has the following property. For $0<\varepsilon,\delta<1$,
@@ -901,9 +960,14 @@ $1\le m\le cr[1+L\log(er)]$ as $r\to\infty$.
 The \hyperref[proof:schmidt]{proof in Appendix~\ref*{geom:appendix}}
 first derives a conditional weighted-Gaussian upper bound and then
 uses one extreme row for the matching lower bound.
-Thus flat weights $\lambda_b=1/s$ require
-$\Theta_{\varepsilon,\delta}(r[1+\log(er)/s])$ rows. Delocalizing the
-Schmidt spectrum removes the rank logarithm once $s\gtrsim\log r$.
+At $L=1$, only one Schmidt weight is nonzero, so the support reduces to
+a common-factor support and the theorem recovers the sharp
+$\Theta_{\varepsilon,\delta}(r\log(er))$ width. For flat weights
+$\lambda_b=1/s$, the scalar weight $w$ is an average of $s$ independent
+squared Gaussians, and the sharp width is
+$\Theta_{\varepsilon,\delta}(r[1+\log(er)/s])$. Thus spreading the
+Schmidt spectrum removes the rank logarithm once $s\gtrsim\log r$,
+at fixed accuracy and confidence.
 
 \subsection{Spherical normalization}
 Spherical factors remove Gaussian radial randomness. Averaging it out
@@ -933,12 +997,14 @@ tensor subspace.
 
 
 \section{Approximation without embedding}\label{app:sec:relative}
+For each fixed input, bounded directional fourth moments suffice for
+relative-error rangefinding, low-rank approximation, and regression with
+sketch size linear in the target rank at fixed accuracy and confidence.
 Use iid isotropic probes with the normalization \eqref{eq:intro:model}.
 The first results assume \eqref{app:eq:fourth};
 Corollary~\ref{app:cor:input} later replaces this global condition by
 moments on the leading space and its residual interaction.
-The key deterministic identity is
-visible in SVD coordinates. If the leading block $\Omega_1$ has full row
+The mechanism is visible in SVD coordinates. If the leading block $\Omega_1$ has full row
 rank, the rank-$r$ competitor $B_*=(A\Omega)\Omega_1^\dagger V_1^\top$
 satisfies
 \[
@@ -946,14 +1012,16 @@ satisfies
  =\norm{A-A_r}_{\F}^2+
    \norm{\Sigma_2\Omega_2\Omega_1^\dagger}_{\F}^2.
 \]
-Lower injection controls the inverse factor. Orthogonal fourth moments
-control the interaction with the trailing singular directions. The deterministic reduction and approximate-matrix-product step are
+Lower injection controls the inverse factor, while orthogonal fourth
+moments control the interaction between the leading and trailing singular
+directions. These estimates play separate roles: only $\norm{M^{-1}}$
+is used, with $M$ the leading Gram matrix, so no upper spectral bound on
+$M$ is needed. The residual interaction is controlled in mean square
+and may be dependent on $M$.
+The deterministic reduction and approximate-matrix-product step are
 classical~\cite{Sarlos2006,CW2009,HMT2011,CNW2016}. The contribution
 here is a single product fourth-moment hypothesis that supplies both
 lower injection and orthogonal residual control, with explicit constants.
-Only $\norm{M^{-1}}$ is used, so a large eigenvalue of $M$ needs no
-upper bound. The residual interaction is controlled separately in mean
-square and can be dependent on $M$.
 
 \begin{lemma}[Product fourth moments]\label{app:lem:product}
 If independent isotropic factors $x_j$ obey directional fourth-moment
@@ -1035,9 +1103,11 @@ uses Gaussian smoothing and Catoni's logarithmic influence function
 The lower-covariance method and rate are classical; the profile supplies
 finite constants for the raw iid sketch.
 
-Relative approximation depends on the interaction of a leading
-subspace with its orthogonal residual. The next bound extracts that
-mixed moment from the directional fourth-moment assumption.
+After lower injection, the remaining quantity is the interaction of the
+leading subspace with its orthogonal residual. The next bound extracts
+the required mixed moment from the directional fourth-moment assumption;
+Lemma~\ref{app:lem:cross} then controls the mean-square Frobenius
+interaction by averaging over the independent probes.
 
 \begin{lemma}[Orthogonal fourth moments]\label{core:lem:orthogonal-fourth}
 Let $y\in\R^s$ be isotropic and satisfy
@@ -1448,9 +1518,11 @@ the corresponding Frobenius estimate for the full PSD residual.
 
 \subsection{A separation on the same input}
 \label{exact:sec:laws}
-The upper approximation bound and embedding obstruction apply to the
-same sketch. Their intersection gives a high-probability separation for
-both factor laws, without an independence assumption on the two events.
+For suitable fixed inputs, relative-error approximation and an upper
+spectral obstruction occur together for the same draw of the sketch.
+Intersecting the two probability bounds gives a high-probability
+separation for Gaussian and Rademacher factors, without requiring
+independence of the two events.
 \begin{figure}[H]
 \centering
 \begingroup
@@ -1596,10 +1668,13 @@ A complementary condition-number estimate at linear sketch size
 is recorded in Appendix~\ref{appendix:spectral-extensions}.
 
 \subsection{Exact laws from random lines}
-Range-based algorithms discard nonzero column scales. This observation,
+Nonzero column scales leave sampled ranges unchanged. This observation,
 also used for Gaussian and spherical probes in~\cite[Section~5.4]{CEMT2025},
-has an exact supportwise formulation. In this section the right sketch
-continues to use $\Omega=m^{-1/2}[z_1\ \cdots\ z_m]$.
+gives exact output laws when the input's entire relevant support has the
+required distribution of random lines. The comparison is with a dense
+Gaussian sketch applied to the same input, whose geometry still shapes
+the sampled range. In this section the right sketch continues to use
+$\Omega=m^{-1/2}[z_1\ \cdots\ z_m]$.
 \begin{proposition}[Exact Gaussian range laws]\label{exact:thm:projective}
 Let $V:\R^R\to S\subseteq\R^N$ be an isometry. Suppose
 $x=V^\top z\ne0$ almost surely and its unoriented line is uniform
@@ -1684,11 +1759,15 @@ give, for $m>r+1$,
  \label{exact:eq:relative-psd}
 \end{align}
 Thus $m=r+1+\lceil r/\varepsilon\rceil$ gives expected relative error
-$1+\varepsilon$ for all four objectives; the PSD cases use the
+at most $1+\varepsilon$ for all four objectives; the PSD cases use the
 $K^{1/2}$ correspondence in Corollary~\ref{app:cor:nystrom}.
 
-The common-factor case gives a more
-specific separation than Corollary~\ref{separation:cor:same-input}.
+The common-factor case gives an exact distributional counterpart to
+Corollary~\ref{separation:cor:same-input}: the range-based approximation
+outputs retain their dense-Gaussian laws while the probability of
+violating any fixed upper embedding tolerance tends to one. The
+relative-error bounds in the following proposition are expectation
+bounds, distinct from the high-probability conclusion of that corollary.
 \begin{proposition}[Exact approximation laws despite leading-subspace embedding failure]
 \label{exact:prop:separation}
 Fix tensor order $d\ge2$, accuracy $\varepsilon\in(0,1)$, and upper
